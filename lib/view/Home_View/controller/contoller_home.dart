@@ -1,5 +1,6 @@
 import 'package:bank/view/Home_View/Screens/first_screen.dart';
 import 'package:bank/view/Home_View/Screens/home_screen.dart';
+import 'package:bank/view/MBAG_Card_Screen/Screen/MBAG_Card_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +28,7 @@ class HomeControllerBottomNav extends GetxController {
         _currentScreen = ScreenFour();
         break;
       case 4:
-        _currentScreen = ScreenFive();
+        _currentScreen = MBAGCardScreen();
         break;
       default:
         _currentScreen = FirstScreen();

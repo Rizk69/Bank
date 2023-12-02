@@ -1,4 +1,6 @@
 import 'package:bank/Core/widgets/Styles.dart';
+import 'package:bank/view/Money_Transfer/Screen/Request_Money.dart';
+import 'package:bank/view/Money_Transfer/Screen/Send_Money.dart';
 import 'package:bank/view/QrTransaction/Screen/Recevive_Qr_Payment.dart';
 import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +207,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   InkWell(
                       onTap: () {
-                        // Get.to();
+                        Get.to(SendMoneyScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -235,7 +237,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        // Get.to(QrPay());
+                        Get.to(RequestMoneyScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

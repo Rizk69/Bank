@@ -50,6 +50,8 @@ dependencies:
   intl: ^0.17.0
   pretty_qr_code: ^3.0.0
   qr_bar_code_scanner_dialog: ^0.0.5
+  contacts_service: ^0.6.3
+  permission_handler: ^11.1.0
 
 
 
