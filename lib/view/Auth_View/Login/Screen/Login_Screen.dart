@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
-  final TextEditingController email = TextEditingController();
 
   final LoginController controller = Get.put(LoginController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -16,7 +15,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: EmailScreen(controller: email, formKey: _formKey),
+        child: EmailScreen(controller: controller.email, formKey: _formKey),
       ),
     );
   }

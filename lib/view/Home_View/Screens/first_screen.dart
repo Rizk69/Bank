@@ -32,20 +32,18 @@ class FirstScreen extends StatelessWidget {
               SizedBox(
                 height: 10.h,
               ),
-              ItemsFirstHome(
-                  onPressed1: () {},
-                  onPressed2: () {
-                    _showBottomSheet(context, '');
-                  },
-                  onPressed3: () {
-                    var token =
-                        CacheHelper.getDataSharedPreference(key: 'token');
-                    print('token===>$token');
-                  }),
+              ItemsFirstHome(onPressed1: () {
+                CacheHelper.removeData(key: 'token');
+              }, onPressed2: () {
+                _showBottomSheet(context, '');
+              }, onPressed3: () {
+                var token = CacheHelper.getDataSharedPreference(key: 'token');
+                print('token===>$token');
+              }),
               SizedBox(
                 height: 25.h,
               ),
-              DepositAndWithdraw(),
+              const DepositAndWithdraw(),
               SizedBox(
                 height: 25.h,
               ),
@@ -54,7 +52,7 @@ class FirstScreen extends StatelessWidget {
                 height: 80,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Colors.grey,
                           spreadRadius: 0.1,
@@ -74,7 +72,7 @@ class FirstScreen extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(color: Colors.grey, width: 0.5)),
-                        child: ImageIcon(
+                        child: const ImageIcon(
                             AssetImage(
                               'Assets/images/line-md_account.png',
                             ),
@@ -140,8 +138,7 @@ class FirstScreen extends StatelessWidget {
                     return const Center(
                         child: CircularProgressIndicator(color: Colors.grey));
                   } else if (controller.transactionData.isEmpty) {
-                    return const Center(
-                        child: Text('No transactions available.'));
+                    return const SizedBox.shrink();
                   } else {
                     return SizedBox(
                       height: 230.h,

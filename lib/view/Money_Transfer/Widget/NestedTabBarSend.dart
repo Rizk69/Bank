@@ -60,11 +60,18 @@ class _NestedTabBarState extends State<NestedTabBar>
 class ContactController extends GetxController {
   RxList<Contact> contacts = <Contact>[].obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getContacts();
+  }
+
   Future<void> getContacts() async {
     var status = await Permission.contacts.request();
     if (status.isGranted) {
       Iterable<Contact> contactList = await ContactsService.getContacts();
       contacts.assignAll(contactList);
+      update();
     } else {
       // لم يتم منح الإذن
       // يمكنك إدراج رمز للتعامل مع الحالة هنا
@@ -202,18 +209,20 @@ class ContactListPage extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Obx(
-                  () => ListView.builder(
-                    itemCount: contactController.contacts.length,
-                    itemBuilder: (context, index) {
-                      var contact = contactController.contacts[index];
-                      return ListTile(
-                        leading: contact.phones!.isNotEmpty
-                            ? Icon(Icons.phone)
-                            : Icon(Icons.phone_disabled),
-                        title: Text(contact.displayName ?? ''),
-                        subtitle: Text((contact.phones!.isNotEmpty
-                                ? contact.phones!.first.value
-                                : 'لا يوجد رقم هاتف') ??
+                  () => contactController.contacts.isEmpty
+                      ? SizedBox.shrink()
+                      : ListView.builder(
+                          itemCount: contactController.contacts.length,
+                          itemBuilder: (context, index) {
+                            var contact = contactController.contacts[index];
+                            return ListTile(
+                              leading: contact.phones!.isNotEmpty
+                                  ? Icon(Icons.phone)
+                                  : Icon(Icons.phone_disabled),
+                              title: Text(contact.displayName ?? ''),
+                              subtitle: Text((contact.phones!.isNotEmpty
+                                      ? contact.phones!.first.value
+                                      : 'لا يوجد رقم هاتف') ??
                             ''),
                       );
                     },
@@ -222,14 +231,6 @@ class ContactListPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: SingleChildScrollView(
-        child: FloatingActionButton(
-          onPressed: () async {
-            await contactController.getContacts();
-          },
-          child: Icon(Icons.refresh),
         ),
       ),
     );

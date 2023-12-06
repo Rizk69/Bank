@@ -16,7 +16,7 @@ class HeadFirstTitle extends StatelessWidget {
             child: Text(
           title,
           style: TextStyle(
-              fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
         )),
         SizedBox(
           height: 8.h,

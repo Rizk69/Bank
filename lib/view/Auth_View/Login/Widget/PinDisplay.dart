@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
 class PinputPassword extends StatelessWidget {
-  final PinputController controller = Get.put(PinputController());
+  BasePinputController controller;
 
-  PinputPassword({super.key});
+  PinputPassword({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class PinputPassword extends StatelessWidget {
             Directionality(
               textDirection: TextDirection.ltr,
               child: Pinput(
-                length: 5,
+                length: 6,
                 controller: controller.pinController,
                 androidSmsAutofillMethod:
                     AndroidSmsAutofillMethod.smsUserConsentApi,

@@ -52,6 +52,8 @@ dependencies:
   qr_bar_code_scanner_dialog: ^0.0.5
   contacts_service: ^0.6.3
   permission_handler: ^11.1.0
+  list_picker: ^1.1.0
+
 
 
 

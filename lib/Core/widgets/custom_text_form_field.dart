@@ -27,7 +27,8 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      maxLength: maxLength ?? 50,
+      maxLength: maxLength,
+
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(fontSize: 17),

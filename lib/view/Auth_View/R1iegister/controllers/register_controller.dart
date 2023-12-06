@@ -1,29 +1,77 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:bank/Core/widgets/Navigation/navigation.dart';
+import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
+import 'package:bank/view/Auth_View/R1iegister/screen/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_country_picker_nm/country.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
-import '../screen/confirm_email_screen.dart';
+import '../../../../Core/cache_helper.dart';
+import '../../../../Core/http_helper.dart';
+import '../../../Home_View/Screens/home_screen.dart';
 
 class RegisterController extends GetxController {
   var bordcontroller = PageController();
-  var emailControllerSignUpOne = TextEditingController();
+  var emailControllerSignUp = TextEditingController();
+  var idControllerSignUp = TextEditingController();
   var keyFormSignUpOne = GlobalKey<FormState>();
   var passwordControllerSignUpOne = TextEditingController();
-  var passwordConfirmControllerSignUpOne = TextEditingController();
   var firstNameControllerSignUpTwo = TextEditingController();
   var keyFormSignUpTwo = GlobalKey<FormState>();
   var lastNameControllerSignUpTwo = TextEditingController();
-  var idNumberControllerSignUpTwo = TextEditingController();
-  var mobileNumberControllerSignUpTwo = TextEditingController();
+  var mobileNumberControllerSignUp = TextEditingController();
+  final PinputControllerSinUp controllerPin = Get.put(PinputControllerSinUp());
+  final PinputControllerSinUpCheckEmail controllerPinCheckEmail =
+      Get.put(PinputControllerSinUpCheckEmail());
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Initialize sharedPreferences when the controller is initialized
+    initializeSharedPreferences();
+  }
+
+  Future<void> initializeSharedPreferences() async {
+    await CacheHelper.init();
+  }
 
   late Country selected;
+  Rx<bool> agreedToTerms = false.obs;
+  Rx<bool> agreedToTerms1 = false.obs;
 
-  void navig() {
+  void changAgree(bool value) {
+    agreedToTerms.value = value;
+    update();
+  }
+
+  void changAgree1(bool value) {
+    agreedToTerms1.value = value;
+    update();
+  }
+
+  bool isLast = false;
+  dynamic index = 0;
+  int textButton = 0;
+
+  dynamic ChangeIndex(index) {
+    textButton = index;
+    if (index == screenRegister.length - 1) {
+      isLast = true;
+      print("true");
+    } else {
+      isLast = false;
+    }
+  }
+
+  void navigNext() {
     bordcontroller.nextPage(
+      duration: const Duration(
+        milliseconds: 750,
+      ),
+      curve: Curves.easeInCubic,
+    );
+  }
+
+  void navigBack() {
+    bordcontroller.previousPage(
       duration: const Duration(
         milliseconds: 750,
       ),
@@ -35,94 +83,133 @@ class RegisterController extends GetxController {
   var isLoading = false.obs;
 
   // register
-  Future<void> register({
-    required String email,
-    required String password,
-    required String password_confirmation,
-    required String first_name,
-    required String last_name,
-    required String id_number,
-    required String country_id,
-    required String phone,
-    required File img,
-    required File frout_id,
-    required File back_id,
-    required BuildContext context,
-  }) async {
+  Future<void> registerPhone() async {
+    print('start');
+    print(mobileNumberControllerSignUp.text);
+    isLoading.value = true;
+
     try {
-      isLoading.value = true;
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://wallet.acwad-it.com/api/register'), // Update with your server URL
+      final response = await HttpHelper.postData(
+        endpoint: "register_phone",
+        body: {
+          'phone': mobileNumberControllerSignUp.text,
+          'country_id': idControllerSignUp.value.text
+        },
       );
-      request.headers['Authorization'] = 'application/json';
-      request.headers['Accept'] = 'application/json';
-      request.headers['Accept-Language'] = 'en';
-      request.fields['email'] = email;
-      request.fields['password'] = password;
-      request.fields['password_confirmation'] = password_confirmation;
-      request.fields['first_name'] = first_name;
-      request.fields['last_name'] = last_name;
-      request.fields['id_number'] = id_number;
-      request.fields['country_id'] = country_id;
-      request.fields['phone'] = phone;
-      request.files.add(
-        http.MultipartFile.fromBytes('img', File(img.path).readAsBytesSync(),
-            filename: img.path),
-      );
-      request.files.add(
-        http.MultipartFile.fromBytes(
-            'frout_id', File(frout_id.path).readAsBytesSync(),
-            filename: frout_id.path),
-      );
-      request.files.add(
-        http.MultipartFile.fromBytes(
-            'back_id', File(back_id.path).readAsBytesSync(),
-            filename: back_id.path),
-      );
-      var response = await request.send();
-      if (response.statusCode == 201) {
-        // Successfully uploaded
-        var responseBody =
-            await response.stream.bytesToString(); // Decode the response body
-        var parsedResponse =
-            json.decode(responseBody); // Parse the JSON response if applicable
-        if (parsedResponse['status'] == true) {
-          Get.snackbar("Success!", "send message to your email",
-              backgroundColor: Colors.blue);
-          navigatofinsh(context, ConfirmEmailScreen(), false);
-          // empty controllers
-          emailControllerSignUpOne.text = "";
-          passwordControllerSignUpOne.text = "";
-          passwordConfirmControllerSignUpOne.text = "";
-          firstNameControllerSignUpTwo.text = "";
-          lastNameControllerSignUpTwo.text = "";
-          idNumberControllerSignUpTwo.text = "";
-          mobileNumberControllerSignUpTwo.text = "";
-          print('File uploaded successfully');
-        } else {
-          Get.snackbar("Warning!", parsedResponse['message']);
-          print('File uploaded successfully');
-        }
-        isLoading.value = false;
-        print('Server Response: $parsedResponse');
+      print(response.toString());
+      if (response["status"] == true) {
+        navigNext();
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
       } else {
-        // Handle errors
-        var responseBody =
-            await response.stream.bytesToString(); // Decode the response body
-        var parsedResponse =
-            json.decode(responseBody); // Parse the JSON response if applicable
-        Get.snackbar("Error!", parsedResponse['message'],
+        Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);
-        print('File upload failed with status ${response.statusCode}');
-        print('Error Response: $responseBody');
-        isLoading.value = false;
       }
-      isLoading.value = false;
     } catch (error) {
-      isLoading.value = false;
       print(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> checkPhone() async {
+    print('start');
+    // print(mobileNumberControllerSignUpTwo.text);
+    isLoading.value = true;
+
+    try {
+      final response = await HttpHelper.postData(
+        endpoint: "check_phone",
+        body: {
+          'phone': mobileNumberControllerSignUp.text,
+          'country_id': idControllerSignUp.text,
+          'phone_code': controllerPin.pinController.text
+        },
+      );
+      print(response.toString());
+      if (response["status"] == true) {
+        await CacheHelper.saveDataSharedPreference(
+          key: "user_id",
+          value: response['user_id'],
+        );
+        navigNext();
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
+      } else {
+        Get.snackbar("Warning!", response['message'],
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> completeRegister() async {
+    print('start');
+    // print(mobileNumberControllerSignUpTwo.text);
+    isLoading.value = true;
+
+    try {
+      var _userid = CacheHelper.getDataSharedPreference(key: 'user_id');
+
+      final response = await HttpHelper.postData(
+        endpoint: "complete_register",
+        body: {
+          'user_id': _userid.toString(),
+          'first_name': firstNameControllerSignUpTwo.text,
+          'last_name': lastNameControllerSignUpTwo.text,
+          'email': emailControllerSignUp.text,
+          'password': passwordControllerSignUpOne.text,
+        },
+      );
+      print(response.toString());
+      if (response["status"] == true) {
+        navigNext();
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
+      } else {
+        Get.snackbar("Warning!", response['message'],
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> checkEmail() async {
+    print('start');
+    isLoading.value = true;
+    await initializeSharedPreferences();
+
+    try {
+      final response = await HttpHelper.postData(
+        endpoint: "check_email_register",
+        body: {
+          'email': emailControllerSignUp.text,
+          'email_code': controllerPinCheckEmail.pinController.text,
+        },
+      );
+      print(response.toString());
+      if (response["status"] == true) {
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
+        await CacheHelper.saveDataSharedPreference(
+          key: "token",
+          value: response['token'],
+        );
+        Get.offAll(HomeScreen());
+      } else {
+        Get.snackbar("Warning!", response['message'],
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      isLoading.value = false;
     }
   }
 

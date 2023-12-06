@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class PinputController extends GetxController {
+class BasePinputController extends GetxController {
   final TextEditingController pinController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -25,4 +25,20 @@ class PinputController extends GetxController {
   void validatePin() {
     formKey.currentState?.validate();
   }
+}
+
+class PinputControllerLogin extends BasePinputController {
+  // Additional specific functionality for login if needed
+}
+
+class PinputControllerSinUp extends BasePinputController {
+  // Additional specific functionality for sign up if needed
+}
+
+class PinputControllerSinInCheckEmail extends BasePinputController {
+  // Additional specific functionality for sign up if needed
+}
+
+class PinputControllerSinUpCheckEmail extends BasePinputController {
+  // Additional specific functionality for sign up if needed
 }

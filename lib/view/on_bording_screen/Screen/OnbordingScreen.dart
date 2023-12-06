@@ -80,12 +80,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
                 text: controller.selectedIndex == 2 ? 'Get Start' : 'Login',
                 color: Colors.white,
                 onPressed: () {
-                  if (controller.selectedIndex == onBoardingList.length - 1) {
                     Get.offAll(() => LoginScreen());
-                  } else {
-                    controller.changeSelectIndex(controller.selectedIndex + 1);
-                    controller.update();
-                  }
                 },
                 colorText: Colors.black,
               ),
@@ -96,12 +91,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
                 text: 'Create Account',
                 color: Colors.black,
                 onPressed: () {
-                  if (controller.selectedIndex == onBoardingList.length - 1) {
                     Get.offAll(() => SignUpScreen());
-                  } else {
-                    controller.changeSelectIndex(controller.selectedIndex + 1);
-                    controller.update();
-                  }
                 },
                 colorText: Colors.white,
               ),
