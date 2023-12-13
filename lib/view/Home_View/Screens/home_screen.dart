@@ -15,18 +15,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeControllerBottomNav>(
-      init: HomeControllerBottomNav(),
-      builder: (homeControllerBottomNav) => Scaffold(
-        body: homeControllerBottomNav.currentScreen,
+    return GetBuilder<HomeController>(
+      init: HomeController(),
+      builder: (homeController) => Scaffold(
+        body: homeController.currentScreen,
         bottomNavigationBar: bottomNavigationBar(context),
       ),
     );
   }
 
   Widget bottomNavigationBar(BuildContext context) {
-    return GetBuilder<HomeControllerBottomNav>(
-      init: HomeControllerBottomNav(),
+    return GetBuilder<HomeController>(
+      init: HomeController(),
       builder: (homeControllerBottomNav) => BottomNavigationBar(
         enableFeedback: true,
         selectedItemColor: Colors.grey,
@@ -115,7 +115,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        Get.to(const ReceiveQrPaymentScreen(idNumber: ''));
+                        Get.to(() => ReceiveQrPaymentScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -129,10 +129,12 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
-                              'Receive payment with QR code  ',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
+                            Expanded(
+                              child: Text(
+                                'Receive payment with QR code',
+                                style: Styles.textStyleTitle18.copyWith(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
                             ),
                           ],
                         ),
@@ -144,7 +146,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        // Get.to(QrPay());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

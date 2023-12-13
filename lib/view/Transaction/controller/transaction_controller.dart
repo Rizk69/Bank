@@ -8,22 +8,33 @@ class TransactionController extends GetxController {
   var transactionData = <Transaction>[].obs;
   final TextEditingController searchController = TextEditingController();
 
-  var isLoading = false.obs; // Start with loading as true
+  @override
+  void onInit() {
+    super.onInit();
+    // TODO: implement onInit
+    getTransactions();
+    update();
+  }
+
+  var isLoading = true.obs; // Start with loading as true
   Future getTransactions() async {
     try {
       transactionData.value = [];
-      isLoading.value = true;
       // Move this line here
-      final response = await HttpHelper.postData(
+      final response = await HttpHelper.getData(
         endpoint: "get_transaction",
-        body: {},
       );
-      print(response.toString());
-      response['transactions'].forEach((e) {
-        transactionData.add(Transaction.fromJson(e));
-      });
-      print(transactionData.length);
-      update();
+      if (response["status"] == true) {
+        print(response);
+        print(response.toString());
+        response['transactions'].forEach((e) {
+          transactionData.add(Transaction.fromJson(e));
+          print(transactionData.length);
+          isLoading.value = false;
+
+          update();
+        });
+      }
     } catch (error) {
       print(error);
     } finally {
@@ -32,22 +43,21 @@ class TransactionController extends GetxController {
   }
 
 // get one transaction
-  late TransactionModel transactionOneData;
-  var isLoadingGetOne = false.obs;
-
-  void getOnTransaction({required int id}) async {
-    try {
-      isLoadingGetOne.value = true;
-      final response = await HttpHelper.postData(
-        endpoint: "get_transaction/$id",
-        body: {},
-      );
-      print(response);
-      transactionOneData = TransactionModel.fromJson(response);
-      isLoadingGetOne.value = false;
-    } catch (error) {
-      Get.snackbar("Error!", "Please Try Again");
-      isLoadingGetOne.value = true;
-    }
-  }
+//   late TransactionModel transactionOneData;
+//   var isLoadingGetOne = false.obs;
+//
+//   void getOnTransaction({required int id}) async {
+//     try {
+//       isLoadingGetOne.value = true;
+//       final response = await HttpHelper.postData(
+//         endpoint: "get_transaction/$id",
+//         body: {},
+//       );
+//       print(response);
+//       transactionOneData = TransactionModel.fromJson(response);
+//     } catch (error) {
+//       Get.snackbar("Error!", "Please Try Again");
+//       isLoadingGetOne.value = true;
+//     }
+//   }
 }

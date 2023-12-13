@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final Widget? prefix;
   final Widget? suffix;
+  final ValueChanged<String>? onChanged;
 
   final bool obscureText;
   final int? maxLength;
@@ -21,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.maxLength,
     this.suffix,
+    this.onChanged,
   });
 
   @override
@@ -28,7 +30,7 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       maxLength: maxLength,
-
+      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(fontSize: 17),

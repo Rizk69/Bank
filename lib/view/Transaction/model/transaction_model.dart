@@ -23,47 +23,59 @@ class TransactionModel {
 }
 
 class Transaction {
-  int id;
-  String senderImg;
-  String senderID;
-  String senderFirstName;
-  String senderLastName;
-  String receiverImg;
-  String receiverID;
-  String receiverFirstName;
-  String receiverLastName;
-  double finalAmount;
-  String createdAt;
+  int? id;
+  String? senderImg;
+  String? senderID;
+  String? senderFirstName;
+  String? senderLastName;
+  String? receiverImg;
+  String? receiverID;
+  String? receiverFirstName;
+  String? receiverLastName;
+  int? finalAmount;
+  String? createdAt;
 
-  Transaction({
-    required this.id,
-    required this.senderImg,
-    required this.senderID,
-    required this.senderFirstName,
-    required this.senderLastName,
-    required this.receiverImg,
-    required this.receiverID,
-    required this.receiverFirstName,
-    required this.receiverLastName,
-    required this.finalAmount,
-    required this.createdAt,
-  });
+  Transaction(
+      {this.id,
+      this.senderImg,
+      this.senderID,
+      this.senderFirstName,
+      this.senderLastName,
+      this.receiverImg,
+      this.receiverID,
+      this.receiverFirstName,
+      this.receiverLastName,
+      this.finalAmount,
+      this.createdAt});
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
-      id: json['id'],
-      senderImg: json['sender_img'],
-      senderID: json['sender_ID'],
-      senderFirstName: json['sender_first_name'],
-      senderLastName: json['sender_last_name'],
-      receiverImg: json['receiver_img'],
-      receiverID: json['receiver_ID'],
-      receiverFirstName: json['receiver_first_name'],
-      receiverLastName: json['receiver_last_name'],
-      finalAmount: (json['final_amount'] is String)
-          ? double.tryParse(json['final_amount']) ?? 0.0
-          : json['final_amount'].toDouble(),
-      createdAt: json['created_at'],
-    );
+  Transaction.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    senderImg = json['sender_img'];
+    senderID = json['sender_ID'];
+    senderFirstName = json['sender_first_name'];
+    senderLastName = json['sender_last_name'];
+    receiverImg = json['receiver_img'];
+    receiverID = json['receiver_ID'];
+    receiverFirstName = json['receiver_first_name'];
+    receiverLastName = json['receiver_last_name'];
+    final dynamic amount = json['final_amount'];
+    finalAmount = amount is int ? amount : int.tryParse(amount.toString());
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['sender_img'] = this.senderImg;
+    data['sender_ID'] = this.senderID;
+    data['sender_first_name'] = this.senderFirstName;
+    data['sender_last_name'] = this.senderLastName;
+    data['receiver_img'] = this.receiverImg;
+    data['receiver_ID'] = this.receiverID;
+    data['receiver_first_name'] = this.receiverFirstName;
+    data['receiver_last_name'] = this.receiverLastName;
+    data['final_amount'] = this.finalAmount;
+    data['created_at'] = this.createdAt;
+    return data;
   }
 }

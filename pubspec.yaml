@@ -43,16 +43,28 @@ dependencies:
   pinput: ^3.0.1
   qr_code_scanner: ^1.0.1
   flutter_country_picker_nm: ^0.0.3
-  image_picker: ^0.8.7+3
   flutter_bloc: ^8.1.2
   smooth_page_indicator: ^1.0.1
   lottie: ^2.7.0
+  geolocator: ^10.1.0
+  image_picker: ^1.0.4
   intl: ^0.17.0
   pretty_qr_code: ^3.0.0
   qr_bar_code_scanner_dialog: ^0.0.5
   contacts_service: ^0.6.3
   permission_handler: ^11.1.0
   list_picker: ^1.1.0
+  local_auth: ^2.1.7
+  google_maps_flutter: ^2.0.8
+  share: ^2.0.4
+  path_provider: ^2.0.15
+  #  tflite: ^1.1.2
+  camera: ^0.10.5+6
+
+
+
+
+
 
 
 

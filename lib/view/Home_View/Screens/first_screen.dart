@@ -1,349 +1,365 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../../helper/Data.dart';
+import '../../Auth_View/Add_Id_Image/Screen/CaptureIdScreen.dart';
+import '../controller/contoller_home.dart';
 import 'package:bank/Core/cache_helper.dart';
-import 'package:bank/Core/widgets/Navigation/navigation.dart';
 import 'package:bank/Core/widgets/Styles.dart';
 import 'package:bank/view/Home_View/Screens/Cashback_Screen.dart';
 import 'package:bank/view/Transaction/Screen/Account_transactions_Screens.dart';
 import 'package:bank/view/Home_View/Widget/App_Bar_First_Home.dart';
 import 'package:bank/view/Home_View/Widget/Deposit_WitDraw.dart';
 import 'package:bank/view/Home_View/Widget/Items_First_Home.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-
-import '../../../helper/Data.dart';
-import '../../Transaction/controller/transaction_controller.dart';
 
 class FirstScreen extends StatelessWidget {
-  final TransactionController controller = Get.put(TransactionController());
+  final HomeControllerGetData homeController = Get.put(HomeControllerGetData());
 
-  FirstScreen({super.key});
+  FirstScreen({Key? key}) : super(key: key);
+
+  Future<void> _refresh() async {
+    try {
+      // Set the loading state
+      homeController.isLoading.value = true;
+
+      // Fetch the data
+
+      await homeController.getDataHome();
+      homeController.update();
+    } finally {
+      // Clear the loading state, whether the data fetch was successful or not
+      homeController.isLoading.value = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.update();
+    homeController.update();
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 15),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AppBarFirstHome(),
-              SizedBox(
-                height: 10.h,
-              ),
-              ItemsFirstHome(onPressed1: () {
-                CacheHelper.removeData(key: 'token');
-              }, onPressed2: () {
-                _showBottomSheet(context, '');
-              }, onPressed3: () {
-                var token = CacheHelper.getDataSharedPreference(key: 'token');
-                print('token===>$token');
-              }),
-              SizedBox(
-                height: 25.h,
-              ),
-              const DepositAndWithdraw(),
-              SizedBox(
-                height: 25.h,
-              ),
-              Container(
-                width: double.infinity,
-                height: 80,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.grey,
-                          spreadRadius: 0.1,
-                          blurRadius: 8,
-                          offset: Offset(1, 0.5))
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey, width: 1.5)),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(color: Colors.grey, width: 0.5)),
-                        child: const ImageIcon(
-                            AssetImage(
-                              'Assets/images/line-md_account.png',
-                            ),
-                            color: Colors.grey),
-                      ),
-                      SizedBox(
-                        width: 10.h,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Add Profile Photo',
-                            style: Styles.textStyleTitle16,
-                          ),
-                          Text(
-                            'You can add photo',
-                            style: Styles.textStyleTitle12,
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.navigate_next_outlined,
-                            color: Colors.black,
-                          ))
-                    ],
-                  ),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppBarFirstHome(),
+                SizedBox(height: 10.h),
+                ItemsFirstHome(
+                  onPressed1: () {
+                    CacheHelper.removeData(key: 'token');
+                  },
+                  onPressed2: () {
+                    _showBottomSheet(context, '');
+                  },
+                  onPressed3: () {
+                    var token =
+                        CacheHelper.getDataSharedPreference(key: 'token');
+                    print('token===>$token');
+                  },
                 ),
-              ),
-              SizedBox(
-                height: 25.h,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(AccountTransactions());
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      'ACCOUNT TRANSACTION',
-                      style: Styles.textStyleTitle16,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Icon(
-                      Icons.navigate_next_outlined,
-                      color: Colors.black,
-                    )
-                  ],
+                SizedBox(height: 25.h),
+                Obx(() => DepositAndWithdraw(
+                      balance: homeController.homeModel.user?.balance ?? '',
+                    )),
+                SizedBox(height: 25.h),
+                Obx(() {
+                  return homeController.homeModel.user?.img != null
+                      ? SizedBox()
+                      : InkWell(onTap: () {}, child: _cheakIdCard());
+                }),
+                SizedBox(height: 15.h),
+                InkWell(
+                    onTap: () {
+                      Get.to(() => CameraScreen());
+                    },
+                    child: _buildProfilePhotoContainer()),
+                SizedBox(height: 25.h),
+                _buildAccountTransactionRow(),
+                _buildTransactionListView(),
+                InkWell(
+                  onTap: () {
+                    Get.to(CashbackScreen());
+                  },
+                  child: _buildListTile('CASHBACK'),
                 ),
-              ),
-              GetBuilder<TransactionController>(
-                initState: (_) {
-                  controller.update();
-                  controller.getTransactions();
-                },
-                builder: (controller) {
-                  if (controller.isLoading.value) {
-                    return const Center(
-                        child: CircularProgressIndicator(color: Colors.grey));
-                  } else if (controller.transactionData.isEmpty) {
-                    return const SizedBox.shrink();
-                  } else {
-                    return SizedBox(
-                      height: 230.h,
-                      child: ListView.builder(
-                        itemCount: 2,
-                        itemBuilder: (context, index) {
-                          var transaction = controller.transactionData[index];
-                          bool isNewHeader = index == 0 ||
-                              transaction.createdAt !=
-                                  controller
-                                      .transactionData[index - 1].createdAt;
-                          String formattedDate =
-                              DateUtilsFormat.formatTransactionDate(
-                                  transaction.createdAt);
+                SizedBox(height: 10.h),
+                _buildPharmacyContainer(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-                          return Container(
-                            padding: EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        transaction.receiverImg,
-                                        errorBuilder: (BuildContext context,
-                                            Object error,
-                                            StackTrace? stackTrace) {
-                                          // This function is called when an error occurs while loading the image
-                                          return Text('Image not found');
-                                        },
-                                        fit: BoxFit.fill,
-                                        height: 55.h,
-                                        width: 50.w,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(transaction.receiverFirstName,
-                                            style: Styles.textStyleTitle14),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          transaction.senderFirstName,
-                                          style: Styles.textStyleTitle14
-                                              .copyWith(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        ImageIcon(
-                                          AssetImage(
-                                              'Assets/images/Vector(9).png'),
-                                          color: transaction.finalAmount >= 0
-                                              ? Color(0XFF4FD25D)
-                                              : Colors.red,
-                                        ),
-                                        SizedBox(
-                                          width: 7.h,
-                                        ),
-                                        Text(
-                                          "${transaction.finalAmount}",
-                                          style: Styles.textStyleTitle24
-                                              .copyWith(
-                                                  color:
-                                                      transaction.finalAmount >=
-                                                              0
-                                                          ? Color(0XFF4FD25D)
-                                                          : Colors.red),
-                                        ),
-                                      ],
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          formattedDate ?? 'Unknown Date',
-                                          style: Styles.textStyleTitle12
-                                                  .copyWith(
-                                                fontWeight: FontWeight.w400,
-                                                // Customize the header text style
-                                              ) ??
-                                              TextStyle(), // Handle the case where textStyleTitle14 is null
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                },
+  Widget _buildProfilePhotoContainer() {
+    return Container(
+      width: double.infinity,
+      height: 80,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 8,
+            offset: Offset(1, 0.5),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey, width: 1.5),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: Colors.grey, width: 0.5),
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(CashbackScreen());
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      'CASHBACK',
-                      style: Styles.textStyleTitle16,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Icon(
-                      Icons.navigate_next_outlined,
-                      color: Colors.black,
-                    )
-                  ],
-                ),
+              child: const ImageIcon(
+                AssetImage('Assets/images/line-md_account.png'),
+                color: Colors.grey,
               ),
-              SizedBox(
-                height: 10.h,
+            ),
+            SizedBox(width: 10.h),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Add Profile Photo', style: Styles.textStyleTitle16),
+                Text('You can add a photo', style: Styles.textStyleTitle12),
+              ],
+            ),
+            Spacer(),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.navigate_next_outlined, color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _cheakIdCard() {
+    return Container(
+      width: double.infinity,
+      height: 80,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 8,
+            offset: Offset(1, 0.5),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey, width: 1.5),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: Colors.grey, width: 0.5),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 28),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Color(0XFFEBEBEB), width: 1)),
+              child: const ImageIcon(
+                AssetImage('Assets/images/line-md_account.png'),
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(width: 10.h),
+            Text(
+              'Please Enter \nPersonal ID Card Image',
+              style: Styles.textStyleTitle16,
+              maxLines: 2,
+            ),
+            Spacer(),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.navigate_next_outlined, color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAccountTransactionRow() {
+    return InkWell(
+      onTap: () {
+        Get.to(() => AccountTransactions());
+      },
+      child: _buildListTile('ACCOUNT TRANSACTION'),
+    );
+  }
+
+  Widget _buildListTile(String title) {
+    return Row(
+      children: [
+        Text(title, style: Styles.textStyleTitle16),
+        SizedBox(width: 4),
+        Icon(Icons.navigate_next_outlined, color: Colors.black),
+      ],
+    );
+  }
+
+  Widget _buildTransactionListView() {
+    return SizedBox(
+      height: 230.h,
+      child: Obx(
+        () => ListView.builder(
+          itemCount: homeController.homeModel.trans?.length ?? 0,
+          itemBuilder: (context, index) {
+            var transactions = homeController.homeModel.trans;
+
+            if (transactions != null && transactions.length > index) {
+              var transaction = transactions[index];
+              String formattedDate = DateUtilsFormat.formatTransactionDate(
+                  transaction.createdAt ?? '');
+
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Image(
-                          image:
-                              AssetImage('Assets/images/Clip path group.png'),
-                          height: 40,
-                          width: 30,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.network(
+                            transaction.receiverImg ?? '',
+                            errorBuilder: (BuildContext context, Object error,
+                                StackTrace? stackTrace) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Icon(Icons.account_circle, size: 40),
+                              );
+                            },
+                            fit: BoxFit.fill,
+                            height: 55.h,
+                            width: 50.w,
+                          ),
                         ),
-                        SizedBox(
-                          width: 13.h,
-                        ),
+                        SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Pharmacy',
-                                style: Styles.textStyleTitle16
-                                    .copyWith(fontWeight: FontWeight.w500)),
+                            Text(transaction.senderFirstName ?? '',
+                                style: Styles.textStyleTitle14),
+                            SizedBox(height: 5),
                             Text(
-                              '10%',
-                              style: Styles.textStyleTitle16.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0XFF86E08F)),
+                              transaction.senderLastName ?? '',
+                              style: Styles.textStyleTitle14.copyWith(
+                                  fontSize: 13, fontWeight: FontWeight.w400),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
-                    Row(
+                    Column(
                       children: [
-                        Image(
-                          image:
-                              AssetImage('Assets/images/Clip path group.png'),
-                          height: 40,
-                          width: 30,
-                        ),
-                        SizedBox(
-                          width: 13.h,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            Text('EcZane',
-                                style: Styles.textStyleTitle16
-                                    .copyWith(fontWeight: FontWeight.w500)),
+                            ImageIcon(
+                              AssetImage('Assets/images/Vector(9).png'),
+                              color: transaction.finalAmount! >= 0
+                                  ? Color(0XFF4FD25D)
+                                  : Colors.red,
+                            ),
+                            SizedBox(width: 7.h),
                             Text(
-                              'lorem epsim',
-                              style: Styles.textStyleTitle16.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0XFF979797)),
+                              "${transaction.finalAmount}",
+                              style: Styles.textStyleTitle24.copyWith(
+                                color: transaction.finalAmount! >= 0
+                                    ? Color(0XFF4FD25D)
+                                    : Colors.red,
+                              ),
                             ),
                           ],
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              formattedDate ?? 'Unknown Date',
+                              style: Styles.textStyleTitle12
+                                  .copyWith(fontWeight: FontWeight.w400),
+                            ),
+                          ),
                         ),
                       ],
                     )
                   ],
                 ),
-              )
-            ],
-          ),
+              );
+            } else {
+              return SizedBox.shrink();
+            }
+          },
         ),
       ),
+    );
+  }
+
+  Widget _buildPharmacyContainer() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 28),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Color(0XFFEBEBEB), width: 1),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildPharmacyItem('Pharmacy', '10%', Color(0XFF86E08F)),
+          _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPharmacyItem(
+      String title, String subtitle, Color subtitleColor) {
+    return Row(
+      children: [
+        Image(
+          image: AssetImage('Assets/images/Clip path group.png'),
+          height: 40,
+          width: 30,
+        ),
+        SizedBox(width: 13.h),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style:
+                  Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
+            ),
+            Text(
+              subtitle,
+              style: Styles.textStyleTitle16.copyWith(
+                fontWeight: FontWeight.w500,
+                color: subtitleColor,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

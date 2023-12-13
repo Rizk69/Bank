@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemsFirstHome extends StatelessWidget {
   final VoidCallback onPressed1;
@@ -15,7 +16,7 @@ class ItemsFirstHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 5.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,8 +24,8 @@ class ItemsFirstHome extends StatelessWidget {
           InkWell(
             onTap: onPressed1,
             child: Container(
-              height: 35,
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              height: 33.h,
+              padding: EdgeInsets.symmetric(horizontal: 13.h, vertical: 3.h),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
@@ -40,7 +41,7 @@ class ItemsFirstHome extends StatelessWidget {
                 children: [
                   ImageIcon(
                     AssetImage('Assets/images/Vector(6).png'),
-                    size: 20,
+                    size: 17.h,
                     color: Color(0XFF3BC7BE),
                   ),
                   SizedBox(
@@ -54,8 +55,8 @@ class ItemsFirstHome extends StatelessWidget {
           InkWell(
             onTap: onPressed2,
             child: Container(
-              height: 35,
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              height: 33.h,
+              padding: EdgeInsets.symmetric(horizontal: 13.h, vertical: 3.h),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
@@ -97,7 +98,7 @@ class ItemsFirstHome extends StatelessWidget {
           InkWell(
             onTap: onPressed3,
             child: Container(
-              height: 35,
+              height: 33.h,
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),

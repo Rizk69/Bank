@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Your splash screen UI here
-    splashController.navigateToOnboarding(); // Trigger navigation here
+    splashController.navigateToNextScreen(); // Trigger navigation here
 
     return Scaffold(
       body: Center(

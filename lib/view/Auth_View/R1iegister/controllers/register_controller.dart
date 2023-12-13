@@ -146,6 +146,39 @@ class RegisterController extends GetxController {
     }
   }
 
+  Future<void> resendCode() async {
+    print('start');
+    // print(mobileNumberControllerSignUpTwo.text);
+    isLoading.value = true;
+
+    try {
+      final response = await HttpHelper.postData(
+        endpoint: "register_phone",
+        body: {
+          'phone': mobileNumberControllerSignUp.text,
+          'country_id': idControllerSignUp.text,
+        },
+      );
+      print(response.toString());
+      if (response["status"] == true) {
+        await CacheHelper.saveDataSharedPreference(
+          key: "user",
+          value: response['user'],
+        );
+        navigNext();
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
+      } else {
+        Get.snackbar("Warning!", response['message'],
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> completeRegister() async {
     print('start');
     // print(mobileNumberControllerSignUpTwo.text);

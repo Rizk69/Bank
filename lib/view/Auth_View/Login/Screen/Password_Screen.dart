@@ -1,19 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
 import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
 import 'package:bank/view/Auth_View/Login/Widget/ButtomsNotBorder.dart';
 import 'package:bank/view/Auth_View/Login/Widget/PinDisplay.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class PasswordScreen extends StatelessWidget {
   final PinputControllerLogin controllerPin = Get.put(PinputControllerLogin());
   final LoginController controller = Get.put(LoginController());
-
-  PasswordScreen({
-    Key? key,
-  }) : super(key: key);
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +42,7 @@ class PasswordScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 30.h),
-            PinputPassword(
-              controller: controllerPin,
-            ),
+            PinputPassword(controller: controllerPin),
             Spacer(),
             Center(
               child: Text(
@@ -68,10 +62,11 @@ class PasswordScreen extends StatelessWidget {
                 color: Color(0XFFD9D9D9),
                 onPressed: () {
                   String pin = controllerPin.pinController.text;
-
                   controller.checkPassword(context: context, password: pin);
                 },
                 colorText: Colors.white,
+                isFormValid: controller.isFormValid,
+                context: context,
               ),
             ),
           ],

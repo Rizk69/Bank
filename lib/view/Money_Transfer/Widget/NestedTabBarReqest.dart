@@ -1,5 +1,6 @@
 import 'package:bank/Core/widgets/Styles.dart';
 import 'package:bank/Core/widgets/custom_text_form_field.dart';
+import 'package:bank/view/Money_Transfer/Controller/ContactControllerSendRequest.dart';
 import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
@@ -57,23 +58,10 @@ class _NestedTabBarState extends State<NestedTabBarRequest>
   }
 }
 
-class ContactController extends GetxController {
-  RxList<Contact> contacts = <Contact>[].obs;
-
-  Future<void> getContacts() async {
-    var status = await Permission.contacts.request();
-    if (status.isGranted) {
-      Iterable<Contact> contactList = await ContactsService.getContacts();
-      contacts.assignAll(contactList);
-    } else {
-      // لم يتم منح الإذن
-      // يمكنك إدراج رمز للتعامل مع الحالة هنا
-    }
-  }
-}
 
 class ContactListPage extends StatelessWidget {
-  final ContactController contactController = Get.put(ContactController());
+  final ContactControllerSendRequest contactController =
+      Get.put(ContactControllerSendRequest());
 
   ContactListPage({super.key});
 
@@ -253,20 +241,13 @@ class ContactListPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: SingleChildScrollView(
-        child: FloatingActionButton(
-          onPressed: () async {
-            await contactController.getContacts();
-          },
-          child: Icon(Icons.refresh),
-        ),
-      ),
     );
   }
 }
 
 class MbagNumberTabBar extends StatelessWidget {
-  final ContactController contactController = Get.put(ContactController());
+  final ContactControllerSendRequest contactController =
+      Get.put(ContactControllerSendRequest());
 
   MbagNumberTabBar({super.key});
 

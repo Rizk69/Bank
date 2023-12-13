@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../Controller/ContactControllerSend.dart';
+
 class NestedTabBar extends StatefulWidget {
   NestedTabBar({super.key});
 
@@ -57,30 +59,12 @@ class _NestedTabBarState extends State<NestedTabBar>
   }
 }
 
-class ContactController extends GetxController {
-  RxList<Contact> contacts = <Contact>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getContacts();
-  }
-
-  Future<void> getContacts() async {
-    var status = await Permission.contacts.request();
-    if (status.isGranted) {
-      Iterable<Contact> contactList = await ContactsService.getContacts();
-      contacts.assignAll(contactList);
-      update();
-    } else {
-      // لم يتم منح الإذن
-      // يمكنك إدراج رمز للتعامل مع الحالة هنا
-    }
-  }
-}
 
 class ContactListPage extends StatelessWidget {
-  final ContactController contactController = Get.put(ContactController());
+  final ContactControllerSend contactController =
+      Get.put(ContactControllerSend());
+  final TextEditingController searchController = TextEditingController();
 
   ContactListPage({super.key});
 
@@ -196,7 +180,16 @@ class ContactListPage extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
-              CustomTextFormField(),
+              CustomTextFormField(
+                controller: searchController,
+                hintText: 'To whom?',
+                onChanged: (value) {
+                  contactController.searchContacts(value);
+                },
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -209,12 +202,14 @@ class ContactListPage extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Obx(
-                  () => contactController.contacts.isEmpty
-                      ? SizedBox.shrink()
+                  () =>
+                  contactController.contacts.isEmpty
+                      ? Center(child: CircularProgressIndicator())
                       : ListView.builder(
-                          itemCount: contactController.contacts.length,
+                          itemCount: contactController.filteredContacts.length,
                           itemBuilder: (context, index) {
-                            var contact = contactController.contacts[index];
+                            var contact =
+                                contactController.filteredContacts[index];
                             return ListTile(
                               leading: contact.phones!.isNotEmpty
                                   ? Icon(Icons.phone)
@@ -223,9 +218,9 @@ class ContactListPage extends StatelessWidget {
                               subtitle: Text((contact.phones!.isNotEmpty
                                       ? contact.phones!.first.value
                                       : 'لا يوجد رقم هاتف') ??
-                            ''),
-                      );
-                    },
+                                  ''),
+                            );
+                          },
                   ),
                 ),
               ),

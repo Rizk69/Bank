@@ -60,4 +60,31 @@ class HttpHelper {
       throw Exception('Failed to load data: $error');
     }
   }
+
+  static Future<Map<String, dynamic>> getDataUrl({
+    required String endpoint,
+    Map<String, dynamic>? query,
+  }) async {
+    final url = Uri.parse(endpoint);
+    var token = CacheHelper.getDataSharedPreference(key: 'token');
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Accept-Language': 'en',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 201) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        return jsonResponse;
+      } else {
+        throw Exception('Failed to load data: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Failed to load data: $error');
+    }
+  }
 }

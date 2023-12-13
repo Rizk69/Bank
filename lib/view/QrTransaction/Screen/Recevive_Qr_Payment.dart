@@ -1,97 +1,112 @@
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
-import '../../../Core/widgets/Styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../on_bording_screen/Widget/buttom_.dart';
+import '../Controller/ReceiveQrPaymentController.dart';
+import '../../../Core/widgets/Styles.dart'; // Import your styles
 
-class ReceiveQrPaymentScreen extends StatefulWidget {
-  final String idNumber;
+class ReceiveQrPaymentScreen extends StatelessWidget {
+  final ReceiveQrPaymentController controller =
+      Get.put(ReceiveQrPaymentController());
 
-  const ReceiveQrPaymentScreen({super.key, required this.idNumber});
-
-  @override
-  State<ReceiveQrPaymentScreen> createState() => _ReceiveQrPaymentScreenState();
-}
-
-class _ReceiveQrPaymentScreenState extends State<ReceiveQrPaymentScreen> {
-  late QrImage qrImage;
-
-  @override
-  void initState() {
-    super.initState();
-    final qrCode = QrCode(
-      8,
-      QrErrorCorrectLevel.H,
-    )..addData(widget.idNumber);
-
-    qrImage = QrImage(qrCode);
-  }
+  ReceiveQrPaymentScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 30.h,
-            ),
+            SizedBox(height: 30.h),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    size: 35,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    Get.back();
-                  }),
+                icon: Icon(
+                  Icons.close,
+                  size: 35,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
             ),
-            SizedBox(
-              height: 50.h,
-            ),
+            SizedBox(height: 50.h),
             Text('Receive payment with',
-                style: Styles.textStyleTitle24, textAlign: TextAlign.center),
+                style: TextStyle(fontSize: 24), textAlign: TextAlign.center),
             Text('QR',
-                style: Styles.textStyleTitle24, textAlign: TextAlign.center),
+                style: TextStyle(fontSize: 24), textAlign: TextAlign.center),
             Text(
-                'You can get payment by showing this QR or creating new QR by entering the amount',
-                style: Styles.textStyleTitle16
-                    .copyWith(color: Colors.grey, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center),
-            SizedBox(
-              height: 20.h,
+              'You can get payment by showing this QR or creating new QR by entering the amount',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
             ),
-            Center(
-              child: SizedBox(
-                height: 250.h,
-                width: 250.h,
-                child: PrettyQrView(
-                  qrImage: qrImage,
-                  decoration: const PrettyQrDecoration(
-                    shape: PrettyQrSmoothSymbol(
-                      color: Colors.black,
+            SizedBox(height: 20.h),
+            GetBuilder<ReceiveQrPaymentController>(
+              initState: (_) => controller.generateQrCode,
+              builder: (controller) => controller.isLoading.value == false
+                  ? SizedBox.shrink()
+                  : Center(
+                      child: RepaintBoundary(
+                        key: controller.qrKey,
+                        child: SizedBox(
+                          height: 250.h,
+                          width: 250.h,
+                          child: PrettyQrView(
+                            qrImage: controller.qrImage,
+                            decoration: const PrettyQrDecoration(
+                              shape: PrettyQrSmoothSymbol(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+            ),
+            Spacer(),
+            Buttoms(
+              text: 'Share QR',
+              onPressed: () async {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  await controller.shareQRCode();
+                });
+              },
+              color: Colors.white,
+              colorText: Colors.black,
+            ),
+            SizedBox(height: 10.h),
+            ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    side: BorderSide(color: Colors.black),
+                  ),
+                ),
+              ),
+              child: Container(
+                margin: const EdgeInsets.all(15),
+                child: Text(
+                  'Create QR by entering amount',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Roboto',
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-            Spacer(),
-            Buttoms(
-                color: Colors.white,
-                colorText: Colors.black,
-                text: 'Share QR',
-                onPressed: () {}),
-            SizedBox(height: 10.h),
-            Buttoms(
-                color: Colors.black,
-                colorText: Colors.white,
-                text: 'Create QR by entering amount',
-                onPressed: () {}),
             SizedBox(height: 25.h),
           ],
         ),

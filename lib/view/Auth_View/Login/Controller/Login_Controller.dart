@@ -1,25 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bank/Core/cache_helper.dart';
 import 'package:bank/Core/http_helper.dart';
 import 'package:bank/view/Auth_View/Login/Screen/Password_Screen.dart';
 import 'package:bank/view/Home_View/Screens/home_screen.dart';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../Screen/SecurtyCode.dart';
+
+// Extract constants for endpoints
+class ApiEndpoints {
+  static const String checkLogin = "check_login";
+  static const String checkCodeLogin = "check_code_login";
+  static const String passwordLogin = "password_login";
+  static const String sendAmount = 'send_amount';
+  static const String getQrClient = 'get_qr_client';
+}
 
 class LoginController extends GetxController {
   final TextEditingController email = TextEditingController();
-
-  var signInLoading = false.obs;
-  late SharedPreferences sharedPreferences;
-  var idControllerSignUp = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final RxBool isFormValid = true.obs;
+  final RxBool signInLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize sharedPreferences when the controller is initialized
     initializeSharedPreferences();
   }
 
@@ -31,36 +37,29 @@ class LoginController extends GetxController {
     required String phone,
     required BuildContext context,
   }) async {
-    print('start');
     signInLoading.value = true;
 
-    // Ensure that sharedPreferences is initialized before using it
     await initializeSharedPreferences();
 
     try {
       final response = await HttpHelper.postData(
-        endpoint: "check_login",
-        body: {
-          'email_phone': phone,
-        },
+        endpoint: ApiEndpoints.checkLogin,
+        body: {'email_phone': phone},
       );
-      if (response["status"] == true) {
-        print(response.toString());
-        Get.snackbar("Success!", response['message'],
-            backgroundColor: Colors.blue);
-        Get.to(SecurityCodeScreen(
-          email: email,
-        ));
+
+      if (response["status"]) {
+        showSuccessSnackbar(response['message']);
+        navigateToSecurityCodeScreen();
+        print(response);
         await CacheHelper.saveDataSharedPreference(
           key: "user_id",
           value: response['user_id'],
         );
       } else {
-        Get.snackbar("Warning!", response['message'],
-            backgroundColor: Colors.red);
+        showWarningSnackbar(response['message']);
       }
     } catch (error) {
-      print(error);
+      showErrorSnackbar("An error occurred while checking email.");
     } finally {
       signInLoading.value = false;
     }
@@ -70,36 +69,31 @@ class LoginController extends GetxController {
     required String code,
     required BuildContext context,
   }) async {
-    print('start');
     signInLoading.value = true;
 
-    // Ensure that sharedPreferences is initialized before using it
     await initializeSharedPreferences();
 
     try {
       final response = await HttpHelper.postData(
-        endpoint: "check_code_login",
+        endpoint: ApiEndpoints.checkCodeLogin,
         body: {
           'phone_code': code,
           'user_id': CacheHelper.getDataSharedPreference(key: 'user_id')
         },
       );
-      if (response["status"] == true) {
-        print(response.toString());
 
-        Get.snackbar("Success!", response['message'],
-            backgroundColor: Colors.blue);
-        Get.to(PasswordScreen());
+      if (response["status"]) {
+        showSuccessSnackbar(response['message']);
+        navigateToPasswordScreen();
         await CacheHelper.saveDataSharedPreference(
           key: "user_id",
           value: response['user_id'],
         );
       } else {
-        Get.snackbar("Warning!", response['message'],
-            backgroundColor: Colors.red);
+        showWarningSnackbar(response['message']);
       }
     } catch (error) {
-      print(error);
+      showErrorSnackbar("An error occurred while checking security code.");
     } finally {
       signInLoading.value = false;
     }
@@ -109,38 +103,91 @@ class LoginController extends GetxController {
     required String password,
     required BuildContext context,
   }) async {
-    print('start');
     signInLoading.value = true;
 
-    // Ensure that sharedPreferences is initialized before using it
     await initializeSharedPreferences();
 
     try {
       final response = await HttpHelper.postData(
-        endpoint: "password_login",
+        endpoint: ApiEndpoints.passwordLogin,
         body: {
           'password': password,
           'user_id': CacheHelper.getDataSharedPreference(key: 'user_id')
         },
       );
-      if (response["status"] == true) {
-        print(response.toString());
 
-        Get.snackbar("Success!", response['message'],
-            backgroundColor: Colors.blue);
+      if (response["status"]) {
+        showSuccessSnackbar(response['message']);
         await CacheHelper.saveDataSharedPreference(
           key: "token",
           value: response['token'],
         );
         Get.offAll(HomeScreen());
       } else {
-        Get.snackbar("Warning!", response['message'],
-            backgroundColor: Colors.red);
+        showWarningSnackbar(response['message']);
       }
     } catch (error) {
-      print(error);
+      showErrorSnackbar("An error occurred while checking password.");
     } finally {
       signInLoading.value = false;
     }
+  }
+
+  void showSuccessSnackbar(String message) {
+    Get.snackbar("Success!", message, backgroundColor: Colors.blue);
+  }
+
+  void showWarningSnackbar(String message) {
+    Get.snackbar("Warning!", message,
+        backgroundColor: Colors.red, duration: Duration(seconds: 3));
+  }
+
+  void showErrorSnackbar(String message) {
+    Get.snackbar("Error!", message,
+        backgroundColor: Colors.red, duration: Duration(seconds: 3));
+  }
+
+  void navigateToSecurityCodeScreen() {
+    Get.to(SecurityCodeScreen(email: email));
+  }
+
+  void navigateToPasswordScreen() {
+    Get.to(PasswordScreen());
+  }
+}
+
+class AuthController extends GetxController {
+  RxBool isLoggedIn = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkAuthStatus();
+  }
+
+  Future<void> checkAuthStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoggedIn.value = prefs.getBool('isLoggedIn') ?? false;
+  }
+
+  void login() {
+    // Your login logic here
+    // ...
+
+    updateAuthStatus(true);
+  }
+
+  void logout() {
+    // Your logout logic here
+    // ...
+
+    updateAuthStatus(false);
+  }
+
+  Future<void> updateAuthStatus(bool status) async {
+    isLoggedIn.value = status;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', status);
   }
 }

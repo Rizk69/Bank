@@ -1,27 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
 import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
 import 'package:bank/view/Auth_View/Login/Controller/TimerController.dart';
 import 'package:bank/view/Auth_View/Login/Widget/ButtomsNotBorder.dart';
-import 'package:bank/view/Auth_View/Login/Widget/PinDisplay.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
+import '../Widget/PinDisplay.dart';
 
 class SecurityCodeScreen extends StatelessWidget {
-  TextEditingController email;
+  final TextEditingController email;
   final PinputControllerSinInCheckEmail controllerPin =
       Get.put(PinputControllerSinInCheckEmail());
   final LoginController controller = Get.put(LoginController());
-  final MyTimerController controllerTimer = Get.put(MyTimerController());
+  final MyTimerControllerLogin controllerTimer =
+      Get.put(MyTimerControllerLogin());
+  late final GlobalKey<FormState> formKey;
 
-  SecurityCodeScreen({Key? key, required this.email}) : super(key: key);
+  SecurityCodeScreen({Key? key, required this.email}) : super(key: key) {
+    formKey = GlobalKey<FormState>();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -39,7 +43,7 @@ class SecurityCodeScreen extends StatelessWidget {
             SizedBox(height: 8.h),
             Center(
               child: Text(
-                'Enter the 6 digital sent to phone number ',
+                'Enter the 6 digits sent to phone number ',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -59,19 +63,18 @@ class SecurityCodeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 30.h),
-            PinputPassword(
-              controller: controllerPin,
-            ),
+            PinputPassword(controller: controllerPin),
             SizedBox(height: 30.h),
             Obx(() => Center(
-                child: controllerTimer.isCodeVisible.value
-                    ? Text(
-                        'Resend a code after ${controllerTimer.counter.value} s',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0XFF6A6969)))
-                    : Container())),
+                  child: Text(
+                    'Resend a code after ${controllerTimer.counter.value} s',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0XFF6A6969),
+                    ),
+                  ),
+                )),
             Spacer(),
             Center(
               child: Text(
@@ -91,10 +94,11 @@ class SecurityCodeScreen extends StatelessWidget {
                 color: Color(0XFFD9D9D9),
                 onPressed: () {
                   String pin = controllerPin.pinController.text;
-
                   controller.checkCodeEmail(context: context, code: pin);
                 },
                 colorText: Colors.white,
+                isFormValid: controller.isFormValid,
+                context: context,
               ),
             ),
           ],
