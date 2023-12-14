@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'cache_helper.dart';
@@ -29,6 +29,53 @@ class HttpHelper {
       );
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       return jsonResponse;
+    } catch (error) {
+      throw Exception('Failed to post data: $error');
+    }
+  }
+
+  static Future<Map<String, dynamic>> postMultipart({
+    required String endpoint,
+    Map<String, dynamic>? fields,
+    required List<File> files,
+  }) async {
+    var token = CacheHelper.getDataSharedPreference(key: 'token');
+    final url = Uri.parse(baseUrl + endpoint);
+
+    try {
+      var request = http.MultipartRequest('POST', url)
+        ..headers['Authorization'] = 'Bearer $token'
+        ..headers['Accept'] = 'application/json'
+        ..headers['Accept-Language'] = 'en';
+
+      // Add fields
+      if (fields != null) {
+        fields.forEach((key, value) {
+          request.fields[key] = value.toString();
+        });
+      }
+
+      // Add files
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            'file_$i',
+            // Use a dynamic field name, e.g., 'file_0', 'file_1', ...
+            file.path,
+            filename: 'file$i.jpg',
+          ),
+        );
+      }
+
+      var response = await http.Response.fromStream(await request.send());
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        return jsonResponse;
+      } else {
+        throw Exception('Failed to post data: ${response.statusCode}');
+      }
     } catch (error) {
       throw Exception('Failed to post data: $error');
     }

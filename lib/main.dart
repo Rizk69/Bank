@@ -1,11 +1,7 @@
 import 'package:bank/Core/cache_helper.dart';
-import 'package:bank/view/Auth_View/Login/Screen/FastLogin.dart';
-import 'package:bank/view/Home_View/Screens/home_screen.dart';
-
 import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:bank/view/splash_screen/Splash_View.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';

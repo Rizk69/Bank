@@ -15,10 +15,11 @@ class ApiResponseCheckScan {
     return ApiResponseCheckScan(
       status: json['status'],
       message: json['message'],
-      currencies: List<Currency>.from(
-        json['currencies'].map((currency) => Currency.fromJson(currency)),
-      ),
-      receiver: Receiver.fromJson(json['receiver']),
+      currencies: (json['currencies'] as List<dynamic>?)
+              ?.map((currency) => Currency.fromJson(currency))
+              .toList() ??
+          [],
+      receiver: Receiver.fromJson(json['receiver'] ?? {}),
     );
   }
 }
@@ -52,9 +53,10 @@ class Receiver {
 
   factory Receiver.fromJson(Map<String, dynamic> json) {
     return Receiver(
-      receiverId: json['receiver_id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
+      receiverId: json['receiver_id'] ?? 0,
+      // Provide a default value if 'receiver_id' is null
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
       img: json['img'],
     );
   }

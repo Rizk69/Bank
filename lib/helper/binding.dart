@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 
 import '../view/Home_View/Screens/first_screen.dart';
 import '../view/Money_Transfer/Controller/ContactControllerSend.dart';
+import '../view/Money_Transfer/Controller/MbagNumberController.dart';
 import '../view/Trader/Controller.dart';
 
 class Binding extends Bindings {
@@ -38,5 +39,6 @@ class Binding extends Bindings {
     Get.lazyPut(() => AmountSendController());
     Get.lazyPut(() => ContactControllerSend());
     Get.lazyPut(() => ContactControllerSendRequest());
+    Get.lazyPut(() => MbagNumberController());
   }
 }

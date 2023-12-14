@@ -1,14 +1,19 @@
 import 'dart:io';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
+import 'package:bank/view/Home_View/Screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../../Core/http_helper.dart';
+import '../../../on_bording_screen/Widget/buttom_.dart';
 import '../../Login/Widget/HeadTitleDes.dart';
 
 class CameraScreen extends StatefulWidget {
+  CameraScreen({Key? key}) : super(key: key);
+
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -16,85 +21,104 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   File? _frontImage;
   File? _backImage;
-  int _currentImage = 1; // 1 for front, 2 for back
-  bool _isSubmitting =
-      false; // Flag to track whether images are being submitted
+  bool _isSubmitting = false;
 
   Future<void> _takePicture(ImageSource source) async {
-    // Check if submitting is in progress
     if (_isSubmitting) {
       return;
     }
 
-    // Request permission
     var status = await Permission.camera.request();
     if (status.isGranted) {
       final pickedFile = await ImagePicker().pickImage(source: source);
       if (pickedFile != null) {
         setState(() {
-          if (_currentImage == 1) {
-            _frontImage = File(pickedFile.path);
+          if (_frontImage == null) {
+            _frontImage = File(pickedFile.path!);
           } else {
-            _backImage = File(pickedFile.path);
+            _backImage = File(pickedFile.path!);
           }
-          _currentImage++;
         });
 
-        if (_currentImage <= 2) {
-          // If there are still images to capture, allow the user to take another picture
-          _showImageCaptureDialog();
-        } else {
-          // If both images are captured, proceed with API submission
+        if (_frontImage != null && _backImage != null) {
           _submitImagesToApi();
         }
       }
     } else {
-      // Handle denied permission
       print('Camera permission denied');
     }
   }
 
-  void _submitImagesToApi() async {
-    // Set submitting flag to true
+  Future<String> _analyzeImage(File image) async {
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textRecognizer = GoogleMlKit.vision.textRecognizer();
+    final visionText = await textRecognizer.processImage(inputImage);
+    String text = visionText.text;
+    return text.trim();
+  }
+
+  Future<void> _submitImagesToApi() async {
     setState(() {
       _isSubmitting = true;
     });
 
-    // API call logic here
-    print('Submitting images to API');
-    // Simulate API call delay
-    await Future.delayed(Duration(seconds: 2));
+    String frontImageResult = await _analyzeImage(_frontImage!);
+    String backImageResult = await _analyzeImage(_backImage!);
 
-    // Reset images after submission
-    setState(() {
-      _frontImage = null;
-      _backImage = null;
-      _currentImage = 1;
-      _isSubmitting = false; // Set submitting flag to false
-    });
+    bool isIDCard = frontImageResult.contains('ID card') &&
+        backImageResult.contains('ID card');
+
+    if (isIDCard) {
+      _sendIdCardImages(_frontImage!, _backImage!);
+    } else {
+      setState(() {
+        _frontImage = null;
+        _backImage = null;
+        _isSubmitting = false;
+      });
+      Get.snackbar("Warning!", 'Images do not contain ID card',
+          backgroundColor: Colors.red);
+      print('Images do not contain ID card');
+    }
   }
 
-  void _showImageCaptureDialog() {
-    // Show a dialog or perform any necessary UI update to inform the user to capture the next image
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Capture Image'),
-          content: Text(
-              'Capture the ${_currentImage == 1 ? "front" : "back"} image'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> _sendIdCardImages(
+      File frontImageResult, File backImageResult) async {
+    try {
+      final response = await HttpHelper.postMultipart(
+        endpoint: "add_id",
+        fields: {
+          'frout_id': frontImageResult,
+          'back_id': backImageResult,
+        },
+        files: [
+          _frontImage!,
+          _backImage!,
+        ],
+      );
+
+      print(response.toString());
+
+      if (response["status"] == true) {
+        Get.offAll(HomeScreen());
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
+      } else {
+        Get.snackbar("Warning!", response['message'],
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      setState(() {
+        _frontImage = null;
+        _backImage = null;
+        _isSubmitting = false;
+      });
+    }
   }
+
+  // ... (الأجزاء الأخرى من الكود لم تتغير)
 
   @override
   Widget build(BuildContext context) {
@@ -135,21 +159,13 @@ class _CameraScreenState extends State<CameraScreen> {
               ),
               Spacer(),
               Buttoms(
-                  text: "Continue",
-                  color: Colors.black,
-                  onPressed: () {
-                    if (_frontImage == null) {
-                      // If front image is not captured, capture it
-                      _takePicture(ImageSource.camera);
-                    } else if (_backImage == null) {
-                      // If back image is not captured, capture it
-                      _takePicture(ImageSource.camera);
-                    } else {
-                      // If both front and back images are captured, submit to API
-                      _submitImagesToApi();
-                    }
-                  },
-                  colorText: Colors.white)
+                text: "Continue",
+                color: Colors.black,
+                onPressed: () {
+                  _takePicture(ImageSource.camera);
+                },
+                colorText: Colors.white,
+              ),
             ],
           ),
         ),

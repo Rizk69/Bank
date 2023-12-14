@@ -48,7 +48,7 @@ class SignUpOne extends StatelessWidget {
                       label: "Country",
                       isRequired: true,
                       items: _countryController.countryModel.country
-                          .map((country) => "${country.code} ${country.name}")
+                          .map((country) => "${country.code} ")
                           .toList(),
                       onChanged: (value) {
                         final selectedCountry =
@@ -65,7 +65,7 @@ class SignUpOne extends StatelessWidget {
                       },
                     );
                   } else {
-                    return CircularProgressIndicator();
+                    return SizedBox.fromSize();
                   }
                 },
               ),

@@ -68,12 +68,15 @@ class FirstScreen extends StatelessWidget {
                 Obx(() {
                   return homeController.homeModel.user?.img != null
                       ? SizedBox()
-                      : InkWell(onTap: () {}, child: _cheakIdCard());
+                      : InkWell(
+                          onTap: () {
+                            Get.to(() => CameraScreen());
+                          },
+                          child: _cheakIdCard());
                 }),
                 SizedBox(height: 15.h),
                 InkWell(
                     onTap: () {
-                      Get.to(() => CameraScreen());
                     },
                     child: _buildProfilePhotoContainer()),
                 SizedBox(height: 25.h),
