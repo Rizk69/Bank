@@ -15,7 +15,7 @@ class HeadFirstTitle extends StatelessWidget {
         Center(
             child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
         )),
         SizedBox(
@@ -24,7 +24,7 @@ class HeadFirstTitle extends StatelessWidget {
         Center(
             child: Text(
           des,
-          style: TextStyle(
+              style: const TextStyle(
               fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
         )),
       ],

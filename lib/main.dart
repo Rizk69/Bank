@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(375, 812),
+        designSize: const Size(375, 812),
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
             initialBinding: Binding(),
@@ -75,59 +75,59 @@ class ScreenFive extends StatelessWidget {
   }
 }
 
-class MyApp1 extends StatefulWidget {
-  const MyApp1({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp1> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp1> {
-  final LocalAuthentication auth = LocalAuthentication();
-  bool _isAuthenticating = false;
-
-  Future<void> _authenticate() async {
-    try {
-      bool canCheckBiometrics = await auth.canCheckBiometrics;
-      if (!canCheckBiometrics) {
-        print('Biometric authentication not available on this device.');
-        return;
-      }
-
-      bool authenticated = await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-      );
-      print('Authentication Result: $authenticated');
-    } catch (e) {
-      print('Authentication Error: $e');
-    } finally {
-      setState(() {
-        _isAuthenticating = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Biometric Authentication Example'),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _isAuthenticating = true;
-              });
-              _authenticate();
-            },
-            child: _isAuthenticating
-                ? const CircularProgressIndicator()
-                : const Text('Authenticate'),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class MyApp1 extends StatefulWidget {
+//   const MyApp1({Key? key}) : super(key: key);
+//
+//   @override
+//   State<MyApp1> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp1> {
+//   final LocalAuthentication auth = LocalAuthentication();
+//   bool _isAuthenticating = false;
+//
+//   Future<void> _authenticate() async {
+//     try {
+//       bool canCheckBiometrics = await auth.canCheckBiometrics;
+//       if (!canCheckBiometrics) {
+//         print('Biometric authentication not available on this device.');
+//         return;
+//       }
+//
+//       bool authenticated = await auth.authenticate(
+//         localizedReason: 'Let OS determine authentication method',
+//       );
+//       print('Authentication Result: $authenticated');
+//     } catch (e) {
+//       print('Authentication Error: $e');
+//     } finally {
+//       setState(() {
+//         _isAuthenticating = false;
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: const Text('Biometric Authentication Example'),
+//         ),
+//         body: Center(
+//           child: ElevatedButton(
+//             onPressed: () {
+//               setState(() {
+//                 _isAuthenticating = true;
+//               });
+//               _authenticate();
+//             },
+//             child: _isAuthenticating
+//                 ? const CircularProgressIndicator()
+//                 : const Text('Authenticate'),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

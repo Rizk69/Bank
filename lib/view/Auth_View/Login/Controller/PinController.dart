@@ -46,3 +46,7 @@ class PinputControllerSinUpCheckEmail extends BasePinputController {
 class PinputControllerFastLoginCheckEmail extends BasePinputController {
   // Additional specific functionality for sign up if needed
 }
+
+class PinputControllerChangeCardPassword extends BasePinputController {
+  // Additional specific functionality for sign up if needed
+}

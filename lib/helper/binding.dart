@@ -1,3 +1,4 @@
+import 'package:bank/view/Auth_View/Add_Id_Image/Controller/CaptureIdController.dart';
 import 'package:bank/view/Auth_View/Login/Controller/ControllerFastLogin.dart';
 import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
 import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
@@ -13,6 +14,7 @@ import 'package:bank/view/QrTransaction/Controller/ReceiveQrPaymentController.da
 import 'package:bank/view/Transaction/controller/transaction_controller.dart';
 import 'package:get/get.dart';
 
+import '../view/AccountDetails/Controller/AccountDetailsController.dart';
 import '../view/Home_View/Screens/first_screen.dart';
 import '../view/Money_Transfer/Controller/ContactControllerSend.dart';
 import '../view/Money_Transfer/Controller/MbagNumberController.dart';
@@ -40,5 +42,7 @@ class Binding extends Bindings {
     Get.lazyPut(() => ContactControllerSend());
     Get.lazyPut(() => ContactControllerSendRequest());
     Get.lazyPut(() => MbagNumberController());
+    Get.lazyPut(() => AccountDetailsController());
+    Get.lazyPut(() => CameraIdController());
   }
 }

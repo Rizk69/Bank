@@ -69,7 +69,7 @@ class DepositAndWithdraw extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Get.to(() => NearestBranch());
+            Get.to(() => LocationScreen());
           },
           child: Column(
             children: [

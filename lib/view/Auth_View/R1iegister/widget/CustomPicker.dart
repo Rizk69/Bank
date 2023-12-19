@@ -7,7 +7,8 @@ class CustomListPickerField extends StatefulWidget {
   final List<String> items;
   final ValueChanged<String?> onChanged;
 
-  CustomListPickerField({
+  const CustomListPickerField({
+    super.key,
     required this.label,
     required this.items,
     required this.onChanged,

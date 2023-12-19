@@ -11,6 +11,8 @@ class PasswordScreen extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  PasswordScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,7 @@ class PasswordScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 70.h),
-            Center(
+            const Center(
               child: Text(
                 'Enter your 6 digital ',
                 style: TextStyle(
@@ -31,7 +33,7 @@ class PasswordScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8.h),
-            Center(
+            const Center(
               child: Text(
                 'PIN',
                 style: TextStyle(
@@ -43,8 +45,8 @@ class PasswordScreen extends StatelessWidget {
             ),
             SizedBox(height: 30.h),
             PinputPassword(controller: controllerPin),
-            Spacer(),
-            Center(
+            const Spacer(),
+            const Center(
               child: Text(
                 'Having trouble? ',
                 style: TextStyle(
@@ -59,7 +61,7 @@ class PasswordScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 25),
               child: ButtomsNotBorder(
                 text: 'Continue',
-                color: Color(0XFFD9D9D9),
+                color: const Color(0XFFD9D9D9),
                 onPressed: () {
                   String pin = controllerPin.pinController.text;
                   controller.checkPassword(context: context, password: pin);

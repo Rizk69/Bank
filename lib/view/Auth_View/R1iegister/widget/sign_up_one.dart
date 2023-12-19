@@ -41,20 +41,17 @@ class SignUpOne extends StatelessWidget {
                     // Extracting only country codes as strings
                     List<String> countryCodes = _countryController
                         .countryModel.country
-                        .map((country) => "${country.code} ${country.name}")
+                        .map((country) => "${country.code}")
                         .toList();
 
                     return CustomListPickerField(
                       label: "Country",
                       isRequired: true,
-                      items: _countryController.countryModel.country
-                          .map((country) => "${country.code} ")
-                          .toList(),
+                      items: countryCodes,
                       onChanged: (value) {
                         final selectedCountry =
                             _countryController.countryModel.country.firstWhere(
-                          (country) =>
-                              "${country.code} ${country.name}" == value,
+                          (country) => "${country.code}" == value,
                         );
                         registerController.idControllerSignUp.text =
                             selectedCountry.id.toString();

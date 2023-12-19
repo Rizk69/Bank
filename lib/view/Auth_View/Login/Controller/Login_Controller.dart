@@ -8,7 +8,6 @@ import 'package:bank/view/Home_View/Screens/home_screen.dart';
 
 import '../Screen/SecurtyCode.dart';
 
-// Extract constants for endpoints
 class ApiEndpoints {
   static const String checkLogin = "check_login";
   static const String checkCodeLogin = "check_code_login";
@@ -36,6 +35,37 @@ class LoginController extends GetxController {
   Future<void> checkEmail({
     required String phone,
     required BuildContext context,
+  }) async {
+    signInLoading.value = true;
+
+    await initializeSharedPreferences();
+
+    try {
+      final response = await HttpHelper.postData(
+        endpoint: ApiEndpoints.checkLogin,
+        body: {'email_phone': phone},
+      );
+
+      if (response["status"]) {
+        showSuccessSnackbar(response['message']);
+        navigateToSecurityCodeScreen();
+        print(response);
+        await CacheHelper.saveDataSharedPreference(
+          key: "user_id",
+          value: response['user_id'],
+        );
+      } else {
+        showWarningSnackbar(response['message']);
+      }
+    } catch (error) {
+      showErrorSnackbar("An error occurred while checking email.");
+    } finally {
+      signInLoading.value = false;
+    }
+  }
+
+  Future<void> resendCode({
+    required String phone,
   }) async {
     signInLoading.value = true;
 
@@ -134,7 +164,7 @@ class LoginController extends GetxController {
   }
 
   void showSuccessSnackbar(String message) {
-    Get.snackbar("Success!", message, backgroundColor: Colors.blue);
+    Get.snackbar("Success!", message, backgroundColor: Colors.green);
   }
 
   void showWarningSnackbar(String message) {
@@ -171,16 +201,10 @@ class AuthController extends GetxController {
   }
 
   void login() {
-    // Your login logic here
-    // ...
-
     updateAuthStatus(true);
   }
 
   void logout() {
-    // Your logout logic here
-    // ...
-
     updateAuthStatus(false);
   }
 

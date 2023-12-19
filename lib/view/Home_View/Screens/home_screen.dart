@@ -6,12 +6,11 @@ import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../QrTransaction/Screen/Qr_Scan_Screen.dart';
 import '../controller/contoller_home.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+   HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

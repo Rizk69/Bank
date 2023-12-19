@@ -10,6 +10,7 @@ class ButtomsNotBorder extends StatelessWidget {
   final VoidCallback onPressed;
 
   ButtomsNotBorder({
+    super.key,
     required this.text,
     required this.isFormValid,
     required this.context,

@@ -42,22 +42,4 @@ class TransactionController extends GetxController {
     }
   }
 
-// get one transaction
-//   late TransactionModel transactionOneData;
-//   var isLoadingGetOne = false.obs;
-//
-//   void getOnTransaction({required int id}) async {
-//     try {
-//       isLoadingGetOne.value = true;
-//       final response = await HttpHelper.postData(
-//         endpoint: "get_transaction/$id",
-//         body: {},
-//       );
-//       print(response);
-//       transactionOneData = TransactionModel.fromJson(response);
-//     } catch (error) {
-//       Get.snackbar("Error!", "Please Try Again");
-//       isLoadingGetOne.value = true;
-//     }
-//   }
 }

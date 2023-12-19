@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../Core/http_helper.dart';
 import '../model/NearestBranchMdel.dart';
@@ -8,7 +10,7 @@ class LocationController extends GetxController {
   late Rx<Position?> nearestPosition = Rx<Position?>(null);
   late Rx<Position?> currentPosition = Rx<Position?>(null);
   late NearestBranchModel _nearestBranchModel =
-      NearestBranchModel(); // Initialize _nearestBranchModel
+  NearestBranchModel(); // Initialize _nearestBranchModel
 
   NearestBranchModel get nearestBranchModel => _nearestBranchModel;
   var isLoading = true.obs; // Start with loading as true
@@ -21,17 +23,50 @@ class LocationController extends GetxController {
 
   Future<void> getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      var status = await Permission.locationWhenInUse.request();
 
-      currentPosition.value = position;
-      await addCurrentPosition(); // Use await here if you need to wait for it to complete
+      if (status.isGranted) {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
 
-      update();
+        currentPosition.value = position;
+        await addCurrentPosition();
+        update();
+      } else if (status.isDenied) {
+        // إذا قام المستخدم برفض الوصول إلى الموقع
+        // يمكنك إظهار رسالة توضيحية وتوجيه المستخدم لتفعيل الوصول في إعدادات الجهاز
+        showLocationPermissionDialog();
+      } else if (status.isPermanentlyDenied) {
+        // إذا قام المستخدم برفض الوصول بشكل دائم
+        // يمكنك إظهار رسالة توضيحية وتوجيه المستخدم لتفعيل الوصول في إعدادات الجهاز
+        showLocationPermissionDialog();
+      }
     } catch (e) {
       print("Error: $e");
     }
+  }
+
+  void showLocationPermissionDialog() {
+    // يمكنك استخدام showDialog لعرض رسالة توضيحية وتوجيه المستخدم
+    showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Location Permission Required"),
+          content:
+              Text("Please enable location access in your device settings."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> addCurrentPosition() async {

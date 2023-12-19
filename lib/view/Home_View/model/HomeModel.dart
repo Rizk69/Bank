@@ -44,6 +44,8 @@ class HomeModel {
 
 class User {
   String? img;
+  String? froutid;
+  String? backid;
   String? accountNumber;
   String? balance;
 
@@ -52,12 +54,16 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     img = json['img'];
     accountNumber = json['account_number'];
+    froutid = json['frout_id'];
+    backid = json['back_id'];
     balance = json['balance'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['img'] = this.img;
+    data['frout_id'] = this.img;
+    data['back_id'] = this.img;
     data['account_number'] = this.accountNumber;
     data['balance'] = this.balance;
     return data;
@@ -123,7 +129,7 @@ class Trans {
 
 class Traders {
   int? id;
-  Null? img;
+  String? img;
   int? activityId;
   String? activityName;
   int? discount;

@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'package:get/get.dart';
 
+import '../../R1iegister/controllers/register_controller.dart';
+import 'Login_Controller.dart';
+
 class BaseMyTimerController extends GetxController {
+  final LoginController controller = Get.put(LoginController());
+
   late RxBool isTimerRunning;
   late RxBool isTimerPaused;
 
@@ -28,7 +33,7 @@ class BaseMyTimerController extends GetxController {
     const duration = Duration(seconds: 1); // Set the timer to run every second
     _timer = Timer.periodic(
       duration,
-      (Timer timer) {
+          (Timer timer) {
         if (!isTimerPaused.value) {
           counter.value++;
 
@@ -93,11 +98,13 @@ class MyTimerControllerLogin extends BaseMyTimerController {
 
   // Replace this with your actual resendCode implementation
   void resendCode() {
-    print('Resending code...');
+    controller.resendCode(phone: controller.email.text);
   }
 }
 
 class MyTimerControllerRegister extends BaseMyTimerController {
+  final RegisterController controllerRegister = Get.put(RegisterController());
+
   void startTimer(Function onResend) {
     // Call the parent startTimer method
     super.startTimer(() {
@@ -108,6 +115,6 @@ class MyTimerControllerRegister extends BaseMyTimerController {
 
   // Replace this with your actual resendCode implementation
   void resendCode() {
-    print('Resending code...');
+    controllerRegister.resendCode();
   }
 }

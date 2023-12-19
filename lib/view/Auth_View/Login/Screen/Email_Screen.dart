@@ -1,19 +1,16 @@
-import 'package:bank/view/Auth_View/Login/Screen/Password_Screen.dart';
-import 'package:bank/view/Auth_View/Login/Widget/ButtomsNotBorder.dart';
-import 'package:bank/view/Auth_View/Login/Widget/HeadTitleDes.dart';
+import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../R1iegister/controllers/CountryController.dart';
-import '../../R1iegister/widget/CustomPicker.dart';
-import '../Controller/Login_Controller.dart';
+import '../Widget/ButtomsNotBorder.dart';
+import '../Widget/HeadTitleDes.dart';
 
 class EmailScreen extends StatelessWidget {
   final TextEditingController controller;
   final LoginController controllerLogin = Get.put(LoginController());
 
   EmailScreen({
+    super.key,
     required this.controller,
   });
 
@@ -54,8 +51,8 @@ class EmailScreen extends StatelessWidget {
               ),
             ),
           ),
-          Spacer(),
-          Center(
+          const Spacer(),
+          const Center(
             child: Text(
               'Having trouble? ',
               style: TextStyle(
@@ -71,7 +68,7 @@ class EmailScreen extends StatelessWidget {
             child: ButtomsNotBorder(
               text: 'Continue',
               color: controllerLogin.isFormValid.value
-                  ? Color(0XFFD9D9D9)
+                  ? const Color(0XFFD9D9D9)
                   : Colors.lightBlue,
               onPressed: controllerLogin.isFormValid.isTrue
                   ? () {

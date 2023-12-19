@@ -7,6 +7,7 @@ import '../Screen/ScreenAmountSend.dart';
 
 class MbagNumberController extends GetxController {
   TextEditingController mbagNumberController = TextEditingController();
+  var isLoading = false.obs;
 
   Future<void> getMbagNumberClient() async {
     try {
@@ -22,10 +23,13 @@ class MbagNumberController extends GetxController {
         print(apiResponse.toString());
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
+        isLoading.value = true;
+
         Get.to(() => AmountSendScreen(model: apiResponse));
       } else {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);
+        isLoading.value = false;
       }
     } catch (error) {
       print(error);

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:io';
@@ -22,7 +21,7 @@ class ReceiveQrPaymentController extends GetxController {
   void onInit() async {
     super.onInit();
     await getQRClient();
-    await generateQrCode(_qR);
+    // await generateQrCode(_qR);
     isLoading = true.obs;
   }
 

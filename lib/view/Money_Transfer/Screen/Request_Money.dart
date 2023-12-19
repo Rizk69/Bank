@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../Core/widgets/Styles.dart';
 
 class RequestMoneyScreen extends StatelessWidget {
-  RequestMoneyScreen({Key? key}) : super(key: key);
+  const RequestMoneyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +26,19 @@ class RequestMoneyScreen extends StatelessWidget {
                   onPressed: () {
                     Get.back();
                   },
-                  icon: Icon(Icons.arrow_back, size: 28),
+                  icon: const Icon(Icons.arrow_back, size: 28),
                 ),
                 Text(
                   'Request Money',
                   style: Styles.textStyleTitle24,
                 ),
-                ImageIcon(
+                const ImageIcon(
                   AssetImage('Assets/images/exclamation.png'),
                   size: 20,
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(child: NestedTabBarRequest())

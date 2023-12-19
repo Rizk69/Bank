@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../Controller/ControllerFastLogin.dart';
-import '../Controller/PinController.dart'; // Corrected import path
+import '../Controller/PinController.dart';
 import '../Widget/ButtomsNotBorder.dart';
 import '../Widget/HeadTitleDes.dart';
 import '../Widget/PinDisplay.dart';
@@ -11,8 +11,9 @@ class FastLogin extends StatelessWidget {
   final FastLoginController controller = Get.put(FastLoginController());
   final PinputControllerFastLoginCheckEmail controllerPin =
       Get.put(PinputControllerFastLoginCheckEmail());
-  final GlobalKey<FormState> formKey =
-      GlobalKey<FormState>(); // Initialized formKey
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  FastLogin({super.key}); // Initialized formKey
 
   RxBool get isFormValid => RxBool(formKey.currentState?.validate() ?? true);
 
