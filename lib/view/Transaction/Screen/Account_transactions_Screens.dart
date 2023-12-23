@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/helper/Data.dart';
-import 'package:bank/view/Transaction/controller/transaction_controller.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/helper/Data.dart';
+import 'package:MBAG/view/Transaction/controller/transaction_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AccountTransactions extends StatelessWidget {
   final TransactionController controller = Get.put(TransactionController());
@@ -140,143 +141,189 @@ class AccountTransactions extends StatelessWidget {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 2,
-                  child: Obx(() {
-                    return controller.isLoading.value
-                        ? CircularProgressIndicator()
-                        : ListView.builder(
-                            itemCount: controller.transactionData.length,
-                            itemBuilder: (context, index) {
-                              var transaction =
-                                  controller.transactionData[index];
-                              bool isNewHeader = index == 0 ||
-                                  transaction.createdAt !=
-                                      controller
-                                          .transactionData[index - 1].createdAt;
-                              String formattedDate =
-                                  transaction.createdAt != null
-                                      ? DateUtilsFormat.formatTransactionDate(
-                                          transaction.createdAt!)
-                                      : '';
-
-                              return Container(
-                                padding: EdgeInsets.all(5),
-                                child: Column(
-                                  children: [
-                                    if (isNewHeader)
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Text(
-                                            formattedDate ?? 'Unknown Date',
-                                            style: Styles.textStyleTitle12
-                                                .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              // Customize the header text style
-                                            ), // Handle the case where textStyleTitle14 is null
-                                          ),
-                                        ),
+                  child:
+                      GetBuilder<TransactionController>(builder: (controller) {
+                    return controller.transactionData.isEmpty
+                        ? SizedBox()
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height / 2,
+                            child: controller.isLoading.value
+                                ? Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              2,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: Colors.white,
                                       ),
-                                    SizedBox(
-                                      height: 10,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
+                                  )
+                                : ListView.builder(
+                                    itemCount:
+                                        controller.transactionData.length,
+                                    itemBuilder: (context, index) {
+                                      var transaction =
+                                          controller.transactionData[index];
+                                      bool isNewHeader = index == 0 ||
+                                          transaction.createdAt !=
+                                              controller
+                                                  .transactionData[index - 1]
+                                                  .createdAt;
+                                      String formattedDate =
+                                          transaction.createdAt != null
+                                              ? DateUtilsFormat
+                                                  .formatTransactionDate(
+                                                      transaction.createdAt!)
+                                              : '';
+
+                                      return Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(
                                           children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: Image.network(
-                                                transaction.senderImg ?? '',
-                                                errorBuilder: (BuildContext
-                                                        context,
-                                                    Object error,
-                                                    StackTrace? stackTrace) {
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25),
-                                                    child: Icon(
-                                                        Icons.account_circle,
-                                                        size: 40),
-                                                  );
-                                                },
-                                                fit: BoxFit.fill,
-                                                height: 55.h,
-                                                width: 50.w,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    transaction
-                                                            .senderFirstName ??
-                                                        '',
+                                            if (isNewHeader)
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: Text(
+                                                    formattedDate ??
+                                                        'Unknown Date',
                                                     style: Styles
-                                                        .textStyleTitle14),
-                                                SizedBox(
-                                                  height: 5,
+                                                        .textStyleTitle12
+                                                        .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      // Customize the header text style
+                                                    ), // Handle the case where textStyleTitle14 is null
+                                                  ),
                                                 ),
-                                                Text(
-                                                  transaction.senderLastName ??
-                                                      "",
-                                                  style: Styles.textStyleTitle14
-                                                      .copyWith(
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                ),
-                                              ],
+                                              ),
+                                            SizedBox(
+                                              height: 10,
                                             ),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
                                             Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                ImageIcon(
-                                                  AssetImage(
-                                                      'Assets/images/Vector(9).png'),
-                                                  color:
-                                                      transaction.finalAmount! >
-                                                              0
-                                                          ? Color(0XFF4FD25D)
-                                                          : Colors.red,
+                                                Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                      child: Image.network(
+                                                        transaction
+                                                                .receiverImg ??
+                                                            '',
+                                                        errorBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                Object error,
+                                                                StackTrace?
+                                                                    stackTrace) {
+                                                          return ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        25),
+                                                            child: Icon(
+                                                                Icons
+                                                                    .account_circle,
+                                                                size: 40),
+                                                          );
+                                                        },
+                                                        fit: BoxFit.fill,
+                                                        height: 55.h,
+                                                        width: 50.w,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                            transaction
+                                                                    .receiverFirstName ??
+                                                                '',
+                                                            style: Styles
+                                                                .textStyleTitle14),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          transaction
+                                                                  .receiverLastName ??
+                                                              "",
+                                                          style: Styles
+                                                              .textStyleTitle14
+                                                              .copyWith(
+                                                                  fontSize: 13,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
-                                                SizedBox(
-                                                  width: 7.h,
-                                                ),
-                                                Text(
-                                                  "${transaction.finalAmount}",
-                                                  style: Styles.textStyleTitle24
-                                                      .copyWith(
+                                                Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        ImageIcon(
+                                                          AssetImage(
+                                                              'Assets/images/Vector(9).png'),
                                                           color: transaction
-                                                                      .finalAmount! >=
-                                                                  0
+                                                                          .finalAmount !=
+                                                                      null &&
+                                                                  transaction
+                                                                          .finalAmount! >
+                                                                      0
                                                               ? Color(
                                                                   0XFF4FD25D)
-                                                              : Colors.red),
-                                                ),
+                                                              : Colors.red,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 7.h,
+                                                        ),
+                                                        Text(
+                                                          "${transaction.finalAmount ?? '0'}",
+                                                          // Use 'N/A' if finalAmount is null
+                                                          style: Styles
+                                                              .textStyleTitle24
+                                                              .copyWith(
+                                                            color: transaction
+                                                                            .finalAmount !=
+                                                                        null &&
+                                                                    transaction
+                                                                            .finalAmount! >=
+                                                                        0
+                                                                ? Color(
+                                                                    0XFF4FD25D)
+                                                                : Colors.red,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                                        ),
+                                      );
+                                    },
+                                  ));
                   }),
                 )
               ],

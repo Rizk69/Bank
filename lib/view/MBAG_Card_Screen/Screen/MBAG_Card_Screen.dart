@@ -1,13 +1,12 @@
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/view/MBAG_Card_Screen/Screen/Black_Card_Screen.dart';
-import 'package:bank/view/MBAG_Card_Screen/Widget/Card.dart';
-import 'package:bank/view/MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/view/MBAG_Card_Screen/Screen/Black_Card_Screen.dart';
+import 'package:MBAG/view/MBAG_Card_Screen/Widget/Card.dart';
+import 'package:MBAG/view/MBAG_Card_Screen/Widget/HelperScreen.dart';
+import 'package:MBAG/view/MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../Transaction/Screen/Account_transactions_Screens.dart';
 
 class MBAGCardScreen extends StatelessWidget {
   const MBAGCardScreen({Key? key}) : super(key: key);
@@ -50,7 +49,10 @@ class MBAGCardScreen extends StatelessWidget {
             Buttoms(
               text: 'New Card',
               color: Color(0XFFFFFFFF),
-              onPressed: () {},
+              onPressed: () {
+                Get.to(
+                    SlideDownTextAnimation()); // Provide the correct route name
+              },
               colorText: Colors.black,
             ),
           ],

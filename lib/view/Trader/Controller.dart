@@ -1,4 +1,4 @@
-import 'package:bank/view/Home_View/model/HomeModel.dart';
+import 'package:MBAG/view/Home_View/model/HomeModel.dart';
 import 'package:get/get.dart';
 
 import '../../Core/http_helper.dart';

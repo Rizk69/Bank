@@ -1,11 +1,11 @@
-import 'package:bank/Core/widgets/custom_text_form_field.dart';
-import 'package:bank/view/Location/Screens/NearestBranch.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
+import 'package:MBAG/view/Location/Screens/NearestBranch.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../Core/widgets/Styles.dart';
 import '../Controller/Location_Controller.dart';
@@ -73,7 +73,17 @@ class LocationScreen extends StatelessWidget {
                   Position? _currentPosition = controller.currentPosition.value;
 
                   return _currentPosition == null
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 180,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.white),
+                          ),
+                        ))
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: GoogleMap(

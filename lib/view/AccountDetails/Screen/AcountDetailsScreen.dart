@@ -1,13 +1,13 @@
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/view/AccountDetails/Widget/ItemsAccoutDetails.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Core/cache_helper.dart';
+import '../../../Core/widgets/Styles.dart';
 import '../../on_bording_screen/Screen/OnbordingScreen.dart';
+import '../../on_bording_screen/Widget/buttom_.dart';
 import '../Controller/AccountDetailsController.dart';
+import '../Widget/ItemsAccoutDetails.dart';
 
 class AccountDetailsScreen extends StatelessWidget {
   final AccountDetailsController userController =
@@ -179,12 +179,8 @@ class AccountDetailsScreen extends StatelessWidget {
                     ItemsAccountDetails(
                       title: 'MBAG Number',
                       des: 'You can receive money or payment\nby sharing',
-                      caption: '13264465',
-                    ),
-                    ItemsAccountDetails(
-                      title: 'IBAN',
-                      des: 'You can receive money transfer ',
-                      caption: 'TR080707009790',
+                      caption: userController.userModel.user?.accountNumber ??
+                          'Empty',
                     ),
                     ItemsAccountDetails(
                       title: 'Total balance',
@@ -210,7 +206,10 @@ class AccountDetailsScreen extends StatelessWidget {
                             text: 'Log Out',
                             color: Colors.red,
                             onPressed: () {
+                              CacheHelper.clearData();
                               CacheHelper.removeData(key: 'token');
+                              CacheHelper.removeData(key: "user_id");
+                              CacheHelper.removeData(key: "user");
                               Get.offAll(CupertinoOnboardingScreen());
                             },
                             colorText: Colors.white))
@@ -224,7 +223,50 @@ class AccountDetailsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // ...
-
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 70.h,
+                        width: double.infinity,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 70.h,
+                        width: double.infinity,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 70.h,
+                        width: double.infinity,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 70.h,
+                        width: double.infinity,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
@@ -235,79 +277,6 @@ class AccountDetailsScreen extends StatelessWidget {
                     ),
 
                     // ...
-
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        height: 42.h,
-                        width: double.infinity,
-                      ),
-                    ),
-
-                    // ...
-
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        height: 31.h,
-                        width: double.infinity,
-                      ),
-                    ),
-
-                    // ...
-
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Account Type',
-                                    style: Styles.textStyleTitle12),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  height: 20,
-                                  width: 100,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                            Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              size: 30,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // ...
-
-                    // Replace other SizedBox widgets with Shimmer widgets as needed
-
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    ),
                   ],
                 ),
               ),

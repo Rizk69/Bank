@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
-import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
-import 'package:bank/view/Auth_View/Login/Controller/TimerController.dart';
-import 'package:bank/view/Auth_View/Login/Widget/ButtomsNotBorder.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/Login_Controller.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/PinController.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/TimerController.dart';
+import 'package:MBAG/view/Auth_View/Login/Widget/ButtomsNotBorder.dart';
 import '../Widget/PinDisplay.dart';
 
 class SecurityCodeScreen extends StatelessWidget {

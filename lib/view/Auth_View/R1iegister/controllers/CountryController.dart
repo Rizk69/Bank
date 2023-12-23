@@ -1,4 +1,4 @@
-import 'package:bank/view/Auth_View/Login/model/Countries.dart';
+import 'package:MBAG/view/Auth_View/Login/model/Countries.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Core/http_helper.dart';
@@ -32,6 +32,20 @@ class CountryController extends GetxController {
       }
     } catch (error) {
       print(error);
+      await Future.delayed(Duration(seconds: 2)); // Initial delay
+      await getDataCountryWithExponentialBackoff(2);
     } finally {}
+  }
+
+  Future<void> getDataCountryWithExponentialBackoff(int retryCount) async {
+    if (retryCount <= 5) {
+      // Limit the number of retries to avoid infinite loops
+      final delaySeconds =
+          2 * (1 << (retryCount - 1)); // Exponential backoff formula
+      await Future.delayed(Duration(seconds: delaySeconds));
+      await getCountry(); // Retry the request
+    } else {
+      print('Maximum number of retries reached. Stopping.');
+    }
   }
 }

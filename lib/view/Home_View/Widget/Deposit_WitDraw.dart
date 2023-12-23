@@ -1,11 +1,15 @@
-import 'package:bank/view/Location/Screens/Location%20Screen.dart';
-import 'package:bank/view/Location/Screens/NearestBranch.dart';
+import 'package:MBAG/view/Location/Screens/Location%20Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../helper/HelperScreenNerst.dart';
+
 class DepositAndWithdraw extends StatelessWidget {
-  DepositAndWithdraw({Key? key, required this.balance}) : super(key: key);
+  DepositAndWithdraw(
+      {Key? key, required this.balance, required this.accountNumber})
+      : super(key: key);
   String balance;
+  String accountNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,11 @@ class DepositAndWithdraw extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            Get.to(() => SlideDownTextAnimation(
+                  appBarView: true,
+                ));
+          },
           child: Column(
             children: [
               ImageIcon(
@@ -37,27 +45,39 @@ class DepositAndWithdraw extends StatelessWidget {
         ),
         Column(
           children: [
-            Text(
-              '\$$balance',
-              style: TextStyle(
+            Row(
+              children: [
+                const ImageIcon(
+                  AssetImage('Assets/images/Vector(9).png'),
                   color: Colors.black,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
+                  size: 30,
+                ),
+                const SizedBox(
+                  width: 3,
+                ),
+                Text(
+                  balance,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             SizedBox(
               height: 5,
             ),
             Row(
               children: [
-                Text(
-                  'Papara Number:  ',
+                const Text(
+                  'MBAG Number:  ',
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
                       fontWeight: FontWeight.w400),
                 ),
                 Text(
-                  '1854321733',
+                  '${accountNumber}',
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,

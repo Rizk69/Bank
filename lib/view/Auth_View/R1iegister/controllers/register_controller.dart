@@ -1,12 +1,12 @@
-import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
-import 'package:bank/view/Auth_View/R1iegister/screen/sign_up_screen.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/PinController.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/TimerController.dart';
+import 'package:MBAG/view/Auth_View/R1iegister/screen/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_country_picker_nm/country.dart';
 import 'package:get/get.dart';
 
 import '../../../../Core/cache_helper.dart';
 import '../../../../Core/http_helper.dart';
-import '../../../Home_View/Screens/home_screen.dart';
 
 class RegisterController extends GetxController {
   var bordcontroller = PageController();
@@ -19,13 +19,15 @@ class RegisterController extends GetxController {
   var lastNameControllerSignUpTwo = TextEditingController();
   var mobileNumberControllerSignUp = TextEditingController();
   final PinputControllerSinUp controllerPin = Get.put(PinputControllerSinUp());
+
   final PinputControllerSinUpCheckEmail controllerPinCheckEmail =
       Get.put(PinputControllerSinUpCheckEmail());
+  int _userId = 0;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize sharedPreferences when the controller is initialized
+    CacheHelper.clearData();
     initializeSharedPreferences();
   }
 
@@ -114,9 +116,8 @@ class RegisterController extends GetxController {
 
   Future<void> checkPhone() async {
     print('start');
-    // print(mobileNumberControllerSignUpTwo.text);
     isLoading.value = true;
-
+    _userId = 0;
     try {
       final response = await HttpHelper.postData(
         endpoint: "check_phone",
@@ -126,12 +127,14 @@ class RegisterController extends GetxController {
           'phone_code': controllerPin.pinController.text
         },
       );
-      print(response.toString());
       if (response["status"] == true) {
+        print(response.toString());
+
         await CacheHelper.saveDataSharedPreference(
           key: "user_id",
           value: response['user_id'],
         );
+        _userId = response['user_id'];
         navigNext();
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
@@ -165,6 +168,10 @@ class RegisterController extends GetxController {
           key: "user",
           value: response['user'],
         );
+        await CacheHelper.saveDataSharedPreference(
+          key: "user_id",
+          value: response['user_id'],
+        );
         navigNext();
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
@@ -181,35 +188,38 @@ class RegisterController extends GetxController {
 
   Future<void> completeRegister() async {
     print('start');
-    // print(mobileNumberControllerSignUpTwo.text);
     isLoading.value = true;
-
-    try {
-      var _userid = CacheHelper.getDataSharedPreference(key: 'user_id');
-
-      final response = await HttpHelper.postData(
-        endpoint: "complete_register",
-        body: {
-          'user_id': _userid.toString(),
-          'first_name': firstNameControllerSignUpTwo.text,
-          'last_name': lastNameControllerSignUpTwo.text,
-          'email': emailControllerSignUp.text,
-          'password': passwordControllerSignUpOne.text,
-        },
-      );
-      print(response.toString());
-      if (response["status"] == true) {
-        navigNext();
-        Get.snackbar("Success!", response['message'],
-            backgroundColor: Colors.blue);
-      } else {
-        Get.snackbar("Warning!", response['message'],
-            backgroundColor: Colors.red);
+    var userid = CacheHelper.getDataSharedPreference(key: 'user_id');
+    if (agreedToTerms.isTrue && agreedToTerms1.isTrue) {
+      try {
+        print(_userId);
+        print(userid);
+        final response = await HttpHelper.postData(
+          endpoint: "complete_register",
+          body: {
+            'user_id': "$_userId",
+            'first_name': firstNameControllerSignUpTwo.text,
+            'last_name': lastNameControllerSignUpTwo.text,
+            'email': emailControllerSignUp.text,
+            'password': passwordControllerSignUpOne.text,
+          },
+        );
+        print(response.toString());
+        if (response["status"] == true) {
+          navigNext();
+          Get.snackbar("Success!", response['message'],
+              backgroundColor: Colors.blue);
+        } else {
+          Get.snackbar("Warning!", response['message'],
+              backgroundColor: Colors.red);
+        }
+      } catch (error) {
+        print(error);
+      } finally {
+        isLoading.value = false;
       }
-    } catch (error) {
-      print(error);
-    } finally {
-      isLoading.value = false;
+    } else {
+      Get.snackbar('Register', 'Please Complete', backgroundColor: Colors.red);
     }
   }
 
@@ -234,7 +244,7 @@ class RegisterController extends GetxController {
           key: "token",
           value: response['token'],
         );
-        Get.offAll(HomeScreen());
+        Get.offAllNamed('/HomeScreen');
       } else {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);

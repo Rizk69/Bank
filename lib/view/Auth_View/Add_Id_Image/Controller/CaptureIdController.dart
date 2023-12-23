@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:bank/view/Home_View/Screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../Core/cache_helper.dart';
+import '../../../Home_View/Screens/home_screen.dart';
 import '../Screen/CaptureIdScreen.dart';
 
 // class CameraIdController extends GetxController {
@@ -200,9 +200,10 @@ class CameraIdController extends GetxController {
 
       var token = await CacheHelper.getDataSharedPreference(key: 'token');
       request.headers.addAll({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
         'Accept': 'application/json',
         'Accept-Language': 'en',
-        'Authorization': 'Bearer $token',
       });
 
       var response = await request.send();
@@ -252,9 +253,10 @@ class CameraController extends GetxController {
 
         // Add headers to the request, including the authorization token
         request.headers.addAll({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
           'Accept-Language': 'en',
-          'Authorization': 'Bearer $token',
         });
 
         // Send the request and handle the response
@@ -263,7 +265,7 @@ class CameraController extends GetxController {
         if (response.statusCode == 200) {
           print('Image uploaded successfully');
           print('Response: ${await response.stream.bytesToString()}');
-
+          Get.snackbar("  Done", '', backgroundColor: Colors.blue);
           Get.off(() => HomeScreen());
         } else {
           Get.snackbar("Warning!", response.reasonPhrase ?? '',

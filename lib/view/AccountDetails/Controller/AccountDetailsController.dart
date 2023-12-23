@@ -46,18 +46,20 @@ class AccountDetailsController extends GetxController {
 
         // Add headers to the request, including the authorization token
         request.headers.addAll({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
           'Accept-Language': 'en',
-          'Authorization': 'Bearer $token',
         });
 
         // Send the request and handle the response
         var response = await request.send();
 
         if (response.statusCode == 201) {
+          Get.snackbar("Done", 'Image uploaded successfully',
+              backgroundColor: Colors.blue, colorText: Colors.black);
           print('Image uploaded successfully');
           print('Response: ${await response.stream.bytesToString()}');
-          update();
         } else {
           print('Error uploading image: ${response.reasonPhrase}');
         }
@@ -68,6 +70,9 @@ class AccountDetailsController extends GetxController {
       } else {
         print('Error: $error');
       }
+    } finally {
+      getDataUser();
+      update();
     }
   }
 

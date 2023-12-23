@@ -1,4 +1,4 @@
-import 'package:bank/view/Transaction/model/transaction_model.dart';
+import 'package:MBAG/view/Transaction/model/transaction_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

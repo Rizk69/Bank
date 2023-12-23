@@ -83,7 +83,10 @@ class QRCodeScannerController extends GetxController {
         print(apiResponse.toString());
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
-        Get.to(() => AmountSendScreen(model: apiResponse));
+        Get.to(() => AmountSendScreen(
+              model: apiResponse,
+              endPoint: 'send_amount',
+            ));
         onClose();
         // Set canScan to false to stop further scanning
         canScan = false;
@@ -93,6 +96,8 @@ class QRCodeScannerController extends GetxController {
       }
     } catch (error) {
       print(error);
+    } finally {
+      canScan = true;
     }
   }
 }

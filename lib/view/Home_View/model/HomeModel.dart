@@ -155,3 +155,45 @@ class Traders {
     return data;
   }
 }
+
+class CurrencyModel {
+  bool status;
+  String message;
+  List<Currency> currencies;
+
+  CurrencyModel({
+    required this.status,
+    required this.message,
+    required this.currencies,
+  });
+
+  factory CurrencyModel.fromJson(Map<String, dynamic> json) {
+    return CurrencyModel(
+      status: json['status'],
+      message: json['message'],
+      currencies: (json['currencies'] as List<dynamic>)
+          .map((currency) => Currency.fromJson(currency))
+          .toList(),
+    );
+  }
+}
+
+class Currency {
+  int? id;
+  String? name;
+  bool? active;
+
+  Currency({
+    required this.id,
+    required this.name,
+    required this.active,
+  });
+
+  factory Currency.fromJson(Map<String, dynamic> json) {
+    return Currency(
+      id: json['id'], // Parse 'id' dynamically
+      name: json['name'] as String?,
+      active: json['active'] as bool?,
+    );
+  }
+}

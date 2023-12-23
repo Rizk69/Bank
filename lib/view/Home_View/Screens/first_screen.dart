@@ -1,36 +1,41 @@
-import 'package:bank/helper/LoadingData.dart';
+import 'package:MBAG/helper/LoadingData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:MBAG/view/Home_View/model/HomeModel.dart' as HomeModel;
+
 import '../../../helper/Data.dart';
+import '../../../helper/HelperScreenNerst.dart';
 import '../../AccountDetails/Controller/AccountDetailsController.dart';
 import '../../Auth_View/Add_Id_Image/Screen/CaptureIdScreen.dart';
 import '../../on_bording_screen/Widget/buttom_.dart';
-import '../controller/contoller_home.dart';
-import 'package:bank/Core/cache_helper.dart';
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/view/Home_View/Screens/Cashback_Screen.dart';
-import 'package:bank/view/Transaction/Screen/Account_transactions_Screens.dart';
-import 'package:bank/view/Home_View/Widget/App_Bar_First_Home.dart';
-import 'package:bank/view/Home_View/Widget/Deposit_WitDraw.dart';
-import 'package:bank/view/Home_View/Widget/Items_First_Home.dart';
+import 'package:MBAG/Core/cache_helper.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/view/Home_View/Screens/Cashback_Screen.dart';
+import 'package:MBAG/view/Transaction/Screen/Account_transactions_Screens.dart';
+import 'package:MBAG/view/Home_View/Widget/App_Bar_First_Home.dart';
+import 'package:MBAG/view/Home_View/Widget/Deposit_WitDraw.dart';
+import 'package:MBAG/view/Home_View/Widget/Items_First_Home.dart';
+
+import '../controller/HomeGetData.dart';
+import '../model/HomeModel.dart';
 
 class FirstScreen extends StatelessWidget {
-  final HomeControllerGetData homeController = Get.put(HomeControllerGetData());
-  final AccountDetailsController accountController =
+  final AccountDetailsController userController =
       Get.put(AccountDetailsController());
-
-  // final ContactControllerSend home = Get.put(ContactControllerSend());
 
   FirstScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return homeController.isLoading.value == true
-        ? ShimmerLoadingHome()
-        : Scaffold(
-            body: RefreshIndicator(
-              onRefresh: () => homeController.refresh(),
+    return Scaffold(
+      body: GetBuilder<HomeControllerGetData>(
+        builder: (homeController) {
+          if (homeController.isLoading.value) {
+            return ShimmerLoadingHome();
+          } else if (homeController.isDataLoaded.value) {
+            return RefreshIndicator(
+              onRefresh: () => homeController.refreshDataHome(),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
@@ -38,17 +43,22 @@ class FirstScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 15.h),
                       AppBarFirstHome(
                         showBottomSheetDrawer: (context) {
                           return _showBottomSheetDrawer(context);
                         },
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 15.h),
                       ItemsFirstHome(
-                        onPressed1: () {},
+                        onPressed1: () {
+                          Get.to(() => SlideDownTextAnimation(
+                                appBarView: true,
+                              ));
+                        },
                         onPressed2: () {
-                          _showBottomSheet(context, '');
+                          _showBottomSheet(context,
+                              homeController.homeModel.user?.balance ?? '');
                         },
                         onPressed3: () {
                           var token =
@@ -57,47 +67,65 @@ class FirstScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: 25.h),
-                      Obx(() => DepositAndWithdraw(
-                            balance:
-                                homeController.homeModel.user?.balance ?? '',
-                          )),
-                      SizedBox(height: 25.h),
-                      Obx(() {
-                        return homeController.homeModel.user?.froutid != null
-                            ? SizedBox()
-                            : InkWell(
-                                onTap: () {
-                                  Get.to(() => CameraScreenId());
-                                },
-                                child: _cheakIdCard());
-                      }),
+                      DepositAndWithdraw(
+                        balance: homeController.homeModel.user?.balance ?? '',
+                        accountNumber:
+                            homeController.homeModel.user?.accountNumber ?? '',
+                      ),
                       SizedBox(height: 15.h),
-                      Obx(() {
-                        return homeController.homeModel.user?.img != null
-                            ? SizedBox()
-                            : InkWell(
-                                onTap: () {
-                                  Get.to(() => CameraScreen());
-                                },
-                                child: _buildProfilePhotoContainer());
-                      }),
-                      SizedBox(height: 25.h),
+                      homeController.homeModel.user?.froutid != null
+                          ? SizedBox()
+                          : InkWell(
+                              onTap: () {
+                                Get.to(() => CameraScreenId());
+                              },
+                              child: _cheakIdCard()),
+                      SizedBox(height: 15.h),
+                      homeController.homeModel.user?.img != null
+                          ? SizedBox()
+                          : InkWell(
+                              onTap: () {
+                                Get.to(() => CameraScreen());
+                              },
+                              child: _buildProfilePhotoContainer()),
+                      homeController.homeModel.user?.img != null
+                          ? SizedBox()
+                          : SizedBox(height: 25.h),
                       _buildAccountTransactionRow(),
-                      _buildTransactionListView(),
+                      _buildTransactionListView(homeController.homeModel.trans),
                       InkWell(
                         onTap: () {
-                          Get.to(CashbackScreen());
+                          Get.to(() => CashbackScreen());
                         },
                         child: _buildListTile('CASHBACK'),
                       ),
                       SizedBox(height: 10.h),
-                      _buildPharmacyContainer(),
+                      _buildPharmacyContainer(
+                          homeController.homeModel.traders!),
                     ],
                   ),
                 ),
               ),
-            ),
-          );
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Failed to load data'),
+                  ElevatedButton(
+                    onPressed: () {
+                      homeController.refreshDataHome();
+                    },
+                    child: const Text('OBS Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 
   void _showBottomSheetDrawer(BuildContext context) {
@@ -147,7 +175,7 @@ class FirstScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(30)),
                               child: Center(
                                 child: Text(
-                                  "${accountController.userModel.countNotifications ?? '0'}",
+                                  "${userController.userModel.countNotifications}",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 ),
@@ -385,116 +413,122 @@ class FirstScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionListView() {
-    return Obx(
-      () {
-        var transactions = homeController.homeModel.trans;
-
-        if (transactions == null || transactions.isEmpty) {
-          return SizedBox(
-            height: 20.h,
+  Widget _buildTransactionListView(List<HomeModel.Trans>? trans) {
+    var transactions = trans!;
+    return SizedBox(
+      height: 230.h,
+      child: ListView.builder(
+        itemCount: transactions.length,
+        itemBuilder: (context, index) {
+          var transaction = transactions[index];
+          String formattedDate = DateUtilsFormat.formatTransactionDate(
+            transaction.createdAt ?? '',
           );
-        }
 
-        return SizedBox(
-          height: 230.h,
-          child: ListView.builder(
-            itemCount: transactions.length,
-            itemBuilder: (context, index) {
-              var transaction = transactions[index];
-              String formattedDate = DateUtilsFormat.formatTransactionDate(
-                transaction.createdAt ?? '',
-              );
-
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.network(
-                            transaction.receiverImg ?? '',
-                            errorBuilder: (BuildContext context, Object error,
-                                StackTrace? stackTrace) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: Icon(Icons.account_circle, size: 40),
-                              );
-                            },
-                            fit: BoxFit.fill,
-                            height: 55.h,
-                            width: 50.w,
+          return transactions.isEmpty
+              ? Container(
+                  margin: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(15),
+                  height: 80.h,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Center(
+                      child: Text(
+                    'Empty',
+                    style: Styles.textStyleTitle18,
+                  )),
+                )
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.network(
+                              transaction.receiverImg ?? '',
+                              errorBuilder: (BuildContext context, Object error,
+                                  StackTrace? stackTrace) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(25),
+                                  child: Icon(Icons.account_circle, size: 40),
+                                );
+                              },
+                              fit: BoxFit.fill,
+                              height: 55.h,
+                              width: 50.w,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(transaction.senderFirstName ?? '',
-                                style: Styles.textStyleTitle14),
-                            SizedBox(height: 5),
-                            Text(
-                              transaction.senderLastName ?? '',
-                              style: Styles.textStyleTitle14.copyWith(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(transaction.receiverFirstName ?? '',
+                                  style: Styles.textStyleTitle14),
+                              SizedBox(height: 5),
+                              Text(
+                                transaction.receiverLastName ?? '',
+                                style: Styles.textStyleTitle14.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            ImageIcon(
-                              AssetImage('Assets/images/Vector(9).png'),
-                              color: transaction.finalAmount! >= 0
-                                  ? Color(0XFF4FD25D)
-                                  : Colors.red,
-                            ),
-                            SizedBox(width: 7.h),
-                            Text(
-                              "${transaction.finalAmount}",
-                              style: Styles.textStyleTitle24.copyWith(
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              ImageIcon(
+                                AssetImage('Assets/images/Vector(9).png'),
                                 color: transaction.finalAmount! >= 0
                                     ? Color(0XFF4FD25D)
                                     : Colors.red,
                               ),
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              formattedDate ?? 'Unknown Date',
-                              style: Styles.textStyleTitle12.copyWith(
-                                fontWeight: FontWeight.w400,
+                              SizedBox(width: 7.h),
+                              Text(
+                                "${transaction.finalAmount}",
+                                style: Styles.textStyleTitle24.copyWith(
+                                  color: transaction.finalAmount! >= 0
+                                      ? Color(0XFF4FD25D)
+                                      : Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                formattedDate ?? 'Unknown Date',
+                                style: Styles.textStyleTitle12.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-        );
-      },
+                        ],
+                      )
+                    ],
+                  ),
+                );
+        },
+      ),
     );
   }
 
-  Widget _buildPharmacyContainer() {
+  Widget _buildPharmacyContainer(List<Traders> traders) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 28),
+      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Color(0XFFEBEBEB), width: 1),
@@ -502,20 +536,32 @@ class FirstScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildPharmacyItem('Pharmacy', '10%', Color(0XFF86E08F)),
-          _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
+          _buildPharmacyItem(
+              traders.first.img ?? '',
+              traders.first.activityName!,
+              "${traders.first.discount!}",
+              Color(0XFF86E08F)),
+          _buildPharmacyItem(traders.last.img ?? '', traders.last.activityName!,
+              "${traders.last.discount!}", Color(0XFF86E08F)),
+
+          // _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
         ],
       ),
     );
   }
 
-  Widget _buildPharmacyItem(String title, String subtitle, Color subtitleColor) {
+  Widget _buildPharmacyItem(
+      String image, String title, String subtitle, Color subtitleColor) {
     return Row(
       children: [
-        Image(
-          image: AssetImage('Assets/images/Clip path group.png'),
-          height: 40,
-          width: 30,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Image.network(
+            image,
+            height: 50.h,
+            width: 40.h,
+            errorBuilder: (context, error, stackTrace) => SizedBox(),
+          ),
         ),
         SizedBox(width: 13.h),
         Column(
@@ -524,7 +570,7 @@ class FirstScreen extends StatelessWidget {
             Text(
               title,
               style:
-              Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
+                  Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
             ),
             Text(
               subtitle,
@@ -539,22 +585,95 @@ class FirstScreen extends StatelessWidget {
     );
   }
 
-  void _showBottomSheet(BuildContext context, String content) {
+  void _showBottomSheet(BuildContext context, String balance) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(content),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                Text(
+                  'Accounts',
+                  style: Styles.textStyleTitle24.copyWith(fontSize: 30),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Row(
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          'Assets/images/download.png',
+                          height: 40.h,
+                          width: 60.h,
+                        )),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text('TL', style: Styles.textStyleTitle14),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Text('.', style: Styles.textStyleTitle14),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Text('Turkish Lira', style: Styles.textStyleTitle14),
+                    Spacer(),
+                    Text(balance, style: Styles.textStyleTitle14),
+                  ],
+                ),
+                SizedBox(
+                  width: 5.h,
+                ),
+                Container(
+                  height: 0.5,
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  margin: EdgeInsets.only(right: 10, top: 10, bottom: 5),
+                  decoration: BoxDecoration(
+                      border:
+                          Border.all(color: Colors.grey.shade700, width: 0.2)),
+                ),
+                SizedBox(
+                  width: 5.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.snackbar('This Not Activity', '',
+                        backgroundColor: Colors.red, colorText: Colors.white);
                   },
-                  child: const Text('Close Bottom Sheet'),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            'Assets/images/2560px-Flag_of_the_United_States.svg.png',
+                            height: 40.h,
+                            width: 60.h,
+                          )),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text('USD', style: Styles.textStyleTitle14),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text('.', style: Styles.textStyleTitle14),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text('Dollar', style: Styles.textStyleTitle14),
+                      Spacer(),
+                      Text('', style: Styles.textStyleTitle14),
+                    ],
+                  ),
                 ),
               ],
             ),

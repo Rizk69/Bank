@@ -3,9 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/widgets/Styles.dart';
+import '../controller/CashBackController.dart';
 
 class CashbackScreen extends StatelessWidget {
-  const CashbackScreen({Key? key}) : super(key: key);
+  final CashBackController cashBackController = Get.put(CashBackController());
+
+  CashbackScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +46,10 @@ class CashbackScreen extends StatelessWidget {
               SizedBox(
                 height: 150.h,
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       children: [
                         Container(
@@ -82,7 +85,7 @@ class CashbackScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  itemCount: 15,
+                  itemCount: 12,
                 ),
               ),
               SizedBox(

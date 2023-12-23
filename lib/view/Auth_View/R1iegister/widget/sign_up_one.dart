@@ -1,11 +1,8 @@
-import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
-import 'package:bank/view/Auth_View/Login/Widget/HeadTitleDes.dart';
-import 'package:bank/view/Auth_View/R1iegister/widget/Country.dart';
-import 'package:bank/view/Auth_View/R1iegister/widget/CustomPicker.dart';
+import 'package:MBAG/view/Auth_View/Login/Widget/HeadTitleDes.dart';
+import 'package:MBAG/view/Auth_View/R1iegister/widget/CustomPicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:list_picker/list_picker.dart';
 
 import '../../../../../Core/widgets/custom_text_form_field.dart';
 import '../controllers/CountryController.dart';

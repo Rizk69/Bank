@@ -1,5 +1,5 @@
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/view/MBAG_Card_Screen/Screen/ChangeCardPassword.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/view/MBAG_Card_Screen/Screen/ChangeCardPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

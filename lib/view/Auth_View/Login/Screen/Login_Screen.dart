@@ -1,4 +1,4 @@
-import 'package:bank/view/Auth_View/Login/Controller/Login_Controller.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/Login_Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,6 +1,5 @@
-import 'package:bank/view/Auth_View/Login/Controller/PinController.dart';
+import 'package:MBAG/view/Auth_View/Login/Controller/PinController.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
 class PinputPassword extends StatelessWidget {

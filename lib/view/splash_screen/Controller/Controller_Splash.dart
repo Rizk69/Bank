@@ -1,9 +1,16 @@
-import 'package:bank/Core/cache_helper.dart';
-import 'package:bank/view/Home_View/Screens/home_screen.dart';
-import 'package:bank/view/on_bording_screen/Screen/OnbordingScreen.dart';
+import 'dart:ui';
+
 import 'package:get/get.dart';
 
+import '../../../ConrollerMain.dart';
+import '../../../Core/cache_helper.dart';
+import '../../Auth_View/Login/Screen/FastLogin.dart';
+import '../../Home_View/Screens/home_screen.dart';
+import '../../on_bording_screen/Screen/OnbordingScreen.dart';
+
 class SplashController extends GetxController {
+  AuthController authController = Get.put(AuthController());
+
   @override
   void onInit() {
     super.onInit();
@@ -18,7 +25,14 @@ class SplashController extends GetxController {
       if (token == null) {
         Get.off(() => CupertinoOnboardingScreen());
       } else {
-        Get.off(() => HomeScreen());
+        final notificationType = authController.notification?.runtimeType;
+        if (notificationType == AppLifecycleState.detached.runtimeType ||
+            notificationType == AppLifecycleState.resumed.runtimeType ||
+            notificationType == null) {
+          Get.off(() => FastLogin());
+        } else {
+          Get.off(() => HomeScreen());
+        }
       }
     });
   }

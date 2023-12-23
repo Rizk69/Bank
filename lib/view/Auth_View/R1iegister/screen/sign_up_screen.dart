@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../Core/widgets/Button.dart';
 import '../../../../Core/widgets/Styles.dart';
+import '../../Login/Controller/TimerController.dart';
 import '../controllers/register_controller.dart';
 import '../widget/CheckEmail.dart';
 import '../widget/SecurityCode.dart';
@@ -18,6 +19,8 @@ List<Widget> screenRegister = [
 
 class SignUpScreen extends StatelessWidget {
   var registerController = Get.put(RegisterController());
+  final BaseMyTimerController _baseMyTimerController =
+      Get.put(BaseMyTimerController());
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +79,14 @@ class SignUpScreen extends StatelessWidget {
                                     }
                                     if (registerController.currentIndex.value ==
                                         2) {
+                                      _baseMyTimerController.dispose();
+
                                       await registerController
                                           .completeRegister();
                                     }
                                     if (registerController.currentIndex.value ==
                                         3) {
-                                      await registerController.checkEmail();
+                                      registerController.checkEmail();
                                     }
                                   },
                                 )

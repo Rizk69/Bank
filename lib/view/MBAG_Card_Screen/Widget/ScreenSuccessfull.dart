@@ -1,6 +1,5 @@
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/view/Home_View/Screens/home_screen.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -78,7 +77,7 @@ class ScreenSuccessfull extends StatelessWidget {
                 text: 'Ok',
                 color: Colors.black,
                 onPressed: () {
-                  Get.offAll(() => HomeScreen());
+                  Get.offAllNamed('/HomeScreen');
                 },
                 colorText: Colors.white),
             SizedBox(

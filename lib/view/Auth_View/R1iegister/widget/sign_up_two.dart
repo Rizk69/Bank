@@ -1,4 +1,4 @@
-import 'package:bank/view/Auth_View/R1iegister/controllers/register_controller.dart';
+import 'package:MBAG/view/Auth_View/R1iegister/controllers/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -66,7 +66,7 @@ class SignUpTwo extends StatelessWidget {
             SizedBox(height: 15.h),
             CustomTextFormField(
                 maxLength: 6,
-                hintText: 'Password',
+                hintText: 'Pin',
                 controller: controller.passwordControllerSignUpOne,
                 textInputType: TextInputType.text,
                 validator: (value) {

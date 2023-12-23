@@ -158,7 +158,7 @@ class BackImageScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 80.h),
+                SizedBox(height: 50.h),
                 Container(
                   height: 350.h,
                   width: 200.w,

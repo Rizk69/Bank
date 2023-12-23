@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../on_bording_screen/Widget/buttom_.dart';
 import '../Controller/ReceiveQrPaymentController.dart';
-import '../../../Core/widgets/Styles.dart'; // Import your styles
 
 class ReceiveQrPaymentScreen extends StatelessWidget {
   final ReceiveQrPaymentController controller =
@@ -51,8 +51,19 @@ class ReceiveQrPaymentScreen extends StatelessWidget {
             SizedBox(height: 20.h),
             GetBuilder<ReceiveQrPaymentController>(
               initState: (_) => controller.generateQrCode,
-              builder: (controller) => controller.isLoading.value == false
-                  ? SizedBox.shrink()
+              builder: (controller) =>
+              controller.isLoading.value == false
+                  ? Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 250.h,
+                        width: 250.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.white),
+                      ),
+                    )
                   : Center(
                       child: RepaintBoundary(
                         key: controller.qrKey,

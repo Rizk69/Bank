@@ -1,15 +1,13 @@
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/Core/widgets/custom_text_form_field.dart';
-import 'package:bank/view/Money_Transfer/Screen/ScreenAmountSend.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
-import 'package:contacts_service/contacts_service.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/Core/widgets/custom_text_form_field.dart';
+import 'package:MBAG/view/Money_Transfer/Screen/ScreenAmountSend.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'package:shimmer/shimmer.dart';
 import '../Controller/ContactControllerSend.dart';
 import '../Controller/MbagNumberController.dart';
-import '../model/CheckPhoneModel.dart';
 
 class NestedTabBar extends StatefulWidget {
   NestedTabBar({super.key});
@@ -28,7 +26,7 @@ class _NestedTabBarState extends State<NestedTabBar>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    contactController.update();
+    // contactController.update();
   }
 
   @override
@@ -132,10 +130,25 @@ class ContactListPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: buildContactListView(),
-              ),
+              Obx(
+                () => Expanded(
+                    flex: 1,
+                    child: contactController.isLoading.isFalse
+                        ? buildContactListView()
+                        : Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: Colors.white,
+                              ),
+                              height: 90.h,
+                              width: double.infinity,
+                            ),
+                          )),
+              )
             ],
           ),
         ),
@@ -145,48 +158,60 @@ class ContactListPage extends StatelessWidget {
 
   Widget buildContactListView() {
     return GetBuilder<ContactControllerSend>(
-      builder: (controller) {
-        controller.filteredContacts.sort((a, b) {
-          // Sort by photos first
-          if (a.user?.img != null && b.user?.img == null) {
-            return -1; // a comes first
-          } else if (a.user?.img == null && b.user?.img != null) {
-            return 1; // b comes first
-          } else {
-            return 0;
-          }
-        });
-
-        return ListView.builder(
-          itemCount: controller.filteredContacts.length,
-          itemBuilder: (context, index) {
-            if (index >= 0 && index < controller.filteredContacts.length) {
-              var contact = controller.filteredContacts[index].phone;
-              var photo = controller.filteredContacts[index].user?.img;
-              var firstName =
-                  controller.filteredContacts[index].user?.firstName;
-              var lastName = controller.filteredContacts[index].user?.lastName;
-
-              return InkWell(
-                onTap: () {},
-                child: ListTile(
-                  leading: buildContactImage(photo),
-                  title: firstName == null
-                      ? SizedBox()
-                      : Text('$firstName $lastName'),
-                  subtitle:
-                      Text((contact.isNotEmpty ? contact : 'لا يوجد رقم هاتف')),
-                  trailing: photo == null ? SizedBox() : Icon(Icons.check),
-                ),
-              );
+        initState: (state) => ContactControllerSend(),
+        builder: (controller) {
+          controller.filteredContacts.sort((a, b) {
+            // Sort by photos first
+            if (a.user?.img != null && b.user?.img == null) {
+              return -1; // a comes first
+            } else if (a.user?.img == null && b.user?.img != null) {
+              return 1; // b comes first
             } else {
-              // Handle index out of bounds case
-              return SizedBox(); // or any other widget as needed
+              return 0;
             }
-          },
-        );
-      },
-    );
+          });
+
+          return ListView.builder(
+            itemCount: controller.filteredContacts.length,
+            itemBuilder: (context, index) {
+              if (index >= 0 && index < controller.filteredContacts.length) {
+                var contact = controller.filteredContacts[index].phone;
+                var contactId = controller.filteredContacts[index].user?.id;
+                var photo = controller.filteredContacts[index].user?.img;
+                var firstName =
+                    controller.filteredContacts[index].user?.firstName;
+                var lastName =
+                    controller.filteredContacts[index].user?.lastName;
+
+                return InkWell(
+                  onTap: () {
+                    if (photo != null) {
+                      Get.to(() => AmountSendScreenId(
+                            modelCurrencies: "1",
+                            modelReceiver: '$contactId',
+                            name: firstName ?? '',
+                            img: photo,
+                            endPoint: 'send_amount_ID',
+                          ));
+                    }
+                  },
+                  child: ListTile(
+                    leading: buildContactImage(photo),
+                    title: firstName == null
+                        ? SizedBox()
+                        : Text('$firstName $lastName'),
+                    subtitle: Text(
+                        (contact.isNotEmpty ? contact : 'لا يوجد رقم هاتف')),
+                    trailing: photo == null ? SizedBox() : Icon(Icons.check),
+                  ),
+                );
+              } else {
+                // Handle index out of bounds case
+                return SizedBox(); // or any other widget as needed
+              }
+            },
+          );
+        });
   }
 
   Widget buildContactImage(String? photo) {
@@ -250,86 +275,79 @@ class MbagNumberTabBar extends StatelessWidget {
         child: Container(
             height: MediaQuery.of(context).size.height / 1.4,
             padding: const EdgeInsets.all(8),
-            child: FutureBuilder(
-                future: controller.getMbagNumberClient(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // Display a loading indicator while waiting for data
-                    return CircularProgressIndicator();
-                  } else {
-                    // Display your continue button after data is loaded
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(
-                          height: 16.h,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.all(1),
-                                height: 55,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'MBAG number',
-                                    style: Styles.textStyleTitle20.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.all(1),
-                                height: 55,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Easy address',
-                                    style: Styles.textStyleTitle20.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 40.h),
-                        CustomTextFormField(
-                          hintText: 'MBAG NUMBER / IBAN ',
-                          suffix: Icon(
-                            Icons.camera_alt,
-                            color: Colors.black,
-                          ),
-                          controller: controller.mbagNumberController,
-                        ),
-                        Spacer(),
-                        // Use FutureBuilder to handle loading state
-                        Buttoms(
-                          text: 'Continue',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 16.h,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.all(1),
+                        height: 55,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
                           color: Colors.black,
-                          onPressed: () async {
-                            await controller.getMbagNumberClient();
-                          },
-                          colorText: Colors.white,
-                        )
-                      ],
-                    );
-                  }
-                })));
+                        ),
+                        child: Center(
+                          child: Text(
+                            'MBAG number',
+                            style: Styles.textStyleTitle20.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.all(1),
+                        height: 55,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Easy address',
+                            style: Styles.textStyleTitle20.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40.h),
+                CustomTextFormField(
+                  hintText: 'MBAG NUMBER / IBAN ',
+                  suffix: Icon(
+                    Icons.camera_alt,
+                    color: Colors.black,
+                  ),
+                  controller: controller.mbagNumberController,
+                ),
+                Spacer(),
+                // Use FutureBuilder to handle loading state
+                Buttoms(
+                  text: 'Continue',
+                  color: Colors.black,
+                  onPressed: () async {
+                    controller.mbagNumberController.isNull
+                        ? Get.snackbar('', 'Please Enter Mbag Number',
+                            backgroundColor: Colors.red)
+                        : await controller.getMbagNumberClient();
+                  },
+                  colorText: Colors.white,
+                )
+              ],
+            )));
   }
 }
 

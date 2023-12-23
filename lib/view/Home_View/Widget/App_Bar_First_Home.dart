@@ -1,4 +1,4 @@
-import 'package:bank/Core/widgets/Styles.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../AccountDetails/Screen/AcountDetailsScreen.dart';
@@ -24,10 +24,9 @@ class AppBarFirstHome extends StatelessWidget {
               AssetImage('Assets/images/Group.png'),
               size: 30,
             )),
-        Text(
-          'M',
-          style: Styles.textStyleTitle24
-              .copyWith(fontSize: 40, fontStyle: FontStyle.normal),
+        const ImageIcon(
+          AssetImage('Assets/images/M black.png'),
+          size: 50,
         ),
         // Image.asset('Assets/images/Logo Mbag without background 5.png',height: 120.h,),
         InkWell(

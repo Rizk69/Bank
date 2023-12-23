@@ -25,7 +25,10 @@ class MbagNumberController extends GetxController {
             backgroundColor: Colors.blue);
         isLoading.value = true;
 
-        Get.to(() => AmountSendScreen(model: apiResponse));
+        Get.to(() => AmountSendScreen(
+              model: apiResponse,
+              endPoint: 'send_amount_phone',
+            ));
       } else {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);

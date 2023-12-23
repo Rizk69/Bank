@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../Core/cache_helper.dart';
+import '../view/Home_View/Widget/App_Bar_First_Home.dart';
 import '../view/Home_View/Widget/Deposit_WitDraw.dart';
 import '../view/Home_View/Widget/Items_First_Home.dart';
 
@@ -20,10 +22,12 @@ class ShimmerLoadingHome extends StatelessWidget {
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: Container(
-                  height: 120.h,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: Colors.white),
+                  child: AppBarFirstHome(
+                    showBottomSheetDrawer: (context) {},
+                  ),
                 ),
               ),
               SizedBox(height: 30.h),
@@ -32,7 +36,11 @@ class ShimmerLoadingHome extends StatelessWidget {
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: ItemsFirstHome(
-                  onPressed1: () {},
+                  onPressed1: () {
+                    var token =
+                        CacheHelper.getDataSharedPreference(key: 'token');
+                    print('token===>$token');
+                  },
                   onPressed2: () {},
                   onPressed3: () {},
                 ),
@@ -44,6 +52,7 @@ class ShimmerLoadingHome extends StatelessWidget {
                 highlightColor: Colors.grey[100]!,
                 child: DepositAndWithdraw(
                   balance: '',
+                  accountNumber: '',
                 ),
               ),
               // Add shimmer effect to _cheakIdCard widget

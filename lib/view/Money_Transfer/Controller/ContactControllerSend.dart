@@ -9,6 +9,7 @@ import '../model/CheckPhoneModel.dart';
 class ContactControllerSend extends GetxController {
   RxList<UserData> filteredContacts = <UserData>[].obs;
   Rx<ApiResponseCheck?> user = Rx<ApiResponseCheck?>(null);
+  RxBool isLoading = true.obs;
 
   @override
   void onInit() {
@@ -28,6 +29,8 @@ class ContactControllerSend extends GetxController {
 
       print('JSON Body: $jsonBody');
       await checkNumber(jsonBody);
+      isLoading.value = false;
+      update();
     } catch (e) {
       print('Error in main: $e');
     }
@@ -50,7 +53,7 @@ class ContactControllerSend extends GetxController {
       }
     } catch (e) {
       print('Error in fetchAllPhones: $e');
-    }
+    } finally {}
 
     return phones;
   }

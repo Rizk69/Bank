@@ -1,11 +1,12 @@
+import 'package:MBAG/view/Auth_View/Login/Controller/TimerController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bank/Core/cache_helper.dart';
-import 'package:bank/Core/http_helper.dart';
-import 'package:bank/view/Auth_View/Login/Screen/Password_Screen.dart';
-import 'package:bank/view/Home_View/Screens/home_screen.dart';
 
+import '../../../../Core/cache_helper.dart';
+import '../../../../Core/http_helper.dart';
+import '../../../Home_View/Screens/home_screen.dart';
+import '../Screen/Password_Screen.dart';
 import '../Screen/SecurtyCode.dart';
 
 class ApiEndpoints {
@@ -36,6 +37,7 @@ class LoginController extends GetxController {
     required String phone,
     required BuildContext context,
   }) async {
+    print('Checking email for phone: $phone');
     signInLoading.value = true;
 
     await initializeSharedPreferences();
@@ -46,16 +48,20 @@ class LoginController extends GetxController {
         body: {'email_phone': phone},
       );
 
-      if (response["status"]) {
-        showSuccessSnackbar(response['message']);
-        navigateToSecurityCodeScreen();
-        print(response);
-        await CacheHelper.saveDataSharedPreference(
-          key: "user_id",
-          value: response['user_id'],
-        );
+      if (response.containsKey("status")) {
+        if (response["status"]) {
+          showSuccessSnackbar(response['message']);
+          navigateToSecurityCodeScreen();
+          print(response);
+          await CacheHelper.saveDataSharedPreference(
+            key: "user_id",
+            value: response['user_id'],
+          );
+        } else {
+          showWarningSnackbar(response['message']);
+        }
       } else {
-        showWarningSnackbar(response['message']);
+        showErrorSnackbar("Invalid server response structure.");
       }
     } catch (error) {
       showErrorSnackbar("An error occurred while checking email.");
@@ -80,7 +86,7 @@ class LoginController extends GetxController {
       if (response["status"]) {
         showSuccessSnackbar(response['message']);
         navigateToSecurityCodeScreen();
-        print(response);
+        print("Resend${response}");
         await CacheHelper.saveDataSharedPreference(
           key: "user_id",
           value: response['user_id'],
@@ -152,7 +158,7 @@ class LoginController extends GetxController {
           key: "token",
           value: response['token'],
         );
-        Get.offAll(HomeScreen());
+        Get.offAll(() => HomeScreen());
       } else {
         showWarningSnackbar(response['message']);
       }

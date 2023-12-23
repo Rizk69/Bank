@@ -1,8 +1,9 @@
-import 'package:bank/Core/widgets/Styles.dart';
-import 'package:bank/view/Money_Transfer/Screen/Request_Money.dart';
-import 'package:bank/view/Money_Transfer/Screen/Send_Money.dart';
-import 'package:bank/view/QrTransaction/Screen/Recevive_Qr_Payment.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
+import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/view/Home_View/controller/HomeGetData.dart';
+import 'package:MBAG/view/Money_Transfer/Screen/Request_Money.dart';
+import 'package:MBAG/view/Money_Transfer/Screen/Send_Money.dart';
+import 'package:MBAG/view/QrTransaction/Screen/Recevive_Qr_Payment.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,11 @@ import '../../QrTransaction/Screen/Qr_Scan_Screen.dart';
 import '../controller/contoller_home.dart';
 
 class HomeScreen extends StatelessWidget {
-   HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final HomeController homeController = Get.put(HomeController());
+  final HomeControllerGetData _homeControllerGetData =
+      Get.put(HomeControllerGetData());
 
   @override
   Widget build(BuildContext context) {

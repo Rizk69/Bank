@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../Core/widgets/Styles.dart';
 import '../Controller/Location_Controller.dart';
@@ -23,20 +24,16 @@ class NearestBranch extends StatelessWidget {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 2.4,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: const SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: CircularProgressIndicator()),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text('Please Wait...')
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          height: 180.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white),
+                        ),
+                      )
                     ],
                   )
                 : Column(

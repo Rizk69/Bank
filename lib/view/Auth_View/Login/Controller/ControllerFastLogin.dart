@@ -1,9 +1,9 @@
-import 'package:bank/view/Home_View/Screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../../../../Core/http_helper.dart';
+import '../../../Home_View/Screens/home_screen.dart';
 
 class FastLoginController extends GetxController {
   RxBool isLoggedIn = false.obs;
@@ -63,22 +63,22 @@ class FastLoginController extends GetxController {
         endpoint: "fast_login",
         body: {
           'password': password,
-          // 'user_id': CacheHelper.getDataSharedPreference(key: 'token')
         },
       );
+      print(response.toString());
       if (response["status"] == true) {
         print(response.toString());
 
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
 
-        Get.offAll(HomeScreen());
+        Get.offAll(() => HomeScreen());
       } else {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);
       }
     } catch (error) {
-      print(error);
+      print(" FastLogin${error}");
     } finally {}
   }
 }

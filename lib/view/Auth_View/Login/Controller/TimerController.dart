@@ -27,13 +27,20 @@ class BaseMyTimerController extends GetxController {
     });
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    stopTimer();
+  }
+
   void startTimer(Function onResend) {
     // Set code as visible initially
 
     const duration = Duration(seconds: 1); // Set the timer to run every second
     _timer = Timer.periodic(
       duration,
-          (Timer timer) {
+      (Timer timer) {
         if (!isTimerPaused.value) {
           counter.value++;
 
@@ -52,7 +59,6 @@ class BaseMyTimerController extends GetxController {
 
   void stopTimer() {
     _timer.cancel();
-    // Set the flag to indicate that the timer is not running
     isTimerRunning.value = false;
   }
 
@@ -82,21 +88,24 @@ class BaseMyTimerController extends GetxController {
   @override
   void onClose() {
     // Stop the timer when the controller is closed
-    _timer.cancel();
+    stopTimer();
     super.onClose();
   }
 }
 
 class MyTimerControllerLogin extends BaseMyTimerController {
+  void onClose() {
+    stopTimer(); // Stop the timer when the screen changes
+    super.onClose();
+  }
+
+  @override
   void startTimer(Function onResend) {
-    // Call the parent startTimer method
     super.startTimer(() {
-      // Call the resendCode method from the RegisterController
       resendCode();
     });
   }
 
-  // Replace this with your actual resendCode implementation
   void resendCode() {
     controller.resendCode(phone: controller.email.text);
   }
@@ -105,16 +114,43 @@ class MyTimerControllerLogin extends BaseMyTimerController {
 class MyTimerControllerRegister extends BaseMyTimerController {
   final RegisterController controllerRegister = Get.put(RegisterController());
 
+  @override
+  void onClose() {
+    stopTimer(); // Stop the timer when the screen changes
+    super.onClose();
+  }
+
+  @override
   void startTimer(Function onResend) {
-    // Call the parent startTimer method
-    super.startTimer(() {
-      // Call the resendCode method from the RegisterController
-      resendCode();
-    });
+    // Check the status before starting the timer
+    checkPhoneStatus(onResend);
+  }
+
+  void checkPhoneStatus(Function onResend) async {
+    try {
+      final response = await checkPhone();
+
+      if (response["status"] == true) {
+        stopTimer();
+      } else {
+        // If status is false, call the parent startTimer method
+        super.startTimer(() {
+          resendCode();
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
   }
 
   // Replace this with your actual resendCode implementation
   void resendCode() {
     controllerRegister.resendCode();
+  }
+
+  // Replace this with your actual implementation of checkPhone
+  Future<Map<String, dynamic>> checkPhone() async {
+    // Assuming you have an implementation for checking phone status
+    return {}; // Return a map with the response
   }
 }

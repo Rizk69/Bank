@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:bank/view/Auth_View/Login/Screen/Login_Screen.dart';
-import 'package:bank/view/on_bording_screen/Controller/On_Bording_Controller.dart';
-import 'package:bank/view/on_bording_screen/Widget/buttom_.dart';
+import 'package:MBAG/view/Auth_View/Login/Screen/Login_Screen.dart';
+import 'package:MBAG/view/on_bording_screen/Controller/On_Bording_Controller.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 
 import '../../Auth_View/R1iegister/screen/sign_up_screen.dart';
 import '../Widget/onbording_logo_title.dart';

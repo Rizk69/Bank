@@ -19,11 +19,10 @@ class HttpHelper {
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
           'Accept-Language': 'en',
-          // Add any additional headers, such as authentication tokens, if needed.
         },
         body: jsonEncode(body),
       );
@@ -46,7 +45,8 @@ class HttpHelper {
       var request = http.MultipartRequest('POST', url)
         ..headers['Authorization'] = 'Bearer $token'
         ..headers['Accept'] = 'application/json'
-        ..headers['Accept-Language'] = 'en';
+        ..headers['Accept-Language'] = 'en'
+        ..headers['Content-Type'] = 'application/json';
 
       // Add fields
       if (fields != null) {
@@ -91,12 +91,16 @@ class HttpHelper {
       final response = await http.get(
         url,
         headers: {
+          'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Accept-Language': 'en',
-          'Authorization': 'Bearer $token',
+          'User-Agent': 'PostmanRuntime/7.36.0',
+          // 'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive',
         },
       );
+
       if (response.statusCode == 201) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         return jsonResponse;
@@ -118,8 +122,8 @@ class HttpHelper {
       final response = await http.get(
         url,
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Content-Type': 'application/json',
           'Accept-Language': 'en',
           'Authorization': 'Bearer $token',
         },
