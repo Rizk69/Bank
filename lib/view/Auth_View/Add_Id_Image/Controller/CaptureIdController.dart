@@ -9,115 +9,6 @@ import '../../../../Core/cache_helper.dart';
 import '../../../Home_View/Screens/home_screen.dart';
 import '../Screen/CaptureIdScreen.dart';
 
-// class CameraIdController extends GetxController {
-//   final picker = ImagePicker();
-//   final isSubmitting = RxBool(false);
-//   final frontImage = Rx<File?>(null);
-//   final backImage = Rx<File?>(null);
-//   final currentPage = RxInt(1);
-//
-//   Future<void> takePictureFront(ImageSource source) async {
-//     try {
-//       var status = await Permission.camera.request();
-//       if (status.isGranted) {
-//         final pickedFile = await picker.pickImage(
-//           source: source,
-//           imageQuality: 50,
-//         );
-//
-//         if (pickedFile != null) {
-//           isSubmitting.value = true;
-//
-//           frontImage.value ??= File(pickedFile.path);
-//           Get.to(()=>BackImageScreen());
-//
-//         }
-//       } else {
-//         print('Camera permission denied');
-//       }
-//     } catch (error) {
-//       print('Error taking picture: $error');
-//     } finally {
-//       isSubmitting.value = false;
-//     }
-//   }
-//   Future<void> takePictureBack(ImageSource source) async {
-//     try {
-//       var status = await Permission.camera.request();
-//       if (status.isGranted) {
-//         final pickedFile = await picker.pickImage(
-//           source: source,
-//           imageQuality: 50,
-//         );
-//
-//         if (pickedFile != null) {
-//           isSubmitting.value = true;
-//
-//           frontImage.value ??= File(pickedFile.path);
-//           Get.to(()=>ViewImagesScreen());
-//
-//
-//         }
-//       } else {
-//         print('Camera permission denied');
-//       }
-//     } catch (error) {
-//       print('Error taking picture: $error');
-//     } finally {
-//       isSubmitting.value = false;
-//     }
-//   }
-//
-//
-//   Future<void> sendIdCardImages() async {
-//     try {
-//       var request = http.MultipartRequest(
-//         'POST',
-//         Uri.parse('https://wallet.acwad-it.com/api/add_id'),
-//       );
-//
-//       if (frontImage.value != null) {
-//         List<int> frontImageBytes = await frontImage.value!.readAsBytes();
-//         request.files.add(
-//           http.MultipartFile.fromBytes(
-//             'front_id', // Use 'front_id' for front image
-//             frontImageBytes,
-//           ),
-//         );
-//       }
-//
-//       if (backImage.value != null) {
-//         List<int> backImageBytes = await backImage.value!.readAsBytes();
-//         request.files.add(
-//           http.MultipartFile.fromBytes(
-//             'back_id', // Use 'back_id' for back image
-//             backImageBytes,
-//           ),
-//         );
-//       }
-//
-//       var token = await CacheHelper.getDataSharedPreference(key: 'token');
-//       request.headers.addAll({
-//         'Accept': 'application/json',
-//         'Accept-Language': 'en',
-//         'Authorization': 'Bearer $token',
-//       });
-//
-//       var response = await request.send();
-//
-//       if (response.statusCode == 201) {
-//         Get.offAll(() => HomeScreen());
-//         print('Images uploaded successfully');
-//         print('Response: ${await response.stream.bytesToString()}');
-//       } else {
-//         print('Error uploading images. Status Code: ${response.statusCode}');
-//         print('Response: ${await response.stream.bytesToString()}');
-//       }
-//     } catch (error) {
-//       print('Error: $error');
-//     }
-//   }
-// }
 enum CurrentScreen {
   CameraScreen,
   BackImageScreen,
@@ -141,15 +32,17 @@ class CameraIdController extends GetxController {
 
         if (pickedFile != null) {
           isSubmitting.value = true;
-
-          frontImage.value ??= File(pickedFile.path);
+          frontImage.value = File(pickedFile.path);
           Get.to(() => BackImageScreen());
+        } else {
+          // Show Snackbar if no picture is taken
+          Get.snackbar('Error', 'No picture taken. Please try again.');
         }
       } else {
-        print('Camera permission denied');
+        Get.snackbar('Permission Denied', 'Camera permission denied.');
       }
     } catch (error) {
-      print('Error taking picture: $error');
+      Get.snackbar('Error', 'Error taking picture: $error');
     } finally {
       isSubmitting.value = false;
     }
@@ -166,37 +59,40 @@ class CameraIdController extends GetxController {
 
         if (pickedFile != null) {
           isSubmitting.value = true;
-
-          backImage.value ??= File(pickedFile.path);
+          backImage.value = File(pickedFile.path);
+        } else {
+          // Show Snackbar if no picture is taken
+          Get.snackbar('Error', 'No picture taken. Please try again.');
         }
       } else {
-        print('Camera permission denied');
+        Get.snackbar('Permission Denied', 'Camera permission denied.');
       }
     } catch (error) {
-      print('Error taking picture: $error');
+      Get.snackbar('Error', 'Error taking picture: $error');
     } finally {
       isSubmitting.value = false;
     }
   }
 
   Future<void> sendImagesToAPI() async {
+    if (frontImage.value == null || backImage.value == null) {
+      // Show Snackbar if either image is missing
+      Get.snackbar('Error', 'Please capture both front and back images.');
+      return;
+    }
+
     try {
       var request = http.MultipartRequest(
         'POST',
         Uri.parse('https://wallet.acwad-it.com/api/add_id'),
       );
 
-      if (frontImage.value != null) {
-        request.files.add(
-          await http.MultipartFile.fromPath('frout_id', frontImage.value!.path),
-        );
-      }
-
-      if (backImage.value != null) {
-        request.files.add(
-          await http.MultipartFile.fromPath('back_id', backImage.value!.path),
-        );
-      }
+      request.files.add(
+        await http.MultipartFile.fromPath('frout_id', frontImage.value!.path),
+      );
+      request.files.add(
+        await http.MultipartFile.fromPath('back_id', backImage.value!.path),
+      );
 
       var token = await CacheHelper.getDataSharedPreference(key: 'token');
       request.headers.addAll({
@@ -211,13 +107,12 @@ class CameraIdController extends GetxController {
       if (response.statusCode == 201) {
         Get.offAll(() => HomeScreen());
         print('Images uploaded successfully');
-        print('Response: ${await response.stream.bytesToString()}');
       } else {
-        print('Error uploading images. Status Code: ${response.statusCode}');
-        print('Response: ${await response.stream.bytesToString()}');
+        Get.snackbar('Error',
+            'Error uploading images. Status Code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error: $error');
+      Get.snackbar('Error', 'Error sending images: $error');
     }
   }
 }
@@ -230,28 +125,23 @@ class CameraController extends GetxController {
 
   Future<void> takePhotoAndSendToAPI() async {
     try {
-      // Ensure camera permissions are granted
       final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 50, // Adjust the quality as needed
+        imageQuality: 50,
       );
 
       if (pickedFile != null) {
-        // Retrieve the token from shared preferences
         var token = await CacheHelper.getDataSharedPreference(key: 'token');
 
-        // Create a multipart request
         var request = http.MultipartRequest(
           'POST',
           Uri.parse('https://wallet.acwad-it.com/api/add_img'),
         );
 
-        // Attach the picked image file to the request
         request.files.add(
           await http.MultipartFile.fromPath('img', pickedFile.path),
         );
 
-        // Add headers to the request, including the authorization token
         request.headers.addAll({
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -259,18 +149,19 @@ class CameraController extends GetxController {
           'Accept-Language': 'en',
         });
 
-        // Send the request and handle the response
         var response = await request.send();
 
-        if (response.statusCode == 200) {
+        // تحديث التحقق من الرمز الحالي للاستجابة
+        if (response.statusCode == 200 || response.statusCode == 201) {
           print('Image uploaded successfully');
           print('Response: ${await response.stream.bytesToString()}');
-          Get.snackbar("  Done", '', backgroundColor: Colors.blue);
+          Get.snackbar("Done", '', backgroundColor: Colors.blue);
           Get.off(() => HomeScreen());
         } else {
-          Get.snackbar("Warning!", response.reasonPhrase ?? '',
-              backgroundColor: Colors.red);
-          print('Error uploading image: ${response.reasonPhrase}');
+          // تحديث رسائل الخطأ
+          var reason = response.reasonPhrase ?? 'Unknown error';
+          Get.snackbar("Warning!", reason, backgroundColor: Colors.red);
+          print('Error uploading image: $reason');
         }
       }
     } catch (error) {

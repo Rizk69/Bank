@@ -24,8 +24,10 @@ class HomeControllerGetData extends GetxController {
 
   Future<void> refreshDataHome() async {
     // Reset flags and fetch the data again
+
     isDataLoaded.value = false;
     isLoading.value = true;
+    update();
     await getDataHome();
   }
 

@@ -6,64 +6,6 @@ import '../../../on_bording_screen/Widget/buttom_.dart';
 import '../../Login/Widget/HeadTitleDes.dart';
 import '../Controller/CaptureIdController.dart';
 
-// class CameraScreenId extends StatelessWidget {
-//   final CameraIdController controller = Get.put(CameraIdController());
-//
-//    CameraScreenId({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.stretch,
-//             children: [
-//               SizedBox(
-//                 height: 60.h,
-//               ),
-//               Align(
-//                 alignment: Alignment.centerLeft,
-//                 child: IconButton(
-//                     onPressed: () {
-//                       Get.back();
-//                     },
-//                     icon: Icon(Icons.arrow_back)),
-//               ),
-//               HeadFirstTitle(
-//                   title: 'Take a photo for your ID',
-//                   des: 'take a photo for your personal id'),
-//               Center(
-//                   child: Text(
-//                 'from front and back',
-//                 style: TextStyle(
-//                     fontSize: 16,
-//                     fontWeight: FontWeight.w400,
-//                     color: Colors.grey),
-//               )),
-//               SizedBox(height: 80.h),
-//               Container(
-//                 height: 350.h,
-//                 width: 200.w,
-//                 child: Image.asset('Assets/images/unsplash_a4maTFz1QPc.png'),
-//               ),
-//               Spacer(),
-//               Buttoms(
-//                 text: "Continue",
-//                 color: Colors.black,
-//                 onPressed: () {
-//                   controller.takePicture(ImageSource.camera);
-//                 },
-//                 colorText: Colors.white,
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 class CameraScreenId extends StatelessWidget {
   final CameraIdController controller = Get.put(CameraIdController());
 
@@ -165,14 +107,17 @@ class BackImageScreen extends StatelessWidget {
                   child: Image.asset('Assets/images/Id recognition.png'),
                 ),
                 Spacer(),
-                Buttoms(
-                  text: "Take Back Photo",
-                  color: Colors.black,
-                  onPressed: () {
-                    controller.takePictureBack(ImageSource.camera);
-                  },
-                  colorText: Colors.white,
-                ),
+                controller.backImage.value == null ||
+                        controller.backImage.value!.path.isEmpty
+                    ? Buttoms(
+                        text: "Take Back Photo",
+                        color: Colors.black,
+                        onPressed: () {
+                          controller.takePictureBack(ImageSource.camera);
+                        },
+                        colorText: Colors.white,
+                      )
+                    : SizedBox(),
                 SizedBox(height: 16),
                 if (controller.isSubmitting.isTrue)
                   CircularProgressIndicator(), // Show loading indicator

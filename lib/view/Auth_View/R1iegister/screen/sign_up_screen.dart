@@ -79,7 +79,6 @@ class SignUpScreen extends StatelessWidget {
                                     }
                                     if (registerController.currentIndex.value ==
                                         2) {
-                                      _baseMyTimerController.dispose();
 
                                       await registerController
                                           .completeRegister();

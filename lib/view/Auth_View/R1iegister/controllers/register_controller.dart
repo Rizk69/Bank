@@ -22,7 +22,7 @@ class RegisterController extends GetxController {
 
   final PinputControllerSinUpCheckEmail controllerPinCheckEmail =
       Get.put(PinputControllerSinUpCheckEmail());
-  int _userId = 0;
+  int userId = 0;
 
   @override
   void onInit() {
@@ -98,8 +98,8 @@ class RegisterController extends GetxController {
           'country_id': idControllerSignUp.value.text
         },
       );
-      print(response.toString());
       if (response["status"] == true) {
+        print(response.toString());
         navigNext();
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
@@ -116,8 +116,8 @@ class RegisterController extends GetxController {
 
   Future<void> checkPhone() async {
     print('start');
+    userId = 0;
     isLoading.value = true;
-    _userId = 0;
     try {
       final response = await HttpHelper.postData(
         endpoint: "check_phone",
@@ -129,12 +129,11 @@ class RegisterController extends GetxController {
       );
       if (response["status"] == true) {
         print(response.toString());
-
         await CacheHelper.saveDataSharedPreference(
           key: "user_id",
           value: response['user_id'],
         );
-        _userId = response['user_id'];
+        userId = response['user_id'];
         navigNext();
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
@@ -151,7 +150,6 @@ class RegisterController extends GetxController {
 
   Future<void> resendCode() async {
     print('start');
-    // print(mobileNumberControllerSignUpTwo.text);
     isLoading.value = true;
 
     try {
@@ -192,12 +190,12 @@ class RegisterController extends GetxController {
     var userid = CacheHelper.getDataSharedPreference(key: 'user_id');
     if (agreedToTerms.isTrue && agreedToTerms1.isTrue) {
       try {
-        print(_userId);
+        print(userId);
         print(userid);
         final response = await HttpHelper.postData(
           endpoint: "complete_register",
           body: {
-            'user_id': "$_userId",
+            'user_id': "$userId",
             'first_name': firstNameControllerSignUpTwo.text,
             'last_name': lastNameControllerSignUpTwo.text,
             'email': emailControllerSignUp.text,

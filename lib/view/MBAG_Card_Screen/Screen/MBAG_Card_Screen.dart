@@ -3,6 +3,7 @@ import 'package:MBAG/view/MBAG_Card_Screen/Screen/Black_Card_Screen.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Widget/Card.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Widget/HelperScreen.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
+import 'package:MBAG/view/SelectCard/Screen/SelectedCardScreen.dart';
 import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,8 +51,7 @@ class MBAGCardScreen extends StatelessWidget {
               text: 'New Card',
               color: Color(0XFFFFFFFF),
               onPressed: () {
-                Get.to(
-                    SlideDownTextAnimation()); // Provide the correct route name
+                Get.to(() => CardScreen()); // Provide the correct route name
               },
               colorText: Colors.black,
             ),

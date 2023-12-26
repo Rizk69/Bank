@@ -6,6 +6,7 @@ import 'Login_Controller.dart';
 
 class BaseMyTimerController extends GetxController {
   final LoginController controller = Get.put(LoginController());
+  final RegisterController controllerRegister = Get.put(RegisterController());
 
   late RxBool isTimerRunning;
   late RxBool isTimerPaused;
@@ -17,13 +18,10 @@ class BaseMyTimerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Initialize the flags
     isTimerRunning = false.obs;
     isTimerPaused = false.obs;
 
-    // Initialize the timer
     startTimer(() {
-      // Initial logic when the timer starts
     });
   }
 
@@ -112,9 +110,6 @@ class MyTimerControllerLogin extends BaseMyTimerController {
 }
 
 class MyTimerControllerRegister extends BaseMyTimerController {
-  final RegisterController controllerRegister = Get.put(RegisterController());
-
-  @override
   void onClose() {
     stopTimer(); // Stop the timer when the screen changes
     super.onClose();
@@ -122,35 +117,14 @@ class MyTimerControllerRegister extends BaseMyTimerController {
 
   @override
   void startTimer(Function onResend) {
-    // Check the status before starting the timer
-    checkPhoneStatus(onResend);
+    super.startTimer(() {
+      resendCode();
+    });
   }
 
-  void checkPhoneStatus(Function onResend) async {
-    try {
-      final response = await checkPhone();
-
-      if (response["status"] == true) {
-        stopTimer();
-      } else {
-        // If status is false, call the parent startTimer method
-        super.startTimer(() {
-          resendCode();
-        });
-      }
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  // Replace this with your actual resendCode implementation
   void resendCode() {
-    controllerRegister.resendCode();
-  }
-
-  // Replace this with your actual implementation of checkPhone
-  Future<Map<String, dynamic>> checkPhone() async {
-    // Assuming you have an implementation for checking phone status
-    return {}; // Return a map with the response
+    if (controllerRegister.userId == 0) {
+      controllerRegister.resendCode();
+    }
   }
 }

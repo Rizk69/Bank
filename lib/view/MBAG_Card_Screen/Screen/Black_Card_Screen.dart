@@ -47,7 +47,7 @@ class BlackCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset(
-                  'Assets/images/IDCard.png',
+                  'Assets/images/IDCardBlack.png',
                   height: 150.h,
                   width: 102.w,
                 ),

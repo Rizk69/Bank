@@ -35,7 +35,9 @@ class FirstScreen extends StatelessWidget {
             return ShimmerLoadingHome();
           } else if (homeController.isDataLoaded.value) {
             return RefreshIndicator(
-              onRefresh: () => homeController.refreshDataHome(),
+              onRefresh: () {
+                return homeController.refreshDataHome();
+              },
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
@@ -416,7 +418,7 @@ class FirstScreen extends StatelessWidget {
   Widget _buildTransactionListView(List<HomeModel.Trans>? trans) {
     var transactions = trans!;
     return SizedBox(
-      height: 230.h,
+      height: transactions.length == 0 ? 20.h : 230.h,
       child: ListView.builder(
         itemCount: transactions.length,
         itemBuilder: (context, index) {

@@ -207,9 +207,11 @@ class AccountDetailsScreen extends StatelessWidget {
                             color: Colors.red,
                             onPressed: () {
                               CacheHelper.clearData();
+
                               CacheHelper.removeData(key: 'token');
-                              CacheHelper.removeData(key: "user_id");
-                              CacheHelper.removeData(key: "user");
+                              CacheHelper.removeData(key: 'user_id');
+                              CacheHelper.removeData(key: 'user');
+
                               Get.offAll(CupertinoOnboardingScreen());
                             },
                             colorText: Colors.white))

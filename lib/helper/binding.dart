@@ -12,6 +12,7 @@ import 'package:MBAG/view/Money_Transfer/Controller/ContactControllerSendRequest
 import 'package:MBAG/view/Money_Transfer/Controller/NestedTapController.dart';
 import 'package:MBAG/view/QrTransaction/Controller/QrController.dart';
 import 'package:MBAG/view/QrTransaction/Controller/ReceiveQrPaymentController.dart';
+import 'package:MBAG/view/SelectCard/Controller/CardSelectionController.dart';
 import 'package:MBAG/view/Transaction/controller/transaction_controller.dart';
 import 'package:get/get.dart';
 
@@ -45,5 +46,6 @@ class Binding extends Bindings {
     Get.lazyPut(() => MbagNumberController());
     Get.lazyPut(() => AccountDetailsController());
     Get.lazyPut(() => CameraIdController());
+    Get.lazyPut(() => CardController());
   }
 }
