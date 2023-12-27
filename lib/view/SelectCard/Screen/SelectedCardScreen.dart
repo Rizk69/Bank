@@ -45,9 +45,9 @@ class CardScreen extends StatelessWidget {
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: controller.cardsList.length,
+        itemCount: controller.imageItemList.length,
         itemBuilder: (context, index) {
-          var card = controller.cardsList[index];
+          var card = controller.imageItemList[index];
           return GestureDetector(
             onTap: () {
               controller.selectCard(card.id);
@@ -56,8 +56,7 @@ class CardScreen extends StatelessWidget {
             child: Card(
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child:
-                      Image.network(card.imgs['1'] ?? 'placeholder_image_url')),
+                  child: Image.network(card.img1 ?? 'placeholder_image_url')),
             ),
           );
         },
@@ -69,9 +68,9 @@ class CardScreen extends StatelessWidget {
     var selectedCardId = controller.selectedCardId.value;
     if (selectedCardId == null) return SizedBox();
 
-    var selectedCard = controller.cardsList.firstWhere(
+    var selectedCard = controller.cardsListItems.firstWhere(
       (card) => card.id == selectedCardId,
-      orElse: () => CardData(
+      orElse: () => CardItem(
         id: 0,
         name: '',
         imgs: {},
@@ -116,22 +115,31 @@ class CardScreen extends StatelessWidget {
 
       bool isSelected = controller.selectedCardColor.value == colorName;
       print(controller.selectedCardColor.value);
-      return FilterChip(
-        label: Text(colorName),
-        selected: isSelected,
-        onSelected: (bool selected) {
-          controller.selectCardColor(colorName);
-        },
-        backgroundColor: Color(int.parse(colorValue)),
-        checkmarkColor: Colors.white,
-        selectedColor: Color(int.parse(colorValue)),
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: FilterChip(
+          selectedShadowColor: Colors.orangeAccent,
+          side: BorderSide(color: Colors.transparent, width: 1),
+          padding: EdgeInsets.all(15),
+          label: Text(colorName),
+          selected: isSelected,
+          onSelected: (bool selected) {
+            controller.selectCardColor(colorName);
+          },
+          backgroundColor: Colors.white,
+          showCheckmark: true,
+          checkmarkColor: Colors.white,
+          selectedColor: Color(int.parse(colorValue)),
+        ),
       );
     });
   }
 }
 
 class CardDetails extends StatelessWidget {
-  final CardData selectedCard;
+  final CardItem selectedCard;
   final CardController controller = Get.find<CardController>();
 
   CardDetails({super.key, required this.selectedCard});

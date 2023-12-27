@@ -58,7 +58,9 @@ import '../model/CardData.dart';
 //   }
 // }
 class CardController extends GetxController {
-  var cardsList = <CardData>[].obs;
+  List<CardItem> cardsListItems = [];
+
+  var imageItemList = <ImageItem>[].obs;
   var selectedCardId = Rxn<int>();
   var selectedCardImages = Rxn<int>();
   var selectedCardColor = Rxn<String>();
@@ -71,14 +73,25 @@ class CardController extends GetxController {
   }
 
   void fetchCards() async {
-    final response = await HttpHelper.getData(endpoint: 'get_cards');
-    var jsonData = response;
-    if (jsonData['status']) {
-      for (var item in jsonData['cards']) {
-        cardsList.add(CardData.fromJson(item));
+    try {
+      final response = await HttpHelper.getData(endpoint: 'get_cards');
+      var jsonData = response;
+      if (jsonData['status']) {
+        cardsListItems.clear();
+        imageItemList.clear();
+        for (var item in jsonData['imgs']) {
+          imageItemList.add(ImageItem.fromJson(item));
+        }
+        for (var item in jsonData['cards']) {
+          cardsListItems.add(CardItem.fromJson(item));
+        }
+      } else {
+        Get.snackbar('Error', 'Failed to load cards');
       }
-    } else {
-      Get.snackbar('Error', 'Failed to load cards');
+    } catch (e) {
+      print(e);
+      // Handle any errors that occur during the fetch
+      Get.snackbar('Error', 'An error occurred: ${e.toString()}');
     }
   }
 
