@@ -10,33 +10,33 @@ class HomeModel {
   HomeModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     if (json['trans'] != null) {
       trans = <Trans>[];
       json['trans'].forEach((v) {
-        trans!.add(new Trans.fromJson(v));
+        trans!.add(Trans.fromJson(v));
       });
     }
     if (json['traders'] != null) {
       traders = <Traders>[];
       json['traders'].forEach((v) {
-        traders!.add(new Traders.fromJson(v));
+        traders!.add(Traders.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
-    if (this.trans != null) {
-      data['trans'] = this.trans!.map((v) => v.toJson()).toList();
+    if (trans != null) {
+      data['trans'] = trans!.map((v) => v.toJson()).toList();
     }
-    if (this.traders != null) {
-      data['traders'] = this.traders!.map((v) => v.toJson()).toList();
+    if (traders != null) {
+      data['traders'] = traders!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -60,12 +60,12 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['img'] = this.img;
-    data['frout_id'] = this.img;
-    data['back_id'] = this.img;
-    data['account_number'] = this.accountNumber;
-    data['balance'] = this.balance;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['img'] = img;
+    data['frout_id'] = img;
+    data['back_id'] = img;
+    data['account_number'] = accountNumber;
+    data['balance'] = balance;
     return data;
   }
 }
@@ -111,18 +111,18 @@ class Trans {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sender_img'] = this.senderImg;
-    data['sender_ID'] = this.senderID;
-    data['sender_first_name'] = this.senderFirstName;
-    data['sender_last_name'] = this.senderLastName;
-    data['receiver_img'] = this.receiverImg;
-    data['receiver_ID'] = this.receiverID;
-    data['receiver_first_name'] = this.receiverFirstName;
-    data['receiver_last_name'] = this.receiverLastName;
-    data['final_amount'] = this.finalAmount;
-    data['created_at'] = this.createdAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sender_img'] = senderImg;
+    data['sender_ID'] = senderID;
+    data['sender_first_name'] = senderFirstName;
+    data['sender_last_name'] = senderLastName;
+    data['receiver_img'] = receiverImg;
+    data['receiver_ID'] = receiverID;
+    data['receiver_first_name'] = receiverFirstName;
+    data['receiver_last_name'] = receiverLastName;
+    data['final_amount'] = finalAmount;
+    data['created_at'] = createdAt;
     return data;
   }
 }
@@ -146,12 +146,12 @@ class Traders {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['img'] = this.img;
-    data['activity_id'] = this.activityId;
-    data['activity_name'] = this.activityName;
-    data['discount'] = this.discount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['img'] = img;
+    data['activity_id'] = activityId;
+    data['activity_name'] = activityName;
+    data['discount'] = discount;
     return data;
   }
 }
@@ -191,7 +191,7 @@ class Currency {
 
   factory Currency.fromJson(Map<String, dynamic> json) {
     return Currency(
-      id: json['id'], // Parse 'id' dynamically
+      id: json['id'],
       name: json['name'] as String?,
       active: json['active'] as bool?,
     );

@@ -17,11 +17,11 @@ void main() async {
   await CacheHelper.init(); // Initialize CacheHelper
   WidgetsFlutterBinding.ensureInitialized();
 
-  await CacheHelper.init(); // Initialize CacheHelper
+  await CacheHelper.init();
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  const int currentVersionCode = 1; // Set the current version code here
-  int oldVersionCode = prefs.getInt('versionCode') ?? 1;
+  const int currentVersionCode = 2;
+  int oldVersionCode = prefs.getInt('versionCode') ?? 2;
   print(oldVersionCode);
 
   if (currentVersionCode == oldVersionCode) {

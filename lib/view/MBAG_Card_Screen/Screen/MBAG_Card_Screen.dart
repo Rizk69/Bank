@@ -1,7 +1,6 @@
 import 'package:MBAG/Core/widgets/Styles.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Screen/Black_Card_Screen.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Widget/Card.dart';
-import 'package:MBAG/view/MBAG_Card_Screen/Widget/HelperScreen.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
 import 'package:MBAG/view/SelectCard/Screen/SelectedCardScreen.dart';
 import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';

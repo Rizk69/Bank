@@ -1,9 +1,11 @@
+import 'package:MBAG/Core/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../../../../Core/http_helper.dart';
 import '../../../Home_View/Screens/home_screen.dart';
+import '../../../on_bording_screen/Screen/OnbordingScreen.dart';
 
 class FastLoginController extends GetxController {
   RxBool isLoggedIn = false.obs;
@@ -41,9 +43,8 @@ class FastLoginController extends GetxController {
 
       if (authenticated) {
         print('User authenticated successfully!');
-        // Use Get.to to navigate to the next screen or perform the desired action.
         Get.to(
-            () => HomeScreen()); // Replace NextScreen with your desired screen.
+                () => HomeScreen()); // Replace NextScreen with your desired screen.
       } else {
         print('Biometric authentication failed.');
       }
@@ -76,6 +77,11 @@ class FastLoginController extends GetxController {
       } else {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);
+        if (response['message'].toString() == 'Unauthenticated.') {
+          CacheHelper.clearData();
+          Duration(milliseconds: 200);
+          Get.offAll(() => CupertinoOnboardingScreen());
+        }
       }
     } catch (error) {
       print(" FastLogin${error}");

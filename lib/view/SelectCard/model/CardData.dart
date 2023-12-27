@@ -1,35 +1,3 @@
-class CardData {
-  int id;
-  String name;
-  Map<String, String> imgs;
-  Map<String, String> colors;
-  String description;
-  int activityId;
-  String activityName;
-
-  CardData({
-    required this.id,
-    required this.name,
-    required this.imgs,
-    required this.colors,
-    required this.description,
-    required this.activityId,
-    required this.activityName,
-  });
-
-  factory CardData.fromJson(Map<String, dynamic> json) {
-    return CardData(
-      id: json['id'],
-      name: json['name'],
-      imgs: Map<String, String>.from(json['imgs']),
-      colors: Map<String, String>.from(json['colors']),
-      description: json['dec'],
-      activityId: json['activity_id'],
-      activityName: json['activity_name'],
-    );
-  }
-}
-
 class ResponseModelCardItem {
   bool status;
   String message;
@@ -69,29 +37,56 @@ class CardItem {
   int id;
   String name;
   Map<String, String> imgs;
-  Map<String, String> colors;
+  List<ColorItem> colors; // Updated to List<ColorItem>
   String description;
+  int request;
   int activityId;
   String activityName;
 
-  CardItem(
-      {required this.id,
-      required this.name,
-      required this.imgs,
-      required this.colors,
-      required this.description,
-      required this.activityId,
-      required this.activityName});
+  CardItem({
+    required this.id,
+    required this.name,
+    required this.imgs,
+    required this.colors,
+    required this.description,
+    required this.request,
+    required this.activityId,
+    required this.activityName,
+  });
 
-  factory CardItem.fromJson(Map<String, dynamic> json) => CardItem(
-        id: json['id'],
-        name: json['name'],
-        imgs: Map.from(json['imgs'])
-            .map((k, v) => MapEntry<String, String>(k, v)),
-        colors: Map.from(json['colors'])
-            .map((k, v) => MapEntry<String, String>(k, v)),
-        description: json['dec'],
-        activityId: json['activity_id'],
-        activityName: json['activity_name'],
-      );
+  factory CardItem.fromJson(Map<String, dynamic> json) {
+    return CardItem(
+      id: json['id'],
+      name: json['name'],
+      imgs:
+          Map.from(json['imgs']).map((k, v) => MapEntry<String, String>(k, v)),
+      colors: List<ColorItem>.from(
+          json['colors'].map((x) => ColorItem.fromJson(x))),
+      // Parsing the colors list
+      description: json['dec'],
+      activityId: json['activity_id'],
+      activityName: json['activity_name'],
+      request: json['request'],
+    );
+  }
+}
+
+class ColorItem {
+  int id;
+  String name;
+  String color;
+
+  ColorItem({
+    required this.id,
+    required this.name,
+    required this.color,
+  });
+
+  factory ColorItem.fromJson(Map<String, dynamic> json) {
+    return ColorItem(
+      id: json['id'],
+      name: json['name'],
+      color: json['color'],
+    );
+  }
 }
