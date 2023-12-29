@@ -26,12 +26,14 @@ class CountryModel {
   final String name;
   final String img;
   final String code;
+  final int count;
 
   CountryModel({
     required this.id,
     required this.name,
     required this.img,
     required this.code,
+    required this.count,
   });
 
   factory CountryModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class CountryModel {
       name: json['name'],
       img: json['img'],
       code: json['code'],
+      count: json['count'],
     );
   }
 }

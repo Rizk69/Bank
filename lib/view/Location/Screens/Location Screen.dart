@@ -70,9 +70,9 @@ class LocationScreen extends StatelessWidget {
               height: 180,
               child: GetBuilder<LocationController>(
                 builder: (controller) {
-                  Position? _currentPosition = controller.currentPosition.value;
+                  Position? currentPosition = controller.currentPosition.value;
 
-                  return _currentPosition == null
+                  return currentPosition == null
                       ? Center(
                           child: Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
@@ -91,8 +91,8 @@ class LocationScreen extends StatelessWidget {
                             zoomControlsEnabled: true,
                             initialCameraPosition: CameraPosition(
                               target: LatLng(
-                                _currentPosition.latitude,
-                                _currentPosition.longitude,
+                                currentPosition.latitude,
+                                currentPosition.longitude,
                               ),
                               zoom: 15,
                             ),
@@ -101,8 +101,8 @@ class LocationScreen extends StatelessWidget {
                               Marker(
                                 markerId: MarkerId('current_location'),
                                 position: LatLng(
-                                  _currentPosition.latitude,
-                                  _currentPosition.longitude,
+                                  currentPosition.latitude,
+                                  currentPosition.longitude,
                                 ),
                                 infoWindow:
                                     InfoWindow(title: 'Current Location'),

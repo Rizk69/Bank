@@ -94,7 +94,7 @@ class SecurityCodeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 25),
                   child: ButtomsNotBorder(
                     text: 'Continue',
-                    color: const Color(0XFFD9D9D9),
+                    color: Colors.black,
                     onPressed: () {
                       String pin = controllerPin.pinController.text;
                       controller.checkCodeEmail(context: context, code: pin);

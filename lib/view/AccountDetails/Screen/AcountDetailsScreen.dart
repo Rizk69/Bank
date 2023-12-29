@@ -191,13 +191,36 @@ class AccountDetailsScreen extends StatelessWidget {
                     ItemsAccountDetails(
                       title: 'Incoming amount limit',
                       des: 'Unverified Approved or Verified',
+                      caption:
+                          "${userController.userModel.user?.limitReceptionDay}",
+                    ),
+                    ItemsAccountDetails(
+                      title: 'The maximum limit\nof the account',
+                      des: '',
                       caption: "${userController.userModel.user?.limitAccount}",
                     ),
                     ItemsAccountDetails(
-                      title: 'Avaliable incoming\namount limit',
-                      des:
-                          'The available amount that can be deposited\nto your account during this month ',
+                      title: 'The maximum limit\nof the credit card',
+                      des: '',
                       caption: "${userController.userModel.user?.limitCart}",
+                    ),
+                    ItemsAccountDetails(
+                      title: 'The maximum limit\nfor transfers in a day',
+                      des: '',
+                      caption:
+                          "${userController.userModel.user?.limitTransferDay}",
+                    ),
+                    ItemsAccountDetails(
+                      title: 'The maximum limit\nfor transfers in a month',
+                      des: '',
+                      caption:
+                          "${userController.userModel.user?.limitTransferManth}",
+                    ),
+                    ItemsAccountDetails(
+                      title: 'The maximum limit\nfor receiving in a month',
+                      des: '',
+                      caption:
+                          "${userController.userModel.user?.limitReceptionManth}",
                     ),
                     Container(
                         padding: EdgeInsets.all(5),

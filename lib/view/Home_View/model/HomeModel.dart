@@ -2,6 +2,7 @@ class HomeModel {
   bool? status;
   String? message;
   User? user;
+  CurrencyHome? currency;
   List<Trans>? trans;
   List<Traders>? traders;
 
@@ -11,6 +12,9 @@ class HomeModel {
     status = json['status'];
     message = json['message'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
+    currency = json['currencies'] != null
+        ? CurrencyHome.fromJson(json['currencies'])
+        : null;
     if (json['trans'] != null) {
       trans = <Trans>[];
       json['trans'].forEach((v) {
@@ -159,7 +163,7 @@ class Traders {
 class CurrencyModel {
   bool status;
   String message;
-  List<Currency> currencies;
+  List<CurrencyHomeModel> currencies;
 
   CurrencyModel({
     required this.status,
@@ -172,27 +176,53 @@ class CurrencyModel {
       status: json['status'],
       message: json['message'],
       currencies: (json['currencies'] as List<dynamic>)
-          .map((currency) => Currency.fromJson(currency))
+          .map((currency) => CurrencyHomeModel.fromJson(currency))
           .toList(),
     );
   }
 }
 
-class Currency {
+class CurrencyHome {
   int? id;
   String? name;
+  String? abbreviation;
   bool? active;
 
-  Currency({
+  CurrencyHome({
     required this.id,
     required this.name,
     required this.active,
+    required this.abbreviation,
   });
 
-  factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(
+  factory CurrencyHome.fromJson(Map<String, dynamic> json) {
+    return CurrencyHome(
       id: json['id'],
       name: json['name'] as String?,
+      abbreviation: json['abbreviation'] as String?,
+      active: json['active'] as bool?,
+    );
+  }
+}
+
+class CurrencyHomeModel {
+  int? id;
+  String? name;
+  String? abbreviation;
+  bool? active;
+
+  CurrencyHomeModel({
+    required this.id,
+    required this.name,
+    required this.active,
+    required this.abbreviation,
+  });
+
+  factory CurrencyHomeModel.fromJson(Map<String, dynamic> json) {
+    return CurrencyHomeModel(
+      id: json['id'],
+      name: json['name'] as String?,
+      abbreviation: json['abbreviation'] as String?,
       active: json['active'] as bool?,
     );
   }

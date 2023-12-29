@@ -249,8 +249,8 @@ class CardDetails extends StatelessWidget {
                       String imgUrl = selectedCard.imgs["${index + 1}"] ??
                           ''; // Correctly access the URL
                       return GestureDetector(
-                        onTap: () =>
-                            controller.navigateToFullSizeImage(imgUrl, context),
+                        onTap: () => controller.navigateToFullSizeImage(
+                            selectedCard, index),
                         // Add onTap functionality
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25),

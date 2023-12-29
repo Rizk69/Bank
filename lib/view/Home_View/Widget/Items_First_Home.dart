@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../model/HomeModel.dart';
+
 class ItemsFirstHome extends StatelessWidget {
   final VoidCallback onPressed1;
   final VoidCallback onPressed2;
   final VoidCallback onPressed3;
+  CurrencyHome currency;
 
-  const ItemsFirstHome(
+  ItemsFirstHome(
       {Key? key,
       required this.onPressed1,
       required this.onPressed2,
-      required this.onPressed3})
+      required this.onPressed3,
+      required this.currency})
       : super(key: key);
 
   @override
@@ -56,7 +60,7 @@ class ItemsFirstHome extends StatelessWidget {
             onTap: onPressed2,
             child: Container(
               height: 33.h,
-              padding: EdgeInsets.symmetric(horizontal: 13.h, vertical: 3.h),
+              padding: EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
@@ -71,20 +75,16 @@ class ItemsFirstHome extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Turkish Lira',
+                  Text(currency.name ?? '',
                       style: TextStyle(
                           color: Colors.grey, fontWeight: FontWeight.bold)),
                   SizedBox(
-                    width: 5,
-                  ),
-                  Icon(
-                    Icons.flag_circle,
-                    color: Colors.red,
+                    width: 8,
                   ),
                   SizedBox(
                     width: 3,
                   ),
-                  Text('TL',
+                  Text(currency.abbreviation ?? '',
                       style: TextStyle(
                           color: Colors.grey, fontWeight: FontWeight.bold)),
                   SizedBox(
@@ -119,3 +119,11 @@ class ItemsFirstHome extends StatelessWidget {
     );
   }
 }
+// currency.id==1?
+// ClipRRect(
+//     borderRadius: BorderRadius.circular(15),
+//     child: Image.asset(
+//       'Assets/images/download.png',
+//       height: 25.h,
+//       width: 25.h,
+//     )):SizedBox(),

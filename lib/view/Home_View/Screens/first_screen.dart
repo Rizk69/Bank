@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:MBAG/view/Home_View/model/HomeModel.dart' as HomeModel;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../helper/Data.dart';
 import '../../../helper/HelperScreenNerst.dart';
@@ -21,8 +22,12 @@ import '../controller/HomeGetData.dart';
 import '../model/HomeModel.dart';
 
 class FirstScreen extends StatelessWidget {
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   final AccountDetailsController userController =
       Get.put(AccountDetailsController());
+  final HomeControllerGetData homeControllerGetData = Get.find();
 
   FirstScreen({Key? key}) : super(key: key);
 
@@ -34,10 +39,10 @@ class FirstScreen extends StatelessWidget {
           if (homeController.isLoading.value) {
             return ShimmerLoadingHome();
           } else if (homeController.isDataLoaded.value) {
-            return RefreshIndicator(
-              onRefresh: () {
-                return homeController.refreshDataHome();
-              },
+            return SmartRefresher(
+              onRefresh: () => homeControllerGetData.refreshDataHome(),
+              enablePullDown: true,
+              controller: _refreshController,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
@@ -55,41 +60,50 @@ class FirstScreen extends StatelessWidget {
                       ItemsFirstHome(
                         onPressed1: () {
                           Get.to(() => SlideDownTextAnimation(
-                                appBarView: true,
-                              ));
+                            appBarView: true,
+                          ));
                         },
                         onPressed2: () {
-                          _showBottomSheet(context,
-                              homeController.homeModel.user?.balance ?? '');
+                          _showBottomSheet(
+                              context, homeController.currencyModel);
                         },
                         onPressed3: () {
                           var token =
                               CacheHelper.getDataSharedPreference(key: 'token');
                           print('token===>$token');
+                          Get.to(() => SlideDownTextAnimation(
+                                appBarView: true,
+                              ));
                         },
+                        currency: homeController.homeModel.currency ??
+                            CurrencyHome(
+                                id: 0,
+                                name: '',
+                                active: false,
+                                abbreviation: ''),
                       ),
                       SizedBox(height: 25.h),
                       DepositAndWithdraw(
                         balance: homeController.homeModel.user?.balance ?? '',
                         accountNumber:
-                            homeController.homeModel.user?.accountNumber ?? '',
+                        homeController.homeModel.user?.accountNumber ?? '',
                       ),
                       SizedBox(height: 15.h),
                       homeController.homeModel.user?.froutid != null
                           ? SizedBox()
                           : InkWell(
-                              onTap: () {
-                                Get.to(() => CameraScreenId());
-                              },
-                              child: _cheakIdCard()),
+                          onTap: () {
+                            Get.to(() => CameraScreenId());
+                          },
+                          child: _cheakIdCard()),
                       SizedBox(height: 15.h),
                       homeController.homeModel.user?.img != null
                           ? SizedBox()
                           : InkWell(
-                              onTap: () {
-                                Get.to(() => CameraScreen());
-                              },
-                              child: _buildProfilePhotoContainer()),
+                          onTap: () {
+                            Get.to(() => CameraScreen());
+                          },
+                          child: _buildProfilePhotoContainer()),
                       homeController.homeModel.user?.img != null
                           ? SizedBox()
                           : SizedBox(height: 25.h),
@@ -103,7 +117,7 @@ class FirstScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 10.h),
                       _buildPharmacyContainer(
-                          homeController.homeModel.traders!),
+                          homeController.homeModel.traders!, context),
                     ],
                   ),
                 ),
@@ -429,95 +443,100 @@ class FirstScreen extends StatelessWidget {
 
           return transactions.isEmpty
               ? Container(
-                  margin: EdgeInsets.all(8),
-                  padding: EdgeInsets.all(15),
-                  height: 80.h,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Center(
-                      child: Text(
-                    'Empty',
-                    style: Styles.textStyleTitle18,
-                  )),
-                )
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(15),
+            height: 80.h,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(15)),
+            child: Center(
+                child: Text(
+                  'Empty',
+                  style: Styles.textStyleTitle18,
+                )),
+          )
               : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.network(
-                              transaction.receiverImg ?? '',
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.network(
+                        transaction.receiverImg ?? '',
                               errorBuilder: (BuildContext context, Object error,
                                   StackTrace? stackTrace) {
                                 return ClipRRect(
-                                  borderRadius: BorderRadius.circular(25),
-                                  child: Icon(Icons.account_circle, size: 40),
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: const Icon(Icons.account_circle,
+                                      size: 60),
                                 );
                               },
                               fit: BoxFit.fill,
-                              height: 55.h,
-                              width: 50.w,
+                              height: 50.h,
+                              width: 45.w,
                             ),
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(transaction.receiverFirstName ?? '',
+                            style: Styles.textStyleTitle14),
+                        SizedBox(height: 5),
+                        Text(
+                          transaction.receiverLastName ?? '',
+                          style: Styles.textStyleTitle14.copyWith(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
                           ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(transaction.receiverFirstName ?? '',
-                                  style: Styles.textStyleTitle14),
-                              SizedBox(height: 5),
-                              Text(
-                                transaction.receiverLastName ?? '',
-                                style: Styles.textStyleTitle14.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
                               ImageIcon(
                                 AssetImage('Assets/images/Vector(9).png'),
-                                color: transaction.finalAmount! >= 0
+                                color: transaction.finalAmount != null &&
+                                        transaction.finalAmount! > 0
                                     ? Color(0XFF4FD25D)
                                     : Colors.red,
                               ),
-                              SizedBox(width: 7.h),
+                              SizedBox(
+                                width: 7.h,
+                              ),
                               Text(
-                                "${transaction.finalAmount}",
+                                "${transaction.finalAmount ?? '0'}",
                                 style: Styles.textStyleTitle24.copyWith(
-                                  color: transaction.finalAmount! >= 0
+                                  color: transaction.finalAmount != null &&
+                                          transaction.finalAmount! >= 0
                                       ? Color(0XFF4FD25D)
                                       : Colors.red,
                                 ),
                               ),
                             ],
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          formattedDate ?? 'Unknown Date',
+                          style: Styles.textStyleTitle12.copyWith(
+                            fontWeight: FontWeight.w400,
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                formattedDate ?? 'Unknown Date',
-                                style: Styles.textStyleTitle12.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ),
+                        ),
+                      ),
+                    ),
                         ],
                       )
                     ],
@@ -528,32 +547,41 @@ class FirstScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPharmacyContainer(List<Traders> traders) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 40),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Color(0XFFEBEBEB), width: 1),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildPharmacyItem(
-              traders.first.img ?? '',
-              traders.first.activityName!,
-              "${traders.first.discount!}",
-              Color(0XFF86E08F)),
-          _buildPharmacyItem(traders.last.img ?? '', traders.last.activityName!,
-              "${traders.last.discount!}", Color(0XFF86E08F)),
+  Widget _buildPharmacyContainer(List<Traders> traders, BuildContext context) {
+    return SizedBox(
+      height: 100.h,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Container(
+            width: 330.w,
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Color(0XFFEBEBEB), width: 1),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildPharmacyItem(
+                    traders[index].img ?? '',
+                    traders[index].activityName!,
+                    "${traders[index].discount!}",
+                    Color(0XFF86E08F)),
 
-          // _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
-        ],
+                // _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
+              ],
+            ),
+          );
+        },
+        itemCount: traders.length,
       ),
     );
   }
 
-  Widget _buildPharmacyItem(
-      String image, String title, String subtitle, Color subtitleColor) {
+  Widget _buildPharmacyItem(String image, String title, String subtitle, Color subtitleColor) {
     return Row(
       children: [
         ClipRRect(
@@ -572,7 +600,7 @@ class FirstScreen extends StatelessWidget {
             Text(
               title,
               style:
-                  Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
+              Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
             ),
             Text(
               subtitle,
@@ -587,7 +615,10 @@ class FirstScreen extends StatelessWidget {
     );
   }
 
-  void _showBottomSheet(BuildContext context, String balance) {
+  void _showBottomSheet(
+    BuildContext context,
+    CurrencyModel currencies,
+  ) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -597,7 +628,7 @@ class FirstScreen extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(20))),
           width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
             child: Column(
               children: [
                 Text(
@@ -607,76 +638,81 @@ class FirstScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                Row(
-                  children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.asset(
-                          'Assets/images/download.png',
-                          height: 40.h,
-                          width: 60.h,
-                        )),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text('TL', style: Styles.textStyleTitle14),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    Text('.', style: Styles.textStyleTitle14),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    Text('Turkish Lira', style: Styles.textStyleTitle14),
-                    Spacer(),
-                    Text(balance, style: Styles.textStyleTitle14),
-                  ],
-                ),
                 SizedBox(
-                  width: 5.h,
-                ),
-                Container(
-                  height: 0.5,
-                  padding: EdgeInsets.symmetric(vertical: 30),
-                  margin: EdgeInsets.only(right: 10, top: 10, bottom: 5),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Colors.grey.shade700, width: 0.2)),
-                ),
-                SizedBox(
-                  width: 5.h,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.snackbar('This Not Activity', '',
-                        backgroundColor: Colors.red, colorText: Colors.white);
-                  },
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            'Assets/images/2560px-Flag_of_the_United_States.svg.png',
-                            height: 40.h,
-                            width: 60.h,
-                          )),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text('USD', style: Styles.textStyleTitle14),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text('.', style: Styles.textStyleTitle14),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text('Dollar', style: Styles.textStyleTitle14),
-                      Spacer(),
-                      Text('', style: Styles.textStyleTitle14),
-                    ],
+                  height: MediaQuery.of(context).size.height / 4,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      bool isActive;
+                      if (currencies.currencies[index].active == true) {
+                        isActive = true;
+                      } else {
+                        isActive = false;
+                      }
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                  currencies.currencies[index].abbreviation ??
+                                      '',
+                                  style: Styles.textStyleTitle12
+                                      .copyWith(color: Colors.grey)),
+                              SizedBox(
+                                width: 20,
+                                child: Center(child: Text('--')),
+                              ),
+                              Text(currencies.currencies[index].name ?? '',
+                                  style: Styles.textStyleTitle14),
+                              Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  if (isActive == false) {
+                                    homeControllerGetData.requestAntherAccount(
+                                        currencyId:
+                                            "${currencies.currencies[index].id}" ??
+                                                '0');
+                                  }
+                                },
+                                child: Container(
+                                    width: 80.w,
+                                    height: 50.h,
+                                    decoration: BoxDecoration(
+                                        color: isActive
+                                            ? Colors.green
+                                            : Colors.red,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    padding: EdgeInsets.all(10),
+                                    child: Center(
+                                      child: Text(
+                                          isActive ? 'Active' : 'NoActive',
+                                          style: Styles.textStyleTitle14
+                                              .copyWith(color: Colors.white)),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 5.h,
+                          ),
+                          Container(
+                            height: 0.5,
+                            padding: EdgeInsets.symmetric(vertical: 30),
+                            margin:
+                                EdgeInsets.only(right: 10, top: 10, bottom: 5),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey.shade700, width: 0.2)),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: currencies.currencies.length,
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -685,3 +721,34 @@ class FirstScreen extends StatelessWidget {
     );
   }
 }
+// InkWell(
+// onTap: () {
+// Get.snackbar('This Not Activity', '',
+// backgroundColor: Colors.red, colorText: Colors.white);
+// },
+// child: Row(
+// children: [
+// ClipRRect(
+// borderRadius: BorderRadius.circular(50),
+// child: Image.asset(
+// 'Assets/images/2560px-Flag_of_the_United_States.svg.png',
+// height: 40.h,
+// width: 60.h,
+// )),
+// SizedBox(
+// width: 8,
+// ),
+// Text('USD', style: Styles.textStyleTitle14),
+// SizedBox(
+// width: 3,
+// ),
+// Text('.', style: Styles.textStyleTitle14),
+// SizedBox(
+// width: 3,
+// ),
+// Text('Dollar', style: Styles.textStyleTitle14),
+// Spacer(),
+// Text('', style: Styles.textStyleTitle14),
+// ],
+// ),
+// ),

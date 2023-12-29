@@ -27,7 +27,7 @@ class SignUpTwo extends StatelessWidget {
                   icon: Icon(Icons.arrow_back)),
             ),
             HeadFirstTitle(title: 'Enter your information', des: ''),
-            SizedBox(height: 80.h),
+            SizedBox(height: 50.h),
             CustomTextFormField(
                 hintText: 'First name',
                 controller: controller.firstNameControllerSignUpTwo,

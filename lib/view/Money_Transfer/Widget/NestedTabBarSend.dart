@@ -185,12 +185,12 @@ class ContactListPage extends StatelessWidget {
 
                 return InkWell(
                   onTap: () {
-                    if (photo != null) {
+                    if (firstName != null) {
                       Get.to(() => AmountSendScreenId(
                             modelCurrencies: "1",
                             modelReceiver: '$contactId',
                             name: firstName ?? '',
-                            img: photo,
+                            img: photo ?? "",
                             endPoint: 'send_amount_ID',
                           ));
                     }
@@ -202,7 +202,8 @@ class ContactListPage extends StatelessWidget {
                         : Text('$firstName $lastName'),
                     subtitle: Text(
                         (contact.isNotEmpty ? contact : 'لا يوجد رقم هاتف')),
-                    trailing: photo == null ? SizedBox() : Icon(Icons.check),
+                    trailing:
+                        firstName == null ? SizedBox() : Icon(Icons.check),
                   ),
                 );
               } else {
@@ -303,34 +304,11 @@ class MbagNumberTabBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: 55,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Easy address',
-                            style: Styles.textStyleTitle20.copyWith(
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 SizedBox(height: 40.h),
                 CustomTextFormField(
                   hintText: 'MBAG NUMBER / IBAN ',
-                  suffix: Icon(
-                    Icons.camera_alt,
-                    color: Colors.black,
-                  ),
                   controller: controller.mbagNumberController,
                 ),
                 Spacer(),

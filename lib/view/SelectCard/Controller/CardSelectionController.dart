@@ -9,7 +9,7 @@ class CardController extends GetxController {
   List<CardItem> cardsListItems = [];
   var isLoading = true.obs;
   var imageItemList = <ImageItem>[].obs;
-  var selectedCardId = Rxn<int>();
+  var selectedCardId = 2.obs;
   var selectedCardImages = Rxn<int>();
   var selectedCardColors = <String>[].obs;
 
@@ -71,20 +71,23 @@ class CardController extends GetxController {
   }
 
   void selectCard(int id) {
-    selectedCardId.value = 1;
     selectedCardId.value = id;
   }
 
-  void navigateToFullSizeImage(String imageUrl, BuildContext context) {
-    Get.to(() => DetailsCardScreen(imageUrl: imageUrl),
-        transition: Transition.fade, duration: Duration(milliseconds: 500));
+  void navigateToFullSizeImage(CardItem selectedCard, int index) {
+    Get.to(
+        () => DetailsCardScreen(
+              selectedCard: selectedCard,
+              index: index,
+            ),
+        transition: Transition.fade,
+        duration: Duration(milliseconds: 500));
   }
 
   void selectCardColor(String color) {
     if (selectedCardColors.contains(color)) {
       selectedCardColors.remove(color);
     } else {
-      // Allow maximum 2 selected colors
       if (selectedCardColors.length < 2) {
         selectedCardColors.add(color);
       }
@@ -93,12 +96,14 @@ class CardController extends GetxController {
 
   void pageForward() {
     pageController.value.nextPage(
-        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.fastLinearToSlowEaseIn);
   }
 
   void pageBack() {
     pageController.value.previousPage(
-        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.fastEaseInToSlowEaseOut);
   }
 
   @override

@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../Home_View/controller/HomeGetData.dart';
 import '../../QrTransaction/model/ScanModel.dart';
 import '../Controller/AmountSendController.dart';
 
 class AmountSendScreen extends StatelessWidget {
   final AmountSendController controller = Get.put(AmountSendController());
+  final HomeControllerGetData homeControllerGetData = Get.find();
   final ApiResponseCheckScan model;
   String endPoint;
 
@@ -37,13 +39,16 @@ class AmountSendScreen extends StatelessWidget {
                     ),
                     Text('Send Money', style: Styles.textStyleTitle24),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.back();
+                      },
                       icon: const Icon(Icons.close),
                     )
                   ],
                 ),
                 SizedBox(height: 24.h),
                 // ... Your existing UI code with style improvements
+
                 Container(
                   height: 80.h,
                   width: 80.h,
@@ -52,18 +57,18 @@ class AmountSendScreen extends StatelessWidget {
                     border:
                         Border.all(color: const Color(0XffE0E0E0), width: 1),
                   ),
-                  child: Image.network(
-                    model.receiver.img,
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Icon(Icons.account_circle, size: 40),
-                      );
-                    },
-                    fit: BoxFit.fill,
-                    height: 55.h,
-                    width: 50.w,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(41),
+                    child: Image.network(
+                      model.receiver.img,
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: Icon(Icons.account_circle, size: 60),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -81,13 +86,14 @@ class AmountSendScreen extends StatelessWidget {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    width: 190.w,
+                    width: 150.w,
+                    height: 33.h,
                     padding:
-                        EdgeInsets.symmetric(horizontal: 4.h, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
                               offset: Offset(0.5, 1.5),
                               blurRadius: 3,
@@ -95,24 +101,25 @@ class AmountSendScreen extends StatelessWidget {
                               spreadRadius: 0.1,
                               color: Colors.grey)
                         ]),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('Turkish Lira',
+                        Text(
+                            homeControllerGetData.homeModel.currency?.name ??
+                                '',
                             style: TextStyle(
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w400)),
+                                fontWeight: FontWeight.bold)),
                         SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.flag_circle,
-                          color: Colors.red,
+                          width: 8,
                         ),
                         SizedBox(
                           width: 3,
                         ),
-                        Text('TL',
+                        Text(
+                            homeControllerGetData
+                                    .homeModel.currency?.abbreviation ??
+                                '',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
@@ -186,7 +193,7 @@ class AmountSendScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: ButtomsNotBorder(
                       text: 'continue',
-                      color: Color(0XFFE0E0E0),
+                      color: Colors.black,
                       onPressed: () {
                         controller.input.value == "0"
                             ? Get.snackbar("Warning!", 'Please Enter Number',
@@ -244,6 +251,8 @@ class AmountSendScreen extends StatelessWidget {
 
 class AmountSendScreenId extends StatelessWidget {
   final AmountSendController controller = Get.put(AmountSendController());
+  final HomeControllerGetData homeControllerGetData = Get.find();
+
   String modelReceiver;
   String modelCurrencies;
   String name;
@@ -280,7 +289,9 @@ class AmountSendScreenId extends StatelessWidget {
                     ),
                     Text('Send Money', style: Styles.textStyleTitle24),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.back();
+                      },
                       icon: const Icon(Icons.close),
                     )
                   ],
@@ -296,14 +307,14 @@ class AmountSendScreenId extends StatelessWidget {
                         Border.all(color: const Color(0XffE0E0E0), width: 1),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(41),
                     child: Image.network(
                       img,
                       errorBuilder: (BuildContext context, Object error,
                           StackTrace? stackTrace) {
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(25),
-                          child: Icon(Icons.account_circle, size: 40),
+                          child: Icon(Icons.account_circle, size: 60),
                         );
                       },
                     ),
@@ -324,13 +335,14 @@ class AmountSendScreenId extends StatelessWidget {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    width: 190.w,
+                    width: 150.w,
+                    height: 33.h,
                     padding:
-                        EdgeInsets.symmetric(horizontal: 4.h, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
                               offset: Offset(0.5, 1.5),
                               blurRadius: 3,
@@ -338,24 +350,25 @@ class AmountSendScreenId extends StatelessWidget {
                               spreadRadius: 0.1,
                               color: Colors.grey)
                         ]),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('Turkish Lira',
+                        Text(
+                            homeControllerGetData.homeModel.currency?.name ??
+                                '',
                             style: TextStyle(
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w400)),
+                                fontWeight: FontWeight.bold)),
                         SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.flag_circle,
-                          color: Colors.red,
+                          width: 8,
                         ),
                         SizedBox(
                           width: 3,
                         ),
-                        Text('TL',
+                        Text(
+                            homeControllerGetData
+                                    .homeModel.currency?.abbreviation ??
+                                '',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold)),
@@ -429,7 +442,7 @@ class AmountSendScreenId extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: ButtomsNotBorder(
                       text: 'continue',
-                      color: Color(0XFFE0E0E0),
+                      color: Colors.black,
                       onPressed: () {
                         controller.input.value == "0"
                             ? Get.snackbar("Warning!", 'Please Enter Number',

@@ -1,3 +1,4 @@
+import 'package:MBAG/view/Home_View/model/HomeModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
@@ -43,6 +44,8 @@ class ShimmerLoadingHome extends StatelessWidget {
                   },
                   onPressed2: () {},
                   onPressed3: () {},
+                  currency: CurrencyHome(
+                      id: 0, name: '', active: false, abbreviation: ''),
                 ),
               ),
               SizedBox(height: 25),

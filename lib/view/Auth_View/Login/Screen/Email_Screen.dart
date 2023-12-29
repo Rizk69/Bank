@@ -67,9 +67,7 @@ class EmailScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 25),
           child: ButtomsNotBorder(
             text: 'Continue',
-            color: controllerLogin.isFormValid.value
-                ? const Color(0XFFD9D9D9)
-                : Colors.lightBlue,
+            color: Colors.black,
             onPressed: () {
               print('Email Text: ${controllerLogin.email.text}');
               if (controllerLogin.email.text.isNotEmpty) {

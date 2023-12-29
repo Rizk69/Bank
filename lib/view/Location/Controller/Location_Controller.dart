@@ -9,11 +9,10 @@ import '../model/NearestBranchMdel.dart';
 class LocationController extends GetxController {
   late Rx<Position?> nearestPosition = Rx<Position?>(null);
   late Rx<Position?> currentPosition = Rx<Position?>(null);
-  late NearestBranchModel _nearestBranchModel =
-  NearestBranchModel(); // Initialize _nearestBranchModel
+  late NearestBranchModel _nearestBranchModel = NearestBranchModel();
 
   NearestBranchModel get nearestBranchModel => _nearestBranchModel;
-  var isLoading = true.obs; // Start with loading as true
+  var isLoading = true.obs;
 
   @override
   void onInit() async {
@@ -31,19 +30,21 @@ class LocationController extends GetxController {
         );
 
         currentPosition.value = position;
-        await addCurrentPosition();
-        update();
       } else if (status.isDenied) {
-        // إذا قام المستخدم برفض الوصول إلى الموقع
-        // يمكنك إظهار رسالة توضيحية وتوجيه المستخدم لتفعيل الوصول في إعدادات الجهاز
+        update();
         showLocationPermissionDialog();
       } else if (status.isPermanentlyDenied) {
+        update();
         // إذا قام المستخدم برفض الوصول بشكل دائم
         // يمكنك إظهار رسالة توضيحية وتوجيه المستخدم لتفعيل الوصول في إعدادات الجهاز
         showLocationPermissionDialog();
       }
     } catch (e) {
       print("Error: $e");
+    } finally {
+      fetchDataNearestBranch(
+          lat: "${currentPosition.value?.latitude}",
+          long: "${currentPosition.value?.longitude}");
     }
   }
 
@@ -69,33 +70,15 @@ class LocationController extends GetxController {
     );
   }
 
-  Future<void> addCurrentPosition() async {
+  Future<void> fetchDataNearestBranch(
+      {required String lat, required String long}) async {
     try {
       final response = await HttpHelper.postData(
-        endpoint: "add_location_user",
-        body: {
-          "lat": currentPosition.value?.latitude,
-          "long": currentPosition.value?.longitude,
-          "place": 'CurrentLocation',
-          "address": 'CurrentLocation',
-        },
-      );
-      if (response["status"] == true) {
-        isLoading.value = false;
-        update();
-        fetchDataNearestBranch();
-      }
-    } catch (e) {
-      // Handle errors here
-      print('Error: $e');
-      isLoading.value = false; // Set loading to false on error
-    }
-  }
-
-  Future<void> fetchDataNearestBranch() async {
-    try {
-      final response = await HttpHelper.getData(
         endpoint: "get_branches_user",
+        body: {
+          "lat": lat,
+          "long": long,
+        },
       );
       if (response["status"] == true) {
         _nearestBranchModel = NearestBranchModel.fromJson(response);
@@ -132,14 +115,14 @@ class LocationController extends GetxController {
             // Access other properties as needed
           }
         }
+        isLoading.value = false;
       } else {
-        // If the server did not return a 200 OK response,
-        // throw an exception.
         throw Exception('Failed to load data');
       }
     } catch (e) {
       // Handle errors here
       print('Error: $e');
+      isLoading.value = false;
     }
   }
 }

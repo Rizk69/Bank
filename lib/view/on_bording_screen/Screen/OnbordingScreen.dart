@@ -110,7 +110,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
           text: controller.selectedIndex == 2 ? 'Get Start' : 'Login',
           color: Colors.white,
           onPressed: () {
-            Get.offAll(() => LoginScreen());
+            Get.to(() => LoginScreen());
           },
           colorText: Colors.black,
         ),
@@ -119,7 +119,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
           text: 'Create Account',
           color: Colors.black,
           onPressed: () {
-            Get.offAll(() => SignUpScreen());
+            Get.to(() => SignUpScreen());
           },
           colorText: Colors.white,
         ),

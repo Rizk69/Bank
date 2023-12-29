@@ -89,6 +89,7 @@ class RegisterController extends GetxController {
     print('start');
     print(mobileNumberControllerSignUp.text);
     isLoading.value = true;
+    print(idControllerSignUp.text);
 
     try {
       final response = await HttpHelper.postData(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/http_helper.dart';
@@ -16,10 +17,12 @@ class HomeControllerGetData extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Check if data is already loaded before making the initial API call
+
     if (!isDataLoaded.value) {
       getDataHome();
     }
+
+    getDataCurrency();
   }
 
   Future<void> refreshDataHome() async {
@@ -60,6 +63,31 @@ class HomeControllerGetData extends GetxController {
     }
   }
 
+  Future<void> requestAntherAccount({
+    required String currencyId,
+  }) async {
+    try {
+      final response = await HttpHelper.getData(
+        endpoint: 'request_anther_account/$currencyId',
+      );
+
+      if (response["status"] == true) {
+        Get.snackbar('successfully', response["message"],
+            backgroundColor: Colors.green, colorText: Colors.white);
+      } else {
+        Get.snackbar('ineffectively', response["message"],
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } catch (error) {
+      Get.snackbar('ineffectively', error.toString(),
+          backgroundColor: Colors.red, colorText: Colors.white);
+
+      print(error);
+    } finally {
+      update();
+    }
+  }
+
   bool isResponseValid(Map<String, dynamic> response) {
     return response.containsKey("status") &&
         response["status"] is bool &&
@@ -89,6 +117,7 @@ class HomeControllerGetData extends GetxController {
         endpoint: "get_currencies",
       );
       if (response["status"] == true) {
+        print(response);
         _currencyModel = CurrencyModel.fromJson(response);
         update();
       } else {

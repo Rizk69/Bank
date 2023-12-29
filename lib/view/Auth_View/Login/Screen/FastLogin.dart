@@ -43,7 +43,7 @@ class FastLogin extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 25, left: 30, right: 30),
             child: ButtomsNotBorder(
               text: 'Continue',
-              color: Color(0XFFD9D9D9),
+              color: Colors.black,
               onPressed: () {
                 String pin = controllerPin.pinController.text;
                 controller.checkPassword(password: pin, context: context);

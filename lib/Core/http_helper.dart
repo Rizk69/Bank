@@ -96,7 +96,6 @@ class HttpHelper {
           'Accept': 'application/json',
           'Accept-Language': 'en',
           'User-Agent': 'PostmanRuntime/7.36.0',
-          // 'Accept-Encoding': 'gzip, deflate, br',
           'Connection': 'keep-alive',
         },
       );
