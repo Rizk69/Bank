@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/http_helper.dart';
-import '../../Auth_View/Login/Controller/Login_Controller.dart';
 import '../../MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
 
 class AmountSendController extends GetxController {

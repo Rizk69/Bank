@@ -12,25 +12,26 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Your splash screen UI here
-    splashController.navigateToNextScreen(); // Trigger navigation here
+    splashController.navigateToNextScreen();
 
     return Scaffold(
-      body: Stack(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: Image.asset('Assets/images/MBAG.png', height: 200.h),
           ),
-          Positioned(
-            top: 50,
-            child: Buttoms(
-                text: 'Clear',
-                color: Colors.white,
-                onPressed: () {
-                  CacheHelper.clearData();
-                },
-                colorText: Colors.black),
-          )
+          // Positioned(
+          //   top: 50,
+          //   child: Buttoms(
+          //       text: 'Clear',
+          //       color: Colors.white,
+          //       onPressed: () {
+          //         CacheHelper.clearData();
+          //       },
+          //       colorText: Colors.black),
+          // )
         ],
       ),
     );

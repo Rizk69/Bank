@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../helper/Dark/SettingsController.dart';
 import '../../Home_View/controller/HomeGetData.dart';
 import '../../QrTransaction/model/ScanModel.dart';
 import '../Controller/AmountSendController.dart';
@@ -20,6 +21,8 @@ class AmountSendScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -47,7 +50,6 @@ class AmountSendScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 24.h),
-                // ... Your existing UI code with style improvements
 
                 Container(
                   height: 80.h,
@@ -55,12 +57,12 @@ class AmountSendScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     border:
-                        Border.all(color: const Color(0XffE0E0E0), width: 1),
+                    Border.all(color: const Color(0XffE0E0E0), width: 1),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(41),
                     child: Image.network(
-                      model.receiver.img,
+                      model.receiver.img ?? '',
                       errorBuilder: (BuildContext context, Object error,
                           StackTrace? stackTrace) {
                         return ClipRRect(
@@ -77,7 +79,9 @@ class AmountSendScreen extends StatelessWidget {
                 Text(
                   model.receiver.firstName,
                   style: Styles.textStyleTitle16.copyWith(
-                      color: const Color(0Xff6A6969),
+                      color: settingsController.isDarkMode.value
+                          ? Colors.white
+                          : Color(0Xff6A6969),
                       fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
@@ -86,13 +90,15 @@ class AmountSendScreen extends StatelessWidget {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    width: 150.w,
+                    width: 180.w,
                     height: 33.h,
                     padding:
                         EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
+                        color: settingsController.isDarkMode.value
+                            ? Colors.black
+                            : Colors.white,
                         boxShadow: [
                           BoxShadow(
                               offset: Offset(0.5, 1.5),
@@ -108,7 +114,9 @@ class AmountSendScreen extends StatelessWidget {
                             homeControllerGetData.homeModel.currency?.name ??
                                 '',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: settingsController.isDarkMode.value
+                                    ? Colors.white
+                                    : Colors.grey,
                                 fontWeight: FontWeight.bold)),
                         SizedBox(
                           width: 8,
@@ -121,39 +129,52 @@ class AmountSendScreen extends StatelessWidget {
                                     .homeModel.currency?.abbreviation ??
                                 '',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: settingsController.isDarkMode.value
+                                    ? Colors.white
+                                    : Colors.grey,
                                 fontWeight: FontWeight.bold)),
                         SizedBox(
                           width: 5,
                         ),
-                        Icon(Icons.expand_more, color: Colors.grey, size: 18),
+                        Icon(Icons.expand_more,
+                            color: settingsController.isDarkMode.value
+                                ? Colors.white
+                                : Colors.grey,
+                            size: 18),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const ImageIcon(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                        ImageIcon(
                           AssetImage('Assets/images/Vector(9).png'),
-                          color: Colors.grey,
+                          color: settingsController.isDarkMode.value
+                              ? Colors.white
+                              : Colors.grey,
                           size: 30,
                         ),
-                        const SizedBox(width: 5),
+                        const SizedBox(width: 6),
                         Text(
                           controller.input.value,
-                          style:
-                              const TextStyle(fontSize: 36, color: Colors.grey),
+                          style: TextStyle(
+                              fontSize: 36,
+                              color: settingsController.isDarkMode.value
+                                  ? Colors.white
+                                  : Colors.grey),
                         ),
                       ],
-                    )),
+                )),
                 const SizedBox(height: 20),
                 Center(
                     child: Text(
-                  'Turkish Lira Balance ',
-                  style: Styles.textStyleTitle14
-                      .copyWith(color: const Color(0XFF6A6969)),
+                      'Turkish Lira Balance ',
+                  style: Styles.textStyleTitle14.copyWith(
+                      color: settingsController.isDarkMode.value
+                          ? Colors.white
+                          : Color(0XFF6A6969)),
                 )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -197,16 +218,16 @@ class AmountSendScreen extends StatelessWidget {
                       onPressed: () {
                         controller.input.value == "0"
                             ? Get.snackbar("Warning!", 'Please Enter Number',
-                                colorText: Colors.white,
-                                backgroundColor: Colors.red)
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red)
                             : controller.sendAmountMoney(
-                                endPoint: endPoint,
-                                receiverId:
-                                    model.receiver.receiverId.toString(),
-                                currencyId:
-                                    model.currencies.first.id.toString(),
-                                amount: controller.input.value,
-                                context: context);
+                            endPoint: endPoint,
+                            receiverId:
+                            model.receiver.receiverId.toString(),
+                            currencyId:
+                            model.currencies.first.id.toString(),
+                            amount: controller.input.value,
+                            context: context);
                       },
                       colorText: Colors.white,
                       isFormValid: true.obs,
@@ -221,22 +242,31 @@ class AmountSendScreen extends StatelessWidget {
   }
 
   Widget buildNumberButton(String number) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        disabledBackgroundColor: Colors.white,
+    final SettingsController settingsController = Get.find();
 
-        padding: EdgeInsets.all(16),
-        // Set padding
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), // Set border radius
+    return Obx(
+      () => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          disabledBackgroundColor:
+              settingsController.isDarkMode.value ? Colors.white : Colors.white,
+
+          padding: EdgeInsets.all(16),
+          // Set padding
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8), // Set border radius
+          ),
         ),
-      ),
-      onPressed: () => controller.appendNumber(number),
-      child: Text(
-        number,
-        style: TextStyle(fontSize: 25, color: Colors.black),
+        onPressed: () => controller.appendNumber(number),
+        child: Text(
+          number,
+          style: TextStyle(
+              fontSize: 25,
+              color: settingsController.isDarkMode.value
+                  ? Colors.white
+                  : Colors.black),
+        ),
       ),
     );
   }
@@ -270,6 +300,8 @@ class AmountSendScreenId extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -304,7 +336,7 @@ class AmountSendScreenId extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     border:
-                        Border.all(color: const Color(0XffE0E0E0), width: 1),
+                    Border.all(color: const Color(0XffE0E0E0), width: 1),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(41),
@@ -326,7 +358,9 @@ class AmountSendScreenId extends StatelessWidget {
                 Text(
                   name,
                   style: Styles.textStyleTitle16.copyWith(
-                      color: const Color(0Xff6A6969),
+                      color: settingsController.isDarkMode.value
+                          ? Colors.white
+                          : Color(0Xff6A6969),
                       fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
@@ -335,7 +369,7 @@ class AmountSendScreenId extends StatelessWidget {
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    width: 150.w,
+                    width: 180.w,
                     height: 33.h,
                     padding:
                         EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
@@ -367,7 +401,7 @@ class AmountSendScreenId extends StatelessWidget {
                         ),
                         Text(
                             homeControllerGetData
-                                    .homeModel.currency?.abbreviation ??
+                                .homeModel.currency?.abbreviation ??
                                 '',
                             style: TextStyle(
                                 color: Colors.grey,
@@ -382,28 +416,28 @@ class AmountSendScreenId extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const ImageIcon(
-                          AssetImage('Assets/images/Vector(9).png'),
-                          color: Colors.grey,
-                          size: 30,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          controller.input.value,
-                          style:
-                              const TextStyle(fontSize: 36, color: Colors.grey),
-                        ),
-                      ],
-                    )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const ImageIcon(
+                      AssetImage('Assets/images/Vector(9).png'),
+                      color: Colors.grey,
+                      size: 30,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      controller.input.value,
+                      style:
+                      const TextStyle(fontSize: 36, color: Colors.grey),
+                    ),
+                  ],
+                )),
                 const SizedBox(height: 20),
                 Center(
                     child: Text(
-                  'Turkish Lira Balance ',
-                  style: Styles.textStyleTitle14
-                      .copyWith(color: const Color(0XFF6A6969)),
-                )),
+                      'Turkish Lira Balance ',
+                      style: Styles.textStyleTitle14
+                          .copyWith(color: const Color(0XFF6A6969)),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -446,14 +480,14 @@ class AmountSendScreenId extends StatelessWidget {
                       onPressed: () {
                         controller.input.value == "0"
                             ? Get.snackbar("Warning!", 'Please Enter Number',
-                                colorText: Colors.white,
-                                backgroundColor: Colors.red)
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red)
                             : controller.sendAmountMoney(
-                                endPoint: endPoint,
-                                receiverId: modelReceiver,
-                                currencyId: modelCurrencies,
-                                amount: controller.input.value,
-                                context: context);
+                            endPoint: endPoint,
+                            receiverId: modelReceiver,
+                            currencyId: modelCurrencies,
+                            amount: controller.input.value,
+                            context: context);
                       },
                       colorText: Colors.white,
                       isFormValid: true.obs,
@@ -468,6 +502,8 @@ class AmountSendScreenId extends StatelessWidget {
   }
 
   Widget buildNumberButton(String number) {
+    final SettingsController settingsController = Get.find();
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
@@ -483,7 +519,11 @@ class AmountSendScreenId extends StatelessWidget {
       onPressed: () => controller.appendNumber(number),
       child: Text(
         number,
-        style: TextStyle(fontSize: 25, color: Colors.black),
+        style: TextStyle(
+            fontSize: 25,
+            color: settingsController.isDarkMode.value
+                ? Colors.white
+                : Colors.black),
       ),
     );
   }

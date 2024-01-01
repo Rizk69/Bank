@@ -25,7 +25,7 @@ class ItemsAccountDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: Styles.textStyleTitle18
+                      style: Styles.textStyleTitle16
                           .copyWith(fontWeight: FontWeight.w500)),
                   SizedBox(
                     height: 10.h,

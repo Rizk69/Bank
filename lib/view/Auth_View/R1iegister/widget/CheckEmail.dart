@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../helper/Dark/SettingsController.dart';
 import '../../Login/Controller/PinController.dart';
+import '../../Login/Controller/TimerController.dart';
 import '../../Login/Widget/HeadTitleDes.dart';
 import '../../Login/Widget/PinDisplay.dart';
 import '../controllers/register_controller.dart';
@@ -15,6 +17,9 @@ class CheckEmail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+    final MyTimerControllerRegisterEmail controllerTimer =
+        Get.put(MyTimerControllerRegisterEmail());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,22 +28,35 @@ class CheckEmail extends StatelessWidget {
               registerController.navigBack();
             },
             icon: Icon(Icons.arrow_back)),
-        HeadFirstTitle(
-            title: 'Check your Email ',
-            des:
-                'Check your email address and enter the \nverification code we had sent'),
-        // Center(
-        //   child: Text(
-        //     registerController.emailControllerSignUpOne.text,
-        //     style: Styles.textStyleTitle18.copyWith(color: Colors.grey),
-        //   ),
-        // ),
+        Center(
+          child: HeadFirstTitle(
+              title: 'Check your Email ',
+              des: 'Check your email address and enter the '),
+        ),
+        Center(
+          child: Text(
+            "verification code we had sent",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: settingsController.isDarkMode.value
+                    ? Colors.white
+                    : Colors.grey),
+          ),
+        ),
         SizedBox(height: 30.h),
         Center(
             child: PinputPassword(
           controller: controllerSinUpCheckEmail,
         )),
-        SizedBox(height: 2.h),
+        SizedBox(height: 30.h),
+        Obx(() => Center(
+            child: Text(
+                'Resend a code after ${controllerTimer.counter.value} s',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0XFF6A6969))))),
       ],
     );
   }

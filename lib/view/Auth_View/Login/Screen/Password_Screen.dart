@@ -6,6 +6,8 @@ import 'package:MBAG/view/Auth_View/Login/Controller/PinController.dart';
 import 'package:MBAG/view/Auth_View/Login/Widget/ButtomsNotBorder.dart';
 import 'package:MBAG/view/Auth_View/Login/Widget/PinDisplay.dart';
 
+import '../../../../helper/Dark/SettingsController.dart';
+
 class PasswordScreen extends StatelessWidget {
   final PinputControllerLogin controllerPin = Get.put(PinputControllerLogin());
   final LoginController controller = Get.put(LoginController());
@@ -15,6 +17,8 @@ class PasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,24 +26,28 @@ class PasswordScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 70.h),
-            const Center(
+            Center(
               child: Text(
                 'Enter your 6 digital ',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: settingsController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ),
             SizedBox(height: 8.h),
-            const Center(
+            Center(
               child: Text(
                 'PIN',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: settingsController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ),
@@ -61,12 +69,16 @@ class PasswordScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 25),
               child: ButtomsNotBorder(
                 text: 'Continue',
-                color: Colors.black,
+                color: settingsController.isDarkMode.value
+                    ? Colors.white
+                    : Colors.black,
                 onPressed: () {
                   String pin = controllerPin.pinController.text;
                   controller.checkPassword(context: context, password: pin);
                 },
-                colorText: Colors.white,
+                colorText: settingsController.isDarkMode.value
+                    ? Colors.black
+                    : Colors.white,
                 isFormValid: controller.isFormValid,
                 context: context,
               ),

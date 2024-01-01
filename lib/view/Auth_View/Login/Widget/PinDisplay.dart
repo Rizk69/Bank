@@ -1,6 +1,9 @@
 import 'package:MBAG/view/Auth_View/Login/Controller/PinController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+
+import '../../../../helper/Dark/SettingsController.dart';
 
 class PinputPassword extends StatelessWidget {
   BasePinputController controller;
@@ -9,16 +12,22 @@ class PinputPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
+    final SettingsController settingsController = Get.find();
+
+    var focusedBorderColor = settingsController.isDarkMode.value
+        ? Colors.orangeAccent
+        : Color.fromRGBO(23, 171, 144, 1);
     const fillColor = Color.fromRGBO(243, 246, 249, 0);
     const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
 
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: const TextStyle(
+      textStyle: TextStyle(
         fontSize: 22,
-        color: Color.fromRGBO(30, 60, 87, 1),
+        color: settingsController.isDarkMode.value
+            ? Colors.white
+            : Color.fromRGBO(30, 60, 87, 1),
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

@@ -78,7 +78,7 @@ class FastLoginController extends GetxController {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);
         if (response['message'].toString() == 'Unauthenticated.') {
-          CacheHelper.clearData();
+          CacheHelper.removeData(key: 'token');
           Duration(milliseconds: 200);
           Get.offAll(() => CupertinoOnboardingScreen());
         }

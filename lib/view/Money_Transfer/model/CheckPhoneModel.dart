@@ -1,7 +1,7 @@
 class ApiResponseCheck {
   final bool status;
   final String message;
-  final List<UserData> user;
+  late final List<UserData> user;
 
   ApiResponseCheck({
     required this.status,

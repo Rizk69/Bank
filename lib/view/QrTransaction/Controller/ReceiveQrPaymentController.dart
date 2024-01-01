@@ -25,7 +25,6 @@ class ReceiveQrPaymentController extends GetxController {
     isLoading = true.obs;
   }
 
-//
   Future<void> getQRClient() async {
     try {
       final response = await HttpHelper.getData(
@@ -72,19 +71,28 @@ class ReceiveQrPaymentController extends GetxController {
   }
 
   Future<void> shareQRCode() async {
-    final imageBytes = await getQrImageBytes();
+    try {
+      final imageBytes = await getQrImageBytes();
+      if (imageBytes == null || imageBytes.isEmpty) {
+        print('QR Code image bytes are null or empty');
+        return; // Handle this situation appropriately
+      }
 
-    final tempDir = await getTemporaryDirectory();
-    final tempFile = File('${tempDir.path}/qr_code.png');
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = File('${tempDir.path}/qr_code.png');
 
-    await tempFile.writeAsBytes(imageBytes);
+      await tempFile.writeAsBytes(imageBytes);
 
-    await Share.shareFiles(
-      [tempFile.path],
-      text: 'Share QR Code',
-      subject: 'QR Code',
-      mimeTypes: ['image/png'], // Specify PNG format
-    );
+      await Share.shareFiles(
+        [tempFile.path],
+        text: 'Share QR Code',
+        subject: 'QR Code',
+        mimeTypes: ['image/png'],
+      );
+    } catch (e) {
+      print('Error in shareQRCode: $e');
+      // Handle the error or show a message to the user
+    }
   }
 
   void updateQrCode(String newIdNumber) {

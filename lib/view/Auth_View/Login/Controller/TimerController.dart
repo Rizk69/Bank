@@ -11,9 +11,9 @@ class BaseMyTimerController extends GetxController {
   late RxBool isTimerRunning;
   late RxBool isTimerPaused;
 
-  var counter = 0.obs;
+  var counter = 60.obs;
   late Timer _timer;
-  static const int resendDelayInSeconds = 60; // Adjust as needed
+  static const int resendDelayInSeconds = 0;
 
   @override
   void onInit() {
@@ -21,8 +21,7 @@ class BaseMyTimerController extends GetxController {
     isTimerRunning = false.obs;
     isTimerPaused = false.obs;
 
-    startTimer(() {
-    });
+    startTimer(() {});
   }
 
   @override
@@ -33,16 +32,13 @@ class BaseMyTimerController extends GetxController {
   }
 
   void startTimer(Function onResend) {
-    // Set code as visible initially
-
-    const duration = Duration(seconds: 1); // Set the timer to run every second
+    const duration = Duration(seconds: 1);
     _timer = Timer.periodic(
       duration,
       (Timer timer) {
         if (!isTimerPaused.value) {
-          counter.value++;
+          counter.value--;
 
-          // If you want to stop the timer after a certain condition, you can add that logic here.
           if (counter.value == resendDelayInSeconds) {
             timer.cancel();
             onResend();
@@ -51,7 +47,6 @@ class BaseMyTimerController extends GetxController {
         }
       },
     );
-    // Set the flag to indicate that the timer is running
     isTimerRunning.value = true;
   }
 
@@ -61,39 +56,33 @@ class BaseMyTimerController extends GetxController {
   }
 
   void restartTimer(Function onResend) {
-    // Stop the timer if it's already running
     if (isTimerRunning.value) {
       stopTimer();
     }
-
-    // Reset the counter
-    counter.value = 0;
-
-    // Start the timer again
+    counter.value = 60;
     startTimer(onResend);
+    update();
   }
 
   void pauseTimer() {
-    // Set the flag to indicate that the timer is paused
     isTimerPaused.value = true;
   }
 
   void resumeTimer() {
-    // Set the flag to indicate that the timer is resumed
     isTimerPaused.value = false;
   }
 
   @override
   void onClose() {
-    // Stop the timer when the controller is closed
     stopTimer();
     super.onClose();
   }
 }
 
 class MyTimerControllerLogin extends BaseMyTimerController {
+  @override
   void onClose() {
-    stopTimer(); // Stop the timer when the screen changes
+    stopTimer();
     super.onClose();
   }
 
@@ -109,22 +98,44 @@ class MyTimerControllerLogin extends BaseMyTimerController {
   }
 }
 
-class MyTimerControllerRegister extends BaseMyTimerController {
+class MyTimerControllerRegisterPhoneorEmail extends BaseMyTimerController {
+  @override
   void onClose() {
-    stopTimer(); // Stop the timer when the screen changes
+    stopTimer();
     super.onClose();
   }
 
   @override
   void startTimer(Function onResend) {
     super.startTimer(() {
-      resendCode();
+      resendCodePhone();
     });
   }
 
-  void resendCode() {
+  void resendCodePhone() {
     if (controllerRegister.userId == 0) {
       controllerRegister.resendCode();
+    }
+  }
+}
+
+class MyTimerControllerRegisterEmail extends BaseMyTimerController {
+  @override
+  void onClose() {
+    stopTimer();
+    super.onClose();
+  }
+
+  @override
+  void startTimer(Function onResend) {
+    super.startTimer(() {
+      resendCodeEmail();
+    });
+  }
+
+  void resendCodeEmail() {
+    if (controllerRegister.userId == 0) {
+      controllerRegister.resendCodeEmail();
     }
   }
 }

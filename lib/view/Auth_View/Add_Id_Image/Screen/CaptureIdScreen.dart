@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../helper/Dark/SettingsController.dart';
 import '../../../on_bording_screen/Widget/buttom_.dart';
 import '../../Login/Widget/HeadTitleDes.dart';
 import '../Controller/CaptureIdController.dart';
@@ -11,6 +12,8 @@ class CameraScreenId extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -34,12 +37,12 @@ class CameraScreenId extends StatelessWidget {
                   des: 'take a photo for your personal id'),
               Center(
                   child: Text(
-                'from front',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey),
-              )),
+                    'from front',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey),
+                  )),
               SizedBox(height: 80.h),
               Container(
                 height: 350.h,
@@ -49,11 +52,15 @@ class CameraScreenId extends StatelessWidget {
               Spacer(),
               Buttoms(
                 text: "Take Front Photo",
-                color: Colors.black,
+                color: settingsController.isDarkMode.value
+                    ? Colors.white
+                    : Colors.black,
                 onPressed: () {
                   controller.takePictureFront(ImageSource.camera);
                 },
-                colorText: Colors.white,
+                colorText: settingsController.isDarkMode.value
+                    ? Colors.black
+                    : Colors.white,
               ),
             ],
           ),
@@ -68,6 +75,8 @@ class BackImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -78,60 +87,64 @@ class BackImageScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 60.h),
                 Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(Icons.arrow_back),
-                  ),
-                ),
-                HeadFirstTitle(
-                  title: 'Take a photo for your ID',
-                  des: 'Take a photo for your personal ID',
-                ),
-                Center(
-                  child: Text(
-                    'from back',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50.h),
-                Container(
-                  height: 350.h,
-                  width: 200.w,
-                  child: Image.asset('Assets/images/Id recognition.png'),
-                ),
-                Spacer(),
-                controller.backImage.value == null ||
-                        controller.backImage.value!.path.isEmpty
-                    ? Buttoms(
-                        text: "Take Back Photo",
-                        color: Colors.black,
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
                         onPressed: () {
-                          controller.takePictureBack(ImageSource.camera);
+                          Get.back();
                         },
-                        colorText: Colors.white,
-                      )
-                    : SizedBox(),
-                SizedBox(height: 16),
-                if (controller.isSubmitting.isTrue)
-                  CircularProgressIndicator(), // Show loading indicator
-                SizedBox(height: 16),
-                Buttoms(
-                  text: "Submit",
-                  color: Colors.black,
+                        icon: Icon(Icons.arrow_back),
+                      ),
+                    ),
+                    HeadFirstTitle(
+                      title: 'Take a photo for your ID',
+                      des: 'Take a photo for your personal ID',
+                    ),
+                    Center(
+                      child: Text(
+                        'from back',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 50.h),
+                    Container(
+                      height: 350.h,
+                      width: 200.w,
+                      child: Image.asset('Assets/images/Id recognition.png'),
+                    ),
+                    Spacer(),
+                    controller.backImage.value == null ||
+                        controller.backImage.value!.path.isEmpty
+                        ? Buttoms(
+                      text: "Take Back Photo",
+                      color: Colors.black,
+                      onPressed: () {
+                        controller.takePictureBack(ImageSource.camera);
+                      },
+                      colorText: Colors.white,
+                    )
+                        : SizedBox(),
+                    SizedBox(height: 16),
+                    if (controller.isSubmitting.isTrue)
+                      CircularProgressIndicator(), // Show loading indicator
+                    SizedBox(height: 16),
+                    Buttoms(
+                      text: "Submit",
+                  color: settingsController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.black,
                   onPressed: () {
                     controller.sendImagesToAPI();
                   },
-                  colorText: Colors.white,
+                  colorText: settingsController.isDarkMode.value
+                      ? Colors.black
+                      : Colors.white,
                 ),
-              ],
-            ),
+                  ],
+                ),
           ),
         ),
       ),
@@ -144,6 +157,8 @@ class CameraScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -167,12 +182,12 @@ class CameraScreen extends StatelessWidget {
                   des: 'please take a clear photo of '),
               Center(
                   child: Text(
-                'your face ',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey),
-              )),
+                    'your face ',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey),
+                  )),
               SizedBox(height: 100.h),
               InkWell(
                 onTap: () {
@@ -188,23 +203,27 @@ class CameraScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     Center(
                         child: Text(
-                      'Click here to take a selfie ',
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey),
-                    )),
+                          'Click here to take a selfie ',
+                          style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey),
+                        )),
                   ],
                 ),
               ),
               Spacer(),
               Buttoms(
                 text: "Continue",
-                color: Colors.black,
+                color: settingsController.isDarkMode.value
+                    ? Colors.white
+                    : Colors.black,
                 onPressed: () {
                   controller.takePhotoAndSendToAPI();
                 },
-                colorText: Colors.white,
+                colorText: settingsController.isDarkMode.value
+                    ? Colors.black
+                    : Colors.white,
               ),
             ],
           ),

@@ -61,6 +61,9 @@ dependencies:
   camera: ^0.10.5+6
   animated_background: ^2.0.0
   pull_to_refresh: ^2.0.0
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.9
+
 
 
 
@@ -106,6 +109,7 @@ flutter:
   assets:
     - Assets/svg/
     - Assets/images/
+    - Assets/translations/
 
   #   - images/a_dot_ham.jpeg
 

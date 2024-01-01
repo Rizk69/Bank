@@ -5,6 +5,7 @@ import '../../../../Core/http_helper.dart';
 
 class CountryController extends GetxController {
   late Countries _countryModel;
+  var selectedCountry = Rxn<CountryModel>(); // Nullable reactive variable
 
   Countries get countryModel => _countryModel;
 
@@ -16,6 +17,10 @@ class CountryController extends GetxController {
       message: "",
       country: [],
     );
+  }
+
+  void selectCountry(CountryModel country) {
+    selectedCountry.value = country;
   }
 
   Future<void> getCountry() async {

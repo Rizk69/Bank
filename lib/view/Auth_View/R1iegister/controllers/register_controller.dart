@@ -27,13 +27,12 @@ class RegisterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    CacheHelper.clearData();
-    initializeSharedPreferences();
+    // initializeSharedPreferences();
   }
 
-  Future<void> initializeSharedPreferences() async {
-    await CacheHelper.init();
-  }
+  // Future<void> initializeSharedPreferences() async {
+  //   await CacheHelper.init();
+  // }
 
   late Country selected;
   Rx<bool> agreedToTerms = false.obs;
@@ -185,6 +184,33 @@ class RegisterController extends GetxController {
     }
   }
 
+  Future<void> resendCodeEmail() async {
+    print('start');
+    isLoading.value = true;
+
+    try {
+      final response = await HttpHelper.postData(
+        endpoint: "resend_email_register",
+        body: {
+          'email': emailControllerSignUp,
+        },
+      );
+      if (response["status"] == true) {
+        print(response.toString());
+
+        Get.snackbar("Success!", response['message'],
+            backgroundColor: Colors.blue);
+      } else {
+        Get.snackbar("Warning!", response['message'],
+            backgroundColor: Colors.red);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> completeRegister() async {
     print('start');
     isLoading.value = true;
@@ -203,8 +229,9 @@ class RegisterController extends GetxController {
             'password': passwordControllerSignUpOne.text,
           },
         );
-        print(response.toString());
         if (response["status"] == true) {
+          print(response.toString());
+
           navigNext();
           Get.snackbar("Success!", response['message'],
               backgroundColor: Colors.blue);
@@ -225,14 +252,17 @@ class RegisterController extends GetxController {
   Future<void> checkEmail() async {
     print('start');
     isLoading.value = true;
-    await initializeSharedPreferences();
 
     try {
+      var _deviceToken = CacheHelper.getDataSharedPreference(key: 'fcmToken');
+      print(_deviceToken);
+
       final response = await HttpHelper.postData(
         endpoint: "check_email_register",
         body: {
           'email': emailControllerSignUp.text,
           'email_code': controllerPinCheckEmail.pinController.text,
+          'device_token': _deviceToken
         },
       );
       print(response.toString());

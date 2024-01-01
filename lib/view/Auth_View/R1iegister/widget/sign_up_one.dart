@@ -16,7 +16,6 @@ class SignUpOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initiate the country loading when the widget is built
     _countryController.getCountry();
 
     return Column(
@@ -27,67 +26,83 @@ class SignUpOne extends StatelessWidget {
           des: 'Sign up with email address or phone number',
         ),
         SizedBox(height: 30.h),
-        Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: FutureBuilder(
-                future: _countryController.getCountry(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    List<String> countryCodes = _countryController
-                        .countryModel.country
-                        .map((country) => country.code)
-                        .toList();
-                    List<String> countryNames = _countryController
-                        .countryModel.country
-                        .map((country) => country.name)
-                        .toList();
-                    List<String> countryImages = _countryController
-                        .countryModel.country
-                        .map((country) => country.img)
-                        .toList();
+        FutureBuilder(
+          future: _countryController.getCountry(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              List<String> countryCodes = _countryController
+                  .countryModel.country
+                  .map((country) => country.code)
+                  .toList();
+              List<String> countryNames = _countryController
+                  .countryModel.country
+                  .map((country) => country.name)
+                  .toList();
+              List<String> countryImages = _countryController
+                  .countryModel.country
+                  .map((country) => country.img)
+                  .toList();
 
-                    return CustomListPickerField(
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: CustomListPickerField(
                       label: "Country",
                       isRequired: true,
                       itemsCode: countryCodes,
                       itemsImage: countryImages,
-                      // Updated to countryImages
                       itemsName: countryNames,
                       onChanged: (value) {
                         final selectedCountry = _countryController
                             .countryModel.country
                             .firstWhere((country) => country.code == value);
+                        _countryController.selectCountry(selectedCountry);
                         registerController.idControllerSignUp.text =
                             selectedCountry.id.toString();
                         print("Selected Country ID: ${selectedCountry.id}");
                       },
-                    );
-                  } else {
-                    return SizedBox
-                        .shrink(); // Use SizedBox.shrink for a more appropriate placeholder
-                  }
-                },
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: CustomTextFormField(
-                maxLength: 11,
-                hintText: 'Enter phone number',
-                prefix: const Icon(Icons.phone_outlined, color: Colors.black),
-                textInputType: TextInputType.phone,
-                controller: registerController.mobileNumberControllerSignUp,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Phone number is empty'; // Updated the validation message
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Obx(() {
+                      var selectedCountryId =
+                          _countryController.selectedCountry.value?.id;
+
+                      var maxLength = 11;
+
+                      if (selectedCountryId != null &&
+                          selectedCountryId >= 0 &&
+                          selectedCountryId <
+                              _countryController.countryModel.country.length) {
+                        maxLength = _countryController
+                            .countryModel.country[selectedCountryId - 1].count;
+                      }
+
+                      return CustomTextFormField(
+                        maxLength: maxLength,
+                        hintText: 'Enter phone number',
+                        prefix: const Icon(Icons.phone_outlined,
+                            color: Colors.black),
+                        textInputType: TextInputType.phone,
+                        controller:
+                            registerController.mobileNumberControllerSignUp,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Phone number is empty'; // Updated the validation message
+                          }
+                          return null;
+                        },
+                      );
+                    }),
+                  ),
+                ],
+              );
+            } else {
+              return SizedBox.shrink();
+            }
+          },
         ),
         SizedBox(height: 2.h),
       ],

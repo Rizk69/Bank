@@ -10,15 +10,15 @@ import '../controllers/register_controller.dart';
 
 class SecurityCodeSignUp extends StatelessWidget {
   final PinputControllerSinUp controllerPin = Get.put(PinputControllerSinUp());
-  final MyTimerControllerRegister controllerTimer =
-      Get.put(MyTimerControllerRegister());
 
-  var registerController = Get.put(RegisterController());
+  RegisterController registerController = Get.find();
 
   SecurityCodeSignUp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final MyTimerControllerRegisterPhoneorEmail controllerTimer =
+        Get.put(MyTimerControllerRegisterPhoneorEmail());
     return Form(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,8 +40,8 @@ class SecurityCodeSignUp extends StatelessWidget {
           SizedBox(height: 30.h),
           Center(
               child: PinputPassword(
-            controller: controllerPin,
-          )),
+                controller: controllerPin,
+              )),
           SizedBox(height: 30.h),
           Obx(() => Center(
               child: Text(

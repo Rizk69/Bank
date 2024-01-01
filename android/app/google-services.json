@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "894905299441",
+    "project_id": "acwadwallet",
+    "storage_bucket": "acwadwallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894905299441:android:ca1c5273a11eceee29d450",
+        "android_client_info": {
+          "package_name": "at.mbag.tager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRQ9PXuxanOp0Iiic1R7IaJQN3YAmnn3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894905299441:android:0a02449ae42a406429d450",
+        "android_client_info": {
+          "package_name": "com.example.bank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRQ9PXuxanOp0Iiic1R7IaJQN3YAmnn3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894905299441:android:406023b9aff035ab29d450",
+        "android_client_info": {
+          "package_name": "com.example.tager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRQ9PXuxanOp0Iiic1R7IaJQN3YAmnn3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,18 +16,22 @@ import 'package:MBAG/view/SelectCard/Controller/CardSelectionController.dart';
 import 'package:MBAG/view/Transaction/controller/transaction_controller.dart';
 import 'package:get/get.dart';
 
+import '../view/NotificationView/Controller/Push_Notification.dart';
 import '../view/AccountDetails/Controller/AccountDetailsController.dart';
 import '../view/Home_View/Screens/first_screen.dart';
 import '../view/Money_Transfer/Controller/ContactControllerSend.dart';
 import '../view/Money_Transfer/Controller/MbagNumberController.dart';
 import '../view/Trader/Controller.dart';
+import 'Dark/SettingsController.dart';
 
 class Binding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => SettingsController());
     Get.lazyPut(() => HomeControllerGetData());
     Get.lazyPut(() => LoginController());
+    Get.lazyPut(() => NotificationController());
     Get.lazyPut(() => BasePinputController());
     Get.lazyPut(() => BaseMyTimerController());
     Get.lazyPut(() => TransactionController());

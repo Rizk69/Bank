@@ -1,4 +1,5 @@
 import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/helper/Dark/SettingsController.dart';
 import 'package:MBAG/view/Home_View/controller/HomeGetData.dart';
 import 'package:MBAG/view/Money_Transfer/Screen/Request_Money.dart';
 import 'package:MBAG/view/Money_Transfer/Screen/Send_Money.dart';
@@ -7,6 +8,7 @@ import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../helper/HelperScreenNerst.dart';
 import '../../QrTransaction/Screen/Qr_Scan_Screen.dart';
 import '../controller/contoller_home.dart';
 
@@ -14,6 +16,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final HomeController homeController = Get.put(HomeController());
+  final SettingsController settingsController = Get.find();
   final HomeControllerGetData _homeControllerGetData =
       Get.put(HomeControllerGetData());
 
@@ -31,41 +34,47 @@ class HomeScreen extends StatelessWidget {
   Widget bottomNavigationBar(BuildContext context) {
     return GetBuilder<HomeController>(
       init: HomeController(),
-      builder: (homeControllerBottomNav) => BottomNavigationBar(
-        enableFeedback: true,
-        selectedItemColor: Colors.grey,
-        unselectedItemColor: Colors.black,
-        currentIndex: homeControllerBottomNav.currentIndex,
-        onTap: (index) {
-          homeControllerBottomNav.changeIndex(index);
-          if (index == 1) {
-            _showBottomSheetQr(context, 'Bottom Sheet ${index + 1}');
-          } else if (index == 2) {
-            _showBottomSheet(context, 'Bottom Sheet ${index + 1}');
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('Assets/images/Vector(1).png')),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('Assets/images/Vector(2).png')),
-            label: 'QR Transaction ',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('Assets/images/Vector(3).png')),
-            label: 'Money Transfer ',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('Assets/images/Vector(4).png')),
-            label: 'Payments',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('Assets/images/Vector(5).png')),
-            label: 'MBAG Card',
-          ),
-        ],
+      builder: (homeControllerBottomNav) => Obx(
+        () => BottomNavigationBar(
+          elevation: 0,
+          backgroundColor:
+              settingsController.isDarkMode.value ? Colors.black : Colors.white,
+          selectedItemColor:
+              settingsController.isDarkMode.value ? Colors.white : Colors.grey,
+          unselectedItemColor:
+              settingsController.isDarkMode.value ? Colors.grey : Colors.black,
+          currentIndex: homeControllerBottomNav.currentIndex,
+          onTap: (index) {
+            homeControllerBottomNav.changeIndex(index);
+            if (index == 1) {
+              _showBottomSheetQr(context, 'Bottom Sheet ${index + 1}');
+            } else if (index == 2) {
+              _showBottomSheet(context, 'Bottom Sheet ${index + 1}');
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage('Assets/images/Vector(1).png')),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage('Assets/images/Vector(2).png')),
+              label: 'QR Transaction ',
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage('Assets/images/Vector(3).png')),
+              label: 'Money Transfer ',
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage('Assets/images/Vector(4).png')),
+              label: 'Payments',
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage('Assets/images/Vector(5).png')),
+              label: 'MBAG Card',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -82,7 +91,10 @@ class HomeScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                  color: settingsController.isDarkMode.value
+                      ? Colors.black
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(15)),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,6 +162,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -205,14 +220,17 @@ class HomeScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                  color: settingsController.isDarkMode.value
+                      ? Colors.black
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(15)),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   InkWell(
                       onTap: () {
-                        Get.to(SendMoneyScreen());
+                        Get.to(() => SendMoneyScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -271,7 +289,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        // Get.to(QrPay());
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -300,7 +320,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        // Get.to(QrPay());
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

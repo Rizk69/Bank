@@ -45,9 +45,6 @@ class QRCodeScannerController extends GetxController {
 
   Future<void> getQRScanClientFromImage() async {
     try {
-      // Implement your logic to process the image selected from the gallery
-      // For example, you can use a package like Firebase ML Kit for image processing
-      // After processing, update scannedData and call getQRScanClient
       scannedData.value = 'processed_data_from_image';
       getQRScanClient(scannedData.value);
     } catch (error) {
@@ -76,10 +73,9 @@ class QRCodeScannerController extends GetxController {
         endpoint: url,
       );
 
-      ApiResponseCheckScan apiResponse =
-          ApiResponseCheckScan.fromJson(response);
-
       if (response['status'] == true) {
+        ApiResponseCheckScan apiResponse =
+            ApiResponseCheckScan.fromJson(response);
         print(apiResponse.toString());
         Get.snackbar("Success!", response['message'],
             backgroundColor: Colors.blue);
@@ -88,7 +84,6 @@ class QRCodeScannerController extends GetxController {
               endPoint: 'send_amount',
             ));
         onClose();
-        // Set canScan to false to stop further scanning
         canScan = false;
       } else {
         Get.snackbar("Warning!", response['message'],

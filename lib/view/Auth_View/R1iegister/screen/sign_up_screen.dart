@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../Core/widgets/Button.dart';
 import '../../../../Core/widgets/Styles.dart';
+import '../../../../helper/Dark/SettingsController.dart';
 import '../../Login/Controller/TimerController.dart';
 import '../controllers/register_controller.dart';
 import '../widget/CheckEmail.dart';
@@ -19,11 +20,11 @@ List<Widget> screenRegister = [
 
 class SignUpScreen extends StatelessWidget {
   var registerController = Get.put(RegisterController());
-  final BaseMyTimerController _baseMyTimerController =
-      Get.put(BaseMyTimerController());
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -65,30 +66,29 @@ class SignUpScreen extends StatelessWidget {
                           height: 15.h,
                         ),
                         Obx(
-                          () => registerController.currentIndex.value < 4
+                              () => registerController.currentIndex.value < 4
                               ? Button(
-                                  textButton: "Continue",
-                                  function: () async {
-                                    if (registerController.currentIndex.value ==
-                                        0) {
-                                      await registerController.registerPhone();
-                                    }
-                                    if (registerController.currentIndex.value ==
-                                        1) {
-                                      await registerController.checkPhone();
-                                    }
-                                    if (registerController.currentIndex.value ==
-                                        2) {
-
-                                      await registerController
-                                          .completeRegister();
-                                    }
-                                    if (registerController.currentIndex.value ==
-                                        3) {
-                                      registerController.checkEmail();
-                                    }
-                                  },
-                                )
+                            textButton: "Continue",
+                            function: () async {
+                              if (registerController.currentIndex.value ==
+                                  0) {
+                                await registerController.registerPhone();
+                              }
+                              if (registerController.currentIndex.value ==
+                                  1) {
+                                await registerController.checkPhone();
+                              }
+                              if (registerController.currentIndex.value ==
+                                  2) {
+                                await registerController
+                                    .completeRegister();
+                              }
+                              if (registerController.currentIndex.value ==
+                                  3) {
+                                registerController.checkEmail();
+                              }
+                            },
+                          )
                               : const SizedBox.shrink(),
                         ),
                       ],

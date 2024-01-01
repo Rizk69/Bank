@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../helper/Dark/SettingsController.dart';
 import '../Controller/ControllerFastLogin.dart';
 import '../Controller/PinController.dart';
 import '../Widget/ButtomsNotBorder.dart';
@@ -19,6 +20,8 @@ class FastLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,12 +46,16 @@ class FastLogin extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 25, left: 30, right: 30),
             child: ButtomsNotBorder(
               text: 'Continue',
-              color: Colors.black,
+              color: settingsController.isDarkMode.value
+                  ? Colors.white
+                  : Colors.black,
               onPressed: () {
                 String pin = controllerPin.pinController.text;
                 controller.checkPassword(password: pin, context: context);
               },
-              colorText: Colors.white,
+              colorText: settingsController.isDarkMode.value
+                  ? Colors.black
+                  : Colors.white,
               isFormValid: isFormValid,
               context: context,
             ),

@@ -5,6 +5,7 @@ import 'package:MBAG/view/Auth_View/Login/Screen/Login_Screen.dart';
 import 'package:MBAG/view/on_bording_screen/Controller/On_Bording_Controller.dart';
 import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 
+import '../../../helper/Dark/SettingsController.dart';
 import '../../Auth_View/R1iegister/screen/sign_up_screen.dart';
 import '../Widget/onbording_logo_title.dart';
 
@@ -32,7 +33,6 @@ class CupertinoOnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: GetBuilder<CupertinoOnBoardingController>(
         init: CupertinoOnBoardingController(),
         builder: (controller) => Padding(
@@ -82,6 +82,8 @@ class CupertinoOnboardingScreen extends StatelessWidget {
   }
 
   Widget buildPageContent(int index) {
+    final SettingsController settingsController = Get.find();
+
     return Column(
       children: [
         const OnBordingLogoAndTitle(),
@@ -95,7 +97,9 @@ class CupertinoOnboardingScreen extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14.h,
-            color: Colors.grey.shade700,
+            color: settingsController.isDarkMode.value
+                ? Colors.white
+                : Colors.grey.shade700,
           ),
         ),
       ],

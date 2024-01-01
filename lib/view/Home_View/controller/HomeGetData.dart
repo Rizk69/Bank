@@ -21,15 +21,14 @@ class HomeControllerGetData extends GetxController {
     if (!isDataLoaded.value) {
       getDataHome();
     }
-
     getDataCurrency();
   }
 
   Future<void> refreshDataHome() async {
-    // Reset flags and fetch the data again
-
     isDataLoaded.value = false;
     isLoading.value = true;
+    getDataCurrency();
+
     update();
     await getDataHome();
   }
@@ -74,6 +73,8 @@ class HomeControllerGetData extends GetxController {
       if (response["status"] == true) {
         Get.snackbar('successfully', response["message"],
             backgroundColor: Colors.green, colorText: Colors.white);
+
+        refreshDataHome();
       } else {
         Get.snackbar('ineffectively', response["message"],
             backgroundColor: Colors.red, colorText: Colors.white);

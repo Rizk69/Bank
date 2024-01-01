@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Core/cache_helper.dart';
 import '../../../Core/widgets/Styles.dart';
+import '../../../helper/Dark/SettingsController.dart';
 import '../../on_bording_screen/Screen/OnbordingScreen.dart';
 import '../../on_bording_screen/Widget/buttom_.dart';
 import '../Controller/AccountDetailsController.dart';
@@ -12,6 +14,7 @@ import '../Widget/ItemsAccoutDetails.dart';
 class AccountDetailsScreen extends StatelessWidget {
   final AccountDetailsController userController =
       Get.put(AccountDetailsController());
+  final SettingsController settingsController = Get.put(SettingsController());
 
   AccountDetailsScreen({Key? key}) : super(key: key);
 
@@ -103,7 +106,7 @@ class AccountDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 10.h,
+                          width: 15.w,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,17 +121,37 @@ class AccountDetailsScreen extends StatelessWidget {
                               userController.userModel.user?.phone ?? '',
                               style: Styles.textStyleTitle16.copyWith(
                                   fontWeight: FontWeight.w400,
-                                  color: const Color(0Xff6A6969)),
+                                  color: Color(0Xff6A6969)),
                             ),
-                            Text(
-                              userController.userModel.user?.email ?? '',
-                              style: Styles.textStyleTitle16.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0Xff6A6969),
-                                  overflow: TextOverflow.visible),
+                            SizedBox(
+                              width: 170.w,
+                              child: Text(
+                                maxLines: 1,
+                                "${userController.userModel.user?.email}" ?? '',
+                                style: Styles.textStyleTitle16.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: Color(0Xff6A6969),
+                                    overflow: TextOverflow.ellipsis),
+                              ),
                             ),
                           ],
                         ),
+                        Spacer(),
+                        Column(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.language),
+                              onPressed: () => _showLanguageDialog(context),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.brightness_4),
+                              onPressed: () {
+                                settingsController.toggleDarkMode();
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     ),
                     SizedBox(
@@ -138,7 +161,9 @@ class AccountDetailsScreen extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: settingsController.isDarkMode.value
+                            ? Colors.black
+                            : Colors.white,
                         border: Border.all(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
@@ -189,20 +214,14 @@ class AccountDetailsScreen extends StatelessWidget {
                           userController.userModel.user?.balance ?? 'Empty',
                     ),
                     ItemsAccountDetails(
-                      title: 'Incoming amount limit',
-                      des: 'Unverified Approved or Verified',
-                      caption:
-                          "${userController.userModel.user?.limitReceptionDay}",
+                      title: 'The maximum limit\nof the credit card',
+                      des: '',
+                      caption: "${userController.userModel.user?.limitCart}",
                     ),
                     ItemsAccountDetails(
                       title: 'The maximum limit\nof the account',
                       des: '',
                       caption: "${userController.userModel.user?.limitAccount}",
-                    ),
-                    ItemsAccountDetails(
-                      title: 'The maximum limit\nof the credit card',
-                      des: '',
-                      caption: "${userController.userModel.user?.limitCart}",
                     ),
                     ItemsAccountDetails(
                       title: 'The maximum limit\nfor transfers in a day',
@@ -215,6 +234,12 @@ class AccountDetailsScreen extends StatelessWidget {
                       des: '',
                       caption:
                           "${userController.userModel.user?.limitTransferManth}",
+                    ),
+                    ItemsAccountDetails(
+                      title: 'Incoming amount limit',
+                      des: 'Unverified Approved or Verified',
+                      caption:
+                          "${userController.userModel.user?.limitReceptionDay}",
                     ),
                     ItemsAccountDetails(
                       title: 'The maximum limit\nfor receiving in a month',
@@ -306,6 +331,31 @@ class AccountDetailsScreen extends StatelessWidget {
                 ),
               ),
             )),
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    // عرض قائمة اللغات للمستخدم
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choose Language'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: const Text('English'),
+                onTap: () => settingsController.changeLanguage('en', 'US'),
+              ),
+              ListTile(
+                title: const Text('العربية'),
+                onTap: () => settingsController.changeLanguage('ar', 'SA'),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

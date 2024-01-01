@@ -1,7 +1,10 @@
 import 'package:MBAG/view/Location/Screens/Location%20Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
+import '../../../helper/Dark/SettingsController.dart';
 import '../../../helper/HelperScreenNerst.dart';
 
 class DepositAndWithdraw extends StatelessWidget {
@@ -13,102 +16,127 @@ class DepositAndWithdraw extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        InkWell(
-          onTap: () {
-            Get.to(() => SlideDownTextAnimation(
-                  appBarView: true,
-                ));
-          },
-          child: Column(
-            children: [
-              ImageIcon(
-                  AssetImage(
-                    'Assets/images/Vector(8).png',
-                  ),
-                  size: 26,
-                  color: Colors.red),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Witdraw',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400),
-              )
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Row(
+    final SettingsController settingsController = Get.find();
+
+    return Obx(
+      () => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () {
+              Get.to(() => SlideDownTextAnimation(
+                    appBarView: true,
+                  ));
+            },
+            child: Column(
               children: [
-                const ImageIcon(
-                  AssetImage('Assets/images/Vector(9).png'),
-                  color: Colors.black,
-                  size: 30,
-                ),
-                const SizedBox(
-                  width: 3,
+                ImageIcon(
+                    AssetImage(
+                      'Assets/images/Vector(8).png',
+                    ),
+                    size: 26,
+                    color: Colors.red),
+                SizedBox(
+                  height: 5,
                 ),
                 Text(
-                  balance,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                const Text(
-                  'MBAG Number:  ',
+                  'Witdraw',
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
                       fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  '${accountNumber}',
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
-                ),
+                )
               ],
-            )
-          ],
-        ),
-        InkWell(
-          onTap: () {
-            Get.to(() => LocationScreen());
-          },
-          child: Column(
+            ),
+          ),
+          Column(
             children: [
-              ImageIcon(AssetImage('Assets/images/icons8_plus.png'),
-                  size: 34, color: Colors.green),
+              Row(
+                children: [
+                  ImageIcon(
+                    AssetImage('Assets/images/Vector(9).png'),
+                    color: settingsController.isDarkMode.value
+                        ? Colors.white
+                        : Colors.black,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                  Text(
+                    balance,
+                    style: TextStyle(
+                        color: settingsController.isDarkMode.value
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 37,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.visible),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: 5,
               ),
-              Text(
-                'Deposit',
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400),
+              Row(
+                children: [
+                  Text(
+                    'MBAG Number:  ',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: settingsController.isDarkMode.value
+                            ? Colors.white
+                            : Colors.grey,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: accountNumber));
+                      // Optionally, show a message that the text has been copied.
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Account number copied to clipboard'),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      '$accountNumber',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: settingsController.isDarkMode.value
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
               )
             ],
           ),
-        ),
-      ],
+          InkWell(
+            onTap: () {
+              Get.to(() => LocationScreen());
+            },
+            child: Column(
+              children: [
+                ImageIcon(AssetImage('Assets/images/icons8_plus.png'),
+                    size: 34, color: Colors.green),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'Deposit',
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w400),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

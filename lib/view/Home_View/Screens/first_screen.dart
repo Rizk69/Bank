@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:MBAG/view/Home_View/model/HomeModel.dart' as HomeModel;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../helper/Dark/SettingsController.dart';
 import '../../../helper/Data.dart';
 import '../../../helper/HelperScreenNerst.dart';
 import '../../AccountDetails/Controller/AccountDetailsController.dart';
@@ -24,10 +25,12 @@ import '../model/HomeModel.dart';
 class FirstScreen extends StatelessWidget {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  final SettingsController settingsController = Get.find();
 
   final AccountDetailsController userController =
       Get.put(AccountDetailsController());
-  final HomeControllerGetData homeControllerGetData = Get.find();
+  final HomeControllerGetData homeControllerGetData =
+      Get.put(HomeControllerGetData());
 
   FirstScreen({Key? key}) : super(key: key);
 
@@ -60,8 +63,8 @@ class FirstScreen extends StatelessWidget {
                       ItemsFirstHome(
                         onPressed1: () {
                           Get.to(() => SlideDownTextAnimation(
-                            appBarView: true,
-                          ));
+                                appBarView: true,
+                              ));
                         },
                         onPressed2: () {
                           _showBottomSheet(
@@ -86,24 +89,24 @@ class FirstScreen extends StatelessWidget {
                       DepositAndWithdraw(
                         balance: homeController.homeModel.user?.balance ?? '',
                         accountNumber:
-                        homeController.homeModel.user?.accountNumber ?? '',
+                            homeController.homeModel.user?.accountNumber ?? '',
                       ),
                       SizedBox(height: 15.h),
                       homeController.homeModel.user?.froutid != null
                           ? SizedBox()
                           : InkWell(
-                          onTap: () {
-                            Get.to(() => CameraScreenId());
-                          },
-                          child: _cheakIdCard()),
+                              onTap: () {
+                                Get.to(() => CameraScreenId());
+                              },
+                              child: _cheakIdCard()),
                       SizedBox(height: 15.h),
                       homeController.homeModel.user?.img != null
                           ? SizedBox()
                           : InkWell(
-                          onTap: () {
-                            Get.to(() => CameraScreen());
-                          },
-                          child: _buildProfilePhotoContainer()),
+                              onTap: () {
+                                Get.to(() => CameraScreen());
+                              },
+                              child: _buildProfilePhotoContainer()),
                       homeController.homeModel.user?.img != null
                           ? SizedBox()
                           : SizedBox(height: 25.h),
@@ -156,7 +159,10 @@ class FirstScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                  color: settingsController.isDarkMode.value
+                      ? Colors.black87
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(15)),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +213,11 @@ class FirstScreen extends StatelessWidget {
                     decoration: BoxDecoration(color: Color(0xffA6ABBD)),
                   ),
                   InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
+                      },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 10),
@@ -235,7 +245,9 @@ class FirstScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        // Get.to(QrPay());
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -264,7 +276,9 @@ class FirstScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        // Get.to(QrPay());
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -293,7 +307,9 @@ class FirstScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Buttoms(
                   text: 'Cancel',
-                  color: Colors.black,
+                  color: settingsController.isDarkMode.value
+                      ? Colors.black
+                      : Colors.black,
                   onPressed: () {
                     Get.back();
                   },
@@ -309,102 +325,108 @@ class FirstScreen extends StatelessWidget {
   }
 
   Widget _buildProfilePhotoContainer() {
-    return Container(
-      width: double.infinity,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            spreadRadius: 0.1,
-            blurRadius: 8,
-            offset: Offset(1, 0.5),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey, width: 1.5),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: Colors.grey, width: 0.5),
-              ),
-              child: const ImageIcon(
-                AssetImage('Assets/images/line-md_account.png'),
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(width: 10.h),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Add Profile Photo', style: Styles.textStyleTitle16),
-                Text('You can add a photo', style: Styles.textStyleTitle12),
-              ],
-            ),
-            Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next_outlined, color: Colors.black),
+    return Obx(
+      () => Container(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
+          color:
+              settingsController.isDarkMode.value ? Colors.black : Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 0.1,
+              blurRadius: 8,
+              offset: Offset(1, 0.5),
             ),
           ],
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey, width: 1.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Colors.grey, width: 0.5),
+                ),
+                child: const ImageIcon(
+                  AssetImage('Assets/images/line-md_account.png'),
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(width: 10.h),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Add Profile Photo', style: Styles.textStyleTitle16),
+                  Text('You can add a photo', style: Styles.textStyleTitle12),
+                ],
+              ),
+              Spacer(),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next_outlined, color: Colors.black),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _cheakIdCard() {
-    return Container(
-      width: double.infinity,
-      height: 80,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            spreadRadius: 0.1,
-            blurRadius: 8,
-            offset: Offset(1, 0.5),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey, width: 1.5),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: Colors.grey, width: 0.5),
-              ),
-              child: const ImageIcon(
-                AssetImage('Assets/images/line-md_account.png'),
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(width: 10.h),
-            Text(
-              'Please Enter \nPersonal ID Card Image',
-              style: Styles.textStyleTitle16,
-              maxLines: 2,
-            ),
-            Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.navigate_next_outlined, color: Colors.black),
+    return Obx(
+      () => Container(
+        width: double.infinity,
+        height: 80,
+        decoration: BoxDecoration(
+          color:
+              settingsController.isDarkMode.value ? Colors.black : Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 0.1,
+              blurRadius: 8,
+              offset: Offset(1, 0.5),
             ),
           ],
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey, width: 1.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: Colors.grey, width: 0.5),
+                ),
+                child: const ImageIcon(
+                  AssetImage('Assets/images/line-md_account.png'),
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(width: 10.h),
+              Text(
+                'Please Enter \nPersonal ID Card Image',
+                style: Styles.textStyleTitle16,
+                maxLines: 2,
+              ),
+              Spacer(),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.navigate_next_outlined, color: Colors.black),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -424,7 +446,10 @@ class FirstScreen extends StatelessWidget {
       children: [
         Text(title, style: Styles.textStyleTitle16),
         SizedBox(width: 4),
-        Icon(Icons.navigate_next_outlined, color: Colors.black),
+        Icon(Icons.navigate_next_outlined,
+            color: settingsController.isDarkMode.value
+                ? Colors.white
+                : Colors.black),
       ],
     );
   }
@@ -432,7 +457,7 @@ class FirstScreen extends StatelessWidget {
   Widget _buildTransactionListView(List<HomeModel.Trans>? trans) {
     var transactions = trans!;
     return SizedBox(
-      height: transactions.length == 0 ? 20.h : 230.h,
+      height: transactions.isEmpty ? 20.h : 230.h,
       child: ListView.builder(
         itemCount: transactions.length,
         itemBuilder: (context, index) {
@@ -443,67 +468,75 @@ class FirstScreen extends StatelessWidget {
 
           return transactions.isEmpty
               ? Container(
-            margin: EdgeInsets.all(8),
-            padding: EdgeInsets.all(15),
-            height: 80.h,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(15)),
-            child: Center(
-                child: Text(
-                  'Empty',
-                  style: Styles.textStyleTitle18,
-                )),
-          )
+                  margin: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(15),
+                  height: 80.h,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Center(
+                      child: Text(
+                    'Empty',
+                    style: Styles.textStyleTitle18,
+                  )),
+                )
               : Container(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.network(
-                        transaction.receiverImg ?? '',
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Image.network(
+                              transaction.receiverImg ?? '',
                               errorBuilder: (BuildContext context, Object error,
                                   StackTrace? stackTrace) {
                                 return ClipRRect(
                                   borderRadius: BorderRadius.circular(30),
-                                  child: const Icon(Icons.account_circle,
-                                      size: 60),
+                                  child: SizedBox(
+                                    height: 45.h,
+                                    width: 45.w,
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.account_circle,
+                                        size: 45,
+                                      ),
+                                    ),
+                                  ),
                                 );
                               },
                               fit: BoxFit.fill,
-                              height: 50.h,
+                              height: 45.h,
                               width: 45.w,
                             ),
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(transaction.receiverFirstName ?? '',
-                            style: Styles.textStyleTitle14),
-                        SizedBox(height: 5),
-                        Text(
-                          transaction.receiverLastName ?? '',
-                          style: Styles.textStyleTitle14.copyWith(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(transaction.receiverFirstName ?? '',
+                                  style: Styles.textStyleTitle14),
+                              SizedBox(height: 5),
+                              Text(
+                                transaction.receiverLastName ?? '',
+                                style: Styles.textStyleTitle14.copyWith(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
                               ImageIcon(
                                 AssetImage('Assets/images/Vector(9).png'),
                                 color: transaction.finalAmount != null &&
@@ -515,15 +548,15 @@ class FirstScreen extends StatelessWidget {
                                 width: 7.h,
                               ),
                               Text(
-                                "${transaction.finalAmount ?? '0'}",
-                                style: Styles.textStyleTitle24.copyWith(
-                                  color: transaction.finalAmount != null &&
-                                          transaction.finalAmount! >= 0
-                                      ? Color(0XFF4FD25D)
-                                      : Colors.red,
-                                ),
-                              ),
-                            ],
+                          "${transaction.finalAmount ?? '0'}",
+                          style: Styles.textStyleTitle24.copyWith(
+                            color: transaction.finalAmount != null &&
+                                transaction.finalAmount! >= 0
+                                ? Color(0XFF4FD25D)
+                                : Colors.red,
+                          ),
+                        ),
+                      ],
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
@@ -537,7 +570,7 @@ class FirstScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                        ],
+                  ],
                       )
                     ],
                   ),
@@ -581,7 +614,8 @@ class FirstScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPharmacyItem(String image, String title, String subtitle, Color subtitleColor) {
+  Widget _buildPharmacyItem(
+      String image, String title, String subtitle, Color subtitleColor) {
     return Row(
       children: [
         ClipRRect(
@@ -600,7 +634,7 @@ class FirstScreen extends StatelessWidget {
             Text(
               title,
               style:
-              Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
+                  Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w500),
             ),
             Text(
               subtitle,
@@ -624,7 +658,9 @@ class FirstScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return Container(
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: settingsController.isDarkMode.value
+                  ? Colors.black38
+                  : Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20))),
           width: MediaQuery.of(context).size.width,
           child: Padding(
@@ -639,7 +675,7 @@ class FirstScreen extends StatelessWidget {
                   height: 20.h,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 4,
+                  height: MediaQuery.of(context).size.height / 3,
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       bool isActive;
@@ -671,6 +707,7 @@ class FirstScreen extends StatelessWidget {
                                         currencyId:
                                             "${currencies.currencies[index].id}" ??
                                                 '0');
+                                    Navigator.pop(context);
                                   }
                                 },
                                 child: Container(

@@ -6,12 +6,11 @@ import '../../../Core/widgets/Styles.dart';
 import '../Widget/NestedTabBarSend.dart';
 
 class SendMoneyScreen extends StatelessWidget {
-  SendMoneyScreen({Key? key}) : super(key: key);
+  const SendMoneyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(19),
         child: Column(

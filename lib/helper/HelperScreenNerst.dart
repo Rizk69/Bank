@@ -17,7 +17,7 @@ class _SlideDownTextAnimationState extends State<SlideDownTextAnimation> {
   void initState() {
     super.initState();
     // Trigger animation on widget creation
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _startAnimation();
     });
   }

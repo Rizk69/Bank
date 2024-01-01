@@ -2,6 +2,7 @@ import 'package:MBAG/view/Auth_View/Login/Controller/Login_Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../helper/Dark/SettingsController.dart';
 import '../Widget/ButtomsNotBorder.dart';
 import '../Widget/HeadTitleDes.dart';
 
@@ -16,6 +17,8 @@ class EmailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SettingsController settingsController = Get.find();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -67,7 +70,9 @@ class EmailScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 25),
           child: ButtomsNotBorder(
             text: 'Continue',
-            color: Colors.black,
+            color: settingsController.isDarkMode.value
+                ? Colors.white
+                : Colors.black,
             onPressed: () {
               print('Email Text: ${controllerLogin.email.text}');
               if (controllerLogin.email.text.isNotEmpty) {
@@ -77,7 +82,9 @@ class EmailScreen extends StatelessWidget {
                 );
               }
             },
-            colorText: Colors.white,
+            colorText: settingsController.isDarkMode.value
+                ? Colors.black
+                : Colors.white,
             isFormValid: controllerLogin.isFormValid,
             context: context,
           ),

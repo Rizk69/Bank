@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Core/http_helper.dart';
 import '../../QrTransaction/model/ScanModel.dart';
 import '../Screen/ScreenAmountSend.dart';
@@ -27,7 +26,7 @@ class MbagNumberController extends GetxController {
 
         Get.to(() => AmountSendScreen(
               model: apiResponse,
-              endPoint: 'send_amount_phone',
+              endPoint: 'send_amount_ID',
             ));
       } else {
         Get.snackbar("Warning!", response['message'],

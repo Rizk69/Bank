@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
 }
 
 def localProperties = new Properties()
@@ -44,7 +45,8 @@ android {
     }
 
     defaultConfig {
-        versionCode 2
+        versionCode 4
+        versionName "1.0.0"
         applicationId "com.example.bank"
         minSdkVersion 28
         targetSdkVersion flutter.targetSdkVersion
@@ -69,4 +71,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+//    classpath 'com.google.gms:google-services:4.4.0'
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+}

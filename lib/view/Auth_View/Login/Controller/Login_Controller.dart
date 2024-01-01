@@ -22,16 +22,18 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final RxBool isFormValid = true.obs;
   final RxBool signInLoading = false.obs;
+  int _userId = 0;
 
   @override
   void onInit() {
     super.onInit();
-    initializeSharedPreferences();
+    // initializeSharedPreferences();
   }
 
-  Future<void> initializeSharedPreferences() async {
-    await CacheHelper.init();
-  }
+  //
+  // Future<void> initializeSharedPreferences() async {
+  //   await CacheHelper.init();
+  // }
 
   Future<void> checkEmail({
     required String phone,
@@ -40,7 +42,7 @@ class LoginController extends GetxController {
     print('Checking email for phone: $phone');
     signInLoading.value = true;
 
-    await initializeSharedPreferences();
+    // await initializeSharedPreferences();
 
     try {
       final response = await HttpHelper.postData(
@@ -51,12 +53,20 @@ class LoginController extends GetxController {
       if (response.containsKey("status")) {
         if (response["status"]) {
           showSuccessSnackbar(response['message']);
-          navigateToSecurityCodeScreen();
           print(response);
-          await CacheHelper.saveDataSharedPreference(
-            key: "user_id",
-            value: response['user_id'],
-          );
+          _userId = response['user_id'];
+          try {
+            await CacheHelper.saveDataSharedPreference(
+              key: "user_id",
+              value: response['user_id'],
+            );
+            if (_userId == 0) {
+            } else {
+              navigateToSecurityCodeScreen();
+            }
+          } catch (e) {
+            print("Error saving user ID: $e");
+          }
         } else {
           showWarningSnackbar(response['message']);
         }
@@ -65,6 +75,7 @@ class LoginController extends GetxController {
       }
     } catch (error) {
       showErrorSnackbar("An error occurred while checking email.");
+      print("Error in checkEmail: $error");
     } finally {
       signInLoading.value = false;
     }
@@ -75,8 +86,6 @@ class LoginController extends GetxController {
   }) async {
     signInLoading.value = true;
 
-    await initializeSharedPreferences();
-
     try {
       final response = await HttpHelper.postData(
         endpoint: ApiEndpoints.checkLogin,
@@ -85,12 +94,12 @@ class LoginController extends GetxController {
 
       if (response["status"]) {
         showSuccessSnackbar(response['message']);
-        navigateToSecurityCodeScreen();
-        print("Resend${response}");
+        print("Resend$response");
         await CacheHelper.saveDataSharedPreference(
           key: "user_id",
           value: response['user_id'],
         );
+        navigateToSecurityCodeScreen();
       } else {
         showWarningSnackbar(response['message']);
       }
@@ -107,15 +116,12 @@ class LoginController extends GetxController {
   }) async {
     signInLoading.value = true;
 
-    await initializeSharedPreferences();
+    // await initializeSharedPreferences();
 
     try {
       final response = await HttpHelper.postData(
         endpoint: ApiEndpoints.checkCodeLogin,
-        body: {
-          'phone_code': code,
-          'user_id': CacheHelper.getDataSharedPreference(key: 'user_id')
-        },
+        body: {'phone_code': code, 'user_id': _userId},
       );
 
       if (response["status"]) {
@@ -141,14 +147,16 @@ class LoginController extends GetxController {
   }) async {
     signInLoading.value = true;
 
-    await initializeSharedPreferences();
+    var device_token = CacheHelper.getDataSharedPreference(key: 'fcmToken');
 
     try {
+      print(device_token);
       final response = await HttpHelper.postData(
         endpoint: ApiEndpoints.passwordLogin,
         body: {
           'password': password,
-          'user_id': CacheHelper.getDataSharedPreference(key: 'user_id')
+          'user_id': CacheHelper.getDataSharedPreference(key: 'user_id'),
+          'device_token': device_token
         },
       );
 
@@ -184,11 +192,11 @@ class LoginController extends GetxController {
   }
 
   void navigateToSecurityCodeScreen() {
-    Get.to(SecurityCodeScreen(email: email));
+    Get.to(() => SecurityCodeScreen(email: email));
   }
 
   void navigateToPasswordScreen() {
-    Get.to(PasswordScreen());
+    Get.to(() => PasswordScreen());
   }
 }
 

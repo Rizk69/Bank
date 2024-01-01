@@ -8,8 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../helper/Dark/SettingsController.dart';
+
 class AccountTransactions extends StatelessWidget {
   final TransactionController controller = Get.put(TransactionController());
+  final SettingsController settingsController = Get.find();
+
   TextEditingController searchController = TextEditingController();
 
   AccountTransactions({Key? key}) : super(key: key);
@@ -33,7 +37,9 @@ class AccountTransactions extends StatelessWidget {
                         icon: Icon(
                           Icons.arrow_back,
                           size: 23,
-                          color: Colors.black,
+                          color: settingsController.isDarkMode.value
+                              ? Colors.white
+                              : Colors.black,
                         )),
                     Center(
                         child: Text('Account Transactions',
@@ -63,7 +69,7 @@ class AccountTransactions extends StatelessWidget {
                   },
                   decoration: InputDecoration(
                     hintText: 'Keywords ( at least 3 character )',
-                    hintStyle: TextStyle(fontSize: 17),
+                    hintStyle: const TextStyle(fontSize: 17),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide: const BorderSide(
@@ -78,7 +84,8 @@ class AccountTransactions extends StatelessWidget {
                         width: 1.0,
                       ),
                     ),
-                    prefixIcon: Icon(Icons.search_sharp, color: Colors.grey),
+                    prefixIcon:
+                        const Icon(Icons.search_sharp, color: Colors.grey),
                     // prefixIcon: ,
                   ), // textInputAction: textInputAction,
                   keyboardType: TextInputType.text,
@@ -86,67 +93,71 @@ class AccountTransactions extends StatelessWidget {
                 SizedBox(
                   height: 28.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      width: 300.w,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(12.0),
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        width: 300.w,
+                        decoration: BoxDecoration(
+                          color: settingsController.isDarkMode.value
+                              ? Colors.black
+                              : Colors.white,
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Account Type',
+                                    style: Styles.textStyleTitle12),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  'All',
+                                  style: Styles.textStyleTitle14
+                                      .copyWith(fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            Icon(Icons.arrow_downward)
+                          ],
+                        ),
                       ),
-                      child: Row(
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Account Type',
-                                  style: Styles.textStyleTitle12),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'All',
-                                style: Styles.textStyleTitle14
-                                    .copyWith(fontSize: 20),
-                              ),
-                            ],
+                          Icon(Icons.filter_alt_rounded),
+                          SizedBox(
+                            height: 5.h,
                           ),
-                          Icon(Icons.arrow_downward)
+                          Text(
+                            'Filter',
+                            style: Styles.textStyleTitle12.copyWith(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          )
                         ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.filter_alt_rounded),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Text(
-                          'Filter',
-                          style: Styles.textStyleTitle12.copyWith(
-                              fontSize: 12, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
+                  height: MediaQuery.of(context).size.height / 1,
                   child:
                       GetBuilder<TransactionController>(builder: (controller) {
                     return controller.transactionData.isEmpty
-                        ? SizedBox()
+                        ? const SizedBox()
                         : SizedBox(
-                            height: MediaQuery.of(context).size.height / 2,
+                            height: MediaQuery.of(context).size.height / 1.9,
                             child: controller.isLoading.value
                                 ? Shimmer.fromColors(
                                     baseColor: Colors.grey[300]!,
@@ -231,16 +242,24 @@ class AccountTransactions extends StatelessWidget {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        25),
-                                                            child: Icon(
-                                                                Icons
-                                                                    .account_circle,
-                                                                size: 40),
+                                                                        30),
+                                                            child: SizedBox(
+                                                              height: 45.h,
+                                                              width: 45.w,
+                                                              child:
+                                                                  const Center(
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .account_circle,
+                                                                  size: 45,
+                                                                ),
+                                                              ),
+                                                            ),
                                                           );
                                                         },
                                                         fit: BoxFit.fill,
-                                                        height: 55.h,
-                                                        width: 50.w,
+                                                        height: 45.h,
+                                                        width: 45.w,
                                                       ),
                                                     ),
                                                     SizedBox(
