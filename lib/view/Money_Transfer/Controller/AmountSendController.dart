@@ -3,9 +3,17 @@ import 'package:get/get.dart';
 
 import '../../../Core/http_helper.dart';
 import '../../MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
+import '../../QrTransaction/model/ScanModel.dart';
 
 class AmountSendController extends GetxController {
   var input = '0'.obs;
+  Rx<Currency?> selectedCurrency = Rx<Currency?>(null);
+  var currenciesList = <Currency>[].obs;
+
+  void selectCurrency(Currency currency) {
+    selectedCurrency.value = currency;
+    print(currency.id);
+  }
 
   void appendNumber(String number) {
     if (input.value == '0') {
@@ -54,6 +62,29 @@ class AmountSendController extends GetxController {
       }
     } catch (error) {
       print(error);
+    }
+  }
+
+  Future<void> getDataCurrencyPhone() async {
+    try {
+      final response = await HttpHelper.getData(
+        endpoint: "get_currencies_user",
+      );
+      if (response["status"] == true) {
+        List<dynamic> currenciesJson = response["currencies"];
+        currenciesList.value = currenciesJson
+            .map((currencyJson) => Currency.fromJson(currencyJson))
+            .toList();
+        if (currenciesList.isNotEmpty) {
+          selectedCurrency.value = currenciesList.first;
+        }
+        update();
+      } else {
+        // Handle the case when currency data is not available
+      }
+    } catch (error) {
+      print('Error during data fetching currencyModel: $error');
+      // Handle the error when fetching currency data
     }
   }
 }

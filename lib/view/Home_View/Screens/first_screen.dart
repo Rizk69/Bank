@@ -548,29 +548,29 @@ class FirstScreen extends StatelessWidget {
                                 width: 7.h,
                               ),
                               Text(
-                          "${transaction.finalAmount ?? '0'}",
-                          style: Styles.textStyleTitle24.copyWith(
-                            color: transaction.finalAmount != null &&
-                                transaction.finalAmount! >= 0
-                                ? Color(0XFF4FD25D)
-                                : Colors.red,
+                                "${transaction.finalAmount ?? '0'}",
+                                style: Styles.textStyleTitle24.copyWith(
+                                  color: transaction.finalAmount != null &&
+                                          transaction.finalAmount! >= 0
+                                      ? Color(0XFF4FD25D)
+                                      : Colors.red,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          formattedDate ?? 'Unknown Date',
-                          style: Styles.textStyleTitle12.copyWith(
-                            fontWeight: FontWeight.w400,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                formattedDate ?? 'Unknown Date',
+                                style: Styles.textStyleTitle12.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
+                        ],
                       )
                     ],
                   ),
@@ -693,13 +693,13 @@ class FirstScreen extends StatelessWidget {
                                       '',
                                   style: Styles.textStyleTitle12
                                       .copyWith(color: Colors.grey)),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                                 child: Center(child: Text('--')),
                               ),
                               Text(currencies.currencies[index].name ?? '',
                                   style: Styles.textStyleTitle14),
-                              Spacer(),
+                              const Spacer(),
                               InkWell(
                                 onTap: () {
                                   if (isActive == false) {

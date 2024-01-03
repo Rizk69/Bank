@@ -14,7 +14,6 @@ class AccountTransactions extends StatelessWidget {
   final TransactionController controller = Get.put(TransactionController());
   final SettingsController settingsController = Get.find();
 
-  TextEditingController searchController = TextEditingController();
 
   AccountTransactions({Key? key}) : super(key: key);
 
@@ -60,7 +59,7 @@ class AccountTransactions extends StatelessWidget {
                   height: 32.h,
                 ),
                 TextFormField(
-                  controller: searchController,
+                  controller: controller.searchController,
                   onChanged: (query) {
                     _debounce?.cancel();
                     _debounce = Timer(const Duration(milliseconds: 500), () {

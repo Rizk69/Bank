@@ -47,8 +47,7 @@ class UserData {
 
 class UserDetails {
   final int id;
-  final dynamic
-      img; // Assuming img can be either null or a String, you may need to adjust this based on the actual data type
+  final dynamic img;
   final String firstName;
   final String lastName;
   final String phone;

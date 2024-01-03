@@ -205,7 +205,7 @@ class NearestBranch extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 15.h,
+                        height: 5.h,
                       ),
                       SizedBox(
                         height: 250.h,
@@ -218,6 +218,7 @@ class NearestBranch extends StatelessWidget {
                               width: MediaQuery.of(context).size.width,
                               padding: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
+                              margin: EdgeInsets.symmetric(vertical: 7),
                               height: 85.h,
                               decoration: BoxDecoration(
                                   border: Border.all(

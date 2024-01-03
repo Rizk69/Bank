@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +26,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Get.put(NotificationController());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   String languageCode = prefs.getString('languageCode') ?? 'en';
   String countryCode = prefs.getString('countryCode') ?? 'US';
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;

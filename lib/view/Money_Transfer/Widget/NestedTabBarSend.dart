@@ -220,7 +220,6 @@ class ContactListPage extends StatelessWidget {
               return InkWell(
                 onTap: () {
                   Get.to(() => AmountSendScreenId(
-                        modelCurrencies: "1",
                         modelReceiver: '$contactId',
                         name: '$firstName $lastName',
                         img: photo ?? "",

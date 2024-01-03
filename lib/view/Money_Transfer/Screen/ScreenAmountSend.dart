@@ -15,14 +15,13 @@ class AmountSendScreen extends StatelessWidget {
   final HomeControllerGetData homeControllerGetData = Get.find();
   final ApiResponseCheckScan model;
   String endPoint;
+  final SettingsController settingsController = Get.find();
 
   AmountSendScreen({Key? key, required this.model, required this.endPoint})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final SettingsController settingsController = Get.find();
-
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -50,14 +49,13 @@ class AmountSendScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 24.h),
-
                 Container(
                   height: 80.h,
                   width: 80.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     border:
-                    Border.all(color: const Color(0XffE0E0E0), width: 1),
+                        Border.all(color: const Color(0XffE0E0E0), width: 1),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(41),
@@ -88,69 +86,73 @@ class AmountSendScreen extends StatelessWidget {
                   height: 24.h,
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: Container(
-                    width: 180.w,
-                    height: 33.h,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: settingsController.isDarkMode.value
-                            ? Colors.black
-                            : Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              offset: Offset(0.5, 1.5),
-                              blurRadius: 3,
-                              blurStyle: BlurStyle.normal,
-                              spreadRadius: 0.1,
-                              color: Colors.grey)
-                        ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                            homeControllerGetData.homeModel.currency?.name ??
-                                '',
-                            style: TextStyle(
-                                color: settingsController.isDarkMode.value
-                                    ? Colors.white
-                                    : Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                            homeControllerGetData
-                                    .homeModel.currency?.abbreviation ??
-                                '',
-                            style: TextStyle(
-                                color: settingsController.isDarkMode.value
-                                    ? Colors.white
-                                    : Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.expand_more,
-                            color: settingsController.isDarkMode.value
-                                ? Colors.white
-                                : Colors.grey,
-                            size: 18),
-                      ],
+                  onTap: () {
+                    _showBottomSheet(context, model.currencies);
+                  },
+                  child: Obx(
+                    () => Container(
+                      width: 180.w,
+                      height: 33.h,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: settingsController.isDarkMode.value
+                              ? Colors.black
+                              : Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0.5, 1.5),
+                                blurRadius: 3,
+                                blurStyle: BlurStyle.normal,
+                                spreadRadius: 0.1,
+                                color: Colors.grey)
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                              controller.selectedCurrency.value?.abbreviation ??
+                                  '',
+                              style: TextStyle(
+                                  color: settingsController.isDarkMode.value
+                                      ? Colors.white
+                                      : Colors.grey,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                              controller.selectedCurrency.value?.name ??
+                                  // abbreviation ??
+                                  '',
+                              style: TextStyle(
+                                  color: settingsController.isDarkMode.value
+                                      ? Colors.white
+                                      : Colors.grey,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(Icons.expand_more,
+                              color: settingsController.isDarkMode.value
+                                  ? Colors.white
+                                  : Colors.grey,
+                              size: 18),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Obx(() => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         ImageIcon(
-                          AssetImage('Assets/images/Vector(9).png'),
+                          const AssetImage('Assets/images/Vector(9).png'),
                           color: settingsController.isDarkMode.value
                               ? Colors.white
                               : Colors.grey,
@@ -166,11 +168,11 @@ class AmountSendScreen extends StatelessWidget {
                                   : Colors.grey),
                         ),
                       ],
-                )),
+                    )),
                 const SizedBox(height: 20),
                 Center(
                     child: Text(
-                      'Turkish Lira Balance ',
+                  'Turkish Lira Balance ',
                   style: Styles.textStyleTitle14.copyWith(
                       color: settingsController.isDarkMode.value
                           ? Colors.white
@@ -218,16 +220,16 @@ class AmountSendScreen extends StatelessWidget {
                       onPressed: () {
                         controller.input.value == "0"
                             ? Get.snackbar("Warning!", 'Please Enter Number',
-                            colorText: Colors.white,
-                            backgroundColor: Colors.red)
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red)
                             : controller.sendAmountMoney(
-                            endPoint: endPoint,
-                            receiverId:
-                            model.receiver.receiverId.toString(),
-                            currencyId:
-                            model.currencies.first.id.toString(),
-                            amount: controller.input.value,
-                            context: context);
+                                endPoint: endPoint,
+                                receiverId:
+                                    model.receiver.receiverId.toString(),
+                                currencyId:
+                                    "${controller.selectedCurrency.value?.id}",
+                                amount: controller.input.value,
+                                context: context);
                       },
                       colorText: Colors.white,
                       isFormValid: true.obs,
@@ -277,14 +279,93 @@ class AmountSendScreen extends StatelessWidget {
       child: Text(label),
     );
   }
+
+  void _showBottomSheet(
+    BuildContext context,
+    List<Currency> currencies,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+              color: settingsController.isDarkMode.value
+                  ? Colors.black38
+                  : Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            child: Column(
+              children: [
+                Text(
+                  'Select Currency',
+                  style: Styles.textStyleTitle24.copyWith(fontSize: 30),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              controller.selectedCurrency(currencies[index]);
+                              print(currencies[index]);
+                              Navigator.pop(context);
+                            },
+                            child: Row(
+                              children: [
+                                Text(currencies[index].abbreviation ?? '',
+                                    style: Styles.textStyleTitle12
+                                        .copyWith(color: Colors.grey)),
+                                SizedBox(
+                                  width: 20,
+                                  child: Center(child: Text('--')),
+                                ),
+                                Text(currencies[index].name ?? '',
+                                    style: Styles.textStyleTitle14),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.h,
+                          ),
+                          Container(
+                            height: 0.5,
+                            padding: EdgeInsets.symmetric(vertical: 30),
+                            margin:
+                                EdgeInsets.only(right: 10, top: 10, bottom: 5),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey.shade700, width: 0.2)),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: currencies.length,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class AmountSendScreenId extends StatelessWidget {
   final AmountSendController controller = Get.put(AmountSendController());
-  final HomeControllerGetData homeControllerGetData = Get.find();
+  final SettingsController settingsController = Get.find();
 
   String modelReceiver;
-  String modelCurrencies;
   String name;
   String img;
   String endPoint;
@@ -293,14 +374,13 @@ class AmountSendScreenId extends StatelessWidget {
       {Key? key,
       required this.modelReceiver,
       required this.endPoint,
-      required this.modelCurrencies,
       required this.name,
       required this.img})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final SettingsController settingsController = Get.find();
+    controller.getDataCurrencyPhone();
 
     return SafeArea(
       child: Scaffold(
@@ -336,7 +416,7 @@ class AmountSendScreenId extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     border:
-                    Border.all(color: const Color(0XffE0E0E0), width: 1),
+                        Border.all(color: const Color(0XffE0E0E0), width: 1),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(41),
@@ -367,77 +447,78 @@ class AmountSendScreenId extends StatelessWidget {
                   height: 24.h,
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: Container(
-                    width: 180.w,
-                    height: 33.h,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              offset: Offset(0.5, 1.5),
-                              blurRadius: 3,
-                              blurStyle: BlurStyle.normal,
-                              spreadRadius: 0.1,
-                              color: Colors.grey)
-                        ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                            homeControllerGetData.homeModel.currency?.name ??
-                                '',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                            homeControllerGetData
-                                .homeModel.currency?.abbreviation ??
-                                '',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.expand_more, color: Colors.grey, size: 18),
-                      ],
+                  onTap: () {
+                    _showBottomSheet(context, controller.currenciesList);
+                  },
+                  child: Obx(
+                    () => Container(
+                      width: 180.w,
+                      height: 33.h,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0.5, 1.5),
+                                blurRadius: 3,
+                                blurStyle: BlurStyle.normal,
+                                spreadRadius: 0.1,
+                                color: Colors.grey)
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                              controller.selectedCurrency.value?.abbreviation ??
+                                  '',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Text(controller.selectedCurrency.value?.name ?? '',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(Icons.expand_more, color: Colors.grey, size: 18),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Obx(() => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const ImageIcon(
-                      AssetImage('Assets/images/Vector(9).png'),
-                      color: Colors.grey,
-                      size: 30,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      controller.input.value,
-                      style:
-                      const TextStyle(fontSize: 36, color: Colors.grey),
-                    ),
-                  ],
-                )),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const ImageIcon(
+                          AssetImage('Assets/images/Vector(9).png'),
+                          color: Colors.grey,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          controller.input.value,
+                          style:
+                              const TextStyle(fontSize: 36, color: Colors.grey),
+                        ),
+                      ],
+                    )),
                 const SizedBox(height: 20),
                 Center(
                     child: Text(
-                      'Turkish Lira Balance ',
-                      style: Styles.textStyleTitle14
-                          .copyWith(color: const Color(0XFF6A6969)),
-                    )),
+                  'Turkish Lira Balance ',
+                  style: Styles.textStyleTitle14
+                      .copyWith(color: const Color(0XFF6A6969)),
+                )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -480,14 +561,15 @@ class AmountSendScreenId extends StatelessWidget {
                       onPressed: () {
                         controller.input.value == "0"
                             ? Get.snackbar("Warning!", 'Please Enter Number',
-                            colorText: Colors.white,
-                            backgroundColor: Colors.red)
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red)
                             : controller.sendAmountMoney(
-                            endPoint: endPoint,
-                            receiverId: modelReceiver,
-                            currencyId: modelCurrencies,
-                            amount: controller.input.value,
-                            context: context);
+                                endPoint: endPoint,
+                                receiverId: modelReceiver,
+                                currencyId:
+                                    "${controller.selectedCurrency.value?.id}",
+                                amount: controller.input.value,
+                                context: context);
                       },
                       colorText: Colors.white,
                       isFormValid: true.obs,
@@ -532,6 +614,86 @@ class AmountSendScreenId extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       child: Text(label),
+    );
+  }
+
+  void _showBottomSheet(
+    BuildContext context,
+    List<Currency> currencies,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+              color: settingsController.isDarkMode.value
+                  ? Colors.black38
+                  : Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            child: Column(
+              children: [
+                Text(
+                  'Select Currency',
+                  style: Styles.textStyleTitle24.copyWith(fontSize: 30),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              controller.selectedCurrency(currencies[index]);
+                              print(currencies[index]);
+                              Navigator.pop(context);
+                            },
+                            child: Row(
+                              children: [
+                                Text(currencies[index].abbreviation ?? '',
+                                    style: Styles.textStyleTitle12
+                                        .copyWith(color: Colors.grey)),
+                                SizedBox(
+                                  width: 20,
+                                  child: Center(child: Text('--')),
+                                ),
+                                Text(currencies[index].name ?? '',
+                                    style: Styles.textStyleTitle14),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.h,
+                          ),
+                          Container(
+                            height: 0.5,
+                            padding: EdgeInsets.symmetric(vertical: 30),
+                            margin:
+                                EdgeInsets.only(right: 10, top: 10, bottom: 5),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey.shade700, width: 0.2)),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: currencies.length,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

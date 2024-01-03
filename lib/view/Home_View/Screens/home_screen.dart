@@ -260,7 +260,10 @@ class HomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                       onTap: () {
-                        Get.to(RequestMoneyScreen());
+                        Get.to(() => SlideDownTextAnimation(
+                              appBarView: true,
+                            ));
+                        // Get.to(RequestMoneyScreen());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

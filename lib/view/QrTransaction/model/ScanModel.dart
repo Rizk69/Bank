@@ -27,13 +27,19 @@ class ApiResponseCheckScan {
 class Currency {
   int id;
   String name;
+  String abbreviation;
 
-  Currency({required this.id, required this.name});
+  Currency({
+    required this.id,
+    required this.abbreviation,
+    required this.name,
+  });
 
   factory Currency.fromJson(Map<String, dynamic> json) {
     return Currency(
       id: json['id'],
       name: json['name'],
+      abbreviation: json['abbreviation'],
     );
   }
 }
