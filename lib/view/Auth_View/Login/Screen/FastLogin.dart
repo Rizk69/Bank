@@ -14,7 +14,7 @@ class FastLogin extends StatelessWidget {
       Get.put(PinputControllerFastLoginCheckEmail());
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  FastLogin({super.key}); // Initialized formKey
+  FastLogin({super.key});
 
   RxBool get isFormValid => RxBool(formKey.currentState?.validate() ?? true);
 
@@ -23,44 +23,53 @@ class FastLogin extends StatelessWidget {
     final SettingsController settingsController = Get.find();
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: 100.h,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 100.h,
+              ),
+              HeadFirstTitle(
+                title: 'Fast Login',
+                des: 'Log in with Password ',
+              ),
+              SizedBox(
+                height: 60.h,
+              ),
+              Center(
+                child: PinputPassword(
+                  controller: controllerPin,
+                ),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 25,
+                ),
+                child: ButtomsNotBorder(
+                  text: 'Continue',
+                  color: settingsController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.black,
+                  onPressed: () {
+                    String pin = controllerPin.pinController.text;
+                    controller.checkPassword(password: pin, context: context);
+                  },
+                  colorText: settingsController.isDarkMode.value
+                      ? Colors.black
+                      : Colors.white,
+                  isFormValid: isFormValid,
+                  context: context,
+                ),
+              ),
+            ],
           ),
-          HeadFirstTitle(
-            title: 'Fast Login',
-            des: 'Log in with Password ',
-          ),
-          SizedBox(
-            height: 60.h,
-          ),
-          Center(
-            child: PinputPassword(
-              controller: controllerPin,
-            ),
-          ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 25, left: 30, right: 30),
-            child: ButtomsNotBorder(
-              text: 'Continue',
-              color: settingsController.isDarkMode.value
-                  ? Colors.white
-                  : Colors.black,
-              onPressed: () {
-                String pin = controllerPin.pinController.text;
-                controller.checkPassword(password: pin, context: context);
-              },
-              colorText: settingsController.isDarkMode.value
-                  ? Colors.black
-                  : Colors.white,
-              isFormValid: isFormValid,
-              context: context,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

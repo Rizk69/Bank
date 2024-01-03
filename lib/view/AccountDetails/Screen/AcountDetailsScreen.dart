@@ -23,7 +23,8 @@ class AccountDetailsScreen extends StatelessWidget {
     return Scaffold(
       body: Obx(() => userController.isLoading.isTrue
           ? SingleChildScrollView(
-              child: Padding(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
@@ -138,19 +139,22 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         Spacer(),
-                        Column(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.language),
-                              onPressed: () => _showLanguageDialog(context),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.brightness_4),
-                              onPressed: () {
-                                settingsController.toggleDarkMode();
-                              },
-                            ),
-                          ],
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.language),
+                                onPressed: () => _showLanguageDialog(context),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.brightness_4),
+                                onPressed: () {
+                                  settingsController.toggleDarkMode();
+                                },
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     ),

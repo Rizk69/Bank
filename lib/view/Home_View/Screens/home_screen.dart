@@ -1,7 +1,6 @@
 import 'package:MBAG/Core/widgets/Styles.dart';
 import 'package:MBAG/helper/Dark/SettingsController.dart';
 import 'package:MBAG/view/Home_View/controller/HomeGetData.dart';
-import 'package:MBAG/view/Money_Transfer/Screen/Request_Money.dart';
 import 'package:MBAG/view/Money_Transfer/Screen/Send_Money.dart';
 import 'package:MBAG/view/QrTransaction/Screen/Recevive_Qr_Payment.dart';
 import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
@@ -86,10 +85,9 @@ class HomeScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              margin: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   color: settingsController.isDarkMode.value
                       ? Colors.black
@@ -146,11 +144,10 @@ class HomeScreen extends StatelessWidget {
                               width: 10,
                             ),
                             Expanded(
-                              child: Text(
-                                'Receive payment with QR code',
-                                style: Styles.textStyleTitle18.copyWith(
-                                    fontWeight: FontWeight.w700, fontSize: 18),
-                              ),
+                              child: Text('Receive payment with QR code',
+                                  maxLines: 1,
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700)),
                             ),
                           ],
                         ),
@@ -213,157 +210,158 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: settingsController.isDarkMode.value
-                      ? Colors.black
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(15)),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SendMoneyScreen());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.send_outlined,
-                              size: 25,
+        return SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      color: settingsController.isDarkMode.value
+                          ? Colors.black
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(15)),
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SendMoneyScreen());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.send_outlined,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Send Money',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              width: 10,
+                          )),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        height: 1,
+                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SlideDownTextAnimation(
+                                  appBarView: true,
+                                ));
+                            // Get.to(RequestMoneyScreen());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.reply_all,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Request Money',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
                             ),
-                            Text(
-                              'Send Money',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
+                          )),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SlideDownTextAnimation(
+                                  appBarView: true,
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.interpreter_mode,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'International Money transfer',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: 1,
-                    decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                          )),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SlideDownTextAnimation(
+                                  appBarView: true,
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.refresh_outlined,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Recurrig transfer',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
                   ),
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SlideDownTextAnimation(
-                              appBarView: true,
-                            ));
-                        // Get.to(RequestMoneyScreen());
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Buttoms(
+                      text: 'Cancel',
+                      color: Colors.black,
+                      onPressed: () {
+                        Get.back();
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.reply_all,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Request Money',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                  ),
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SlideDownTextAnimation(
-                              appBarView: true,
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.interpreter_mode,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'International Money transfer',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                  ),
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SlideDownTextAnimation(
-                              appBarView: true,
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.refresh_outlined,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Recurrig transfer',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                ],
-              ),
+                      colorText: Colors.white),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Buttoms(
-                  text: 'Cancel',
-                  color: Colors.black,
-                  onPressed: () {
-                    Get.back();
-                  },
-                  colorText: Colors.white),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-          ],
+          ),
         );
       },
     );

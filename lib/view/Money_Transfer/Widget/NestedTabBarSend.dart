@@ -121,7 +121,6 @@ class ContactListPage extends StatelessWidget {
                             buildContactWidget('', ''),
                             buildContactWidget('', ''),
                             buildContactWidget('', ''),
-                            buildContactWidget('', ''),
                           ],
                         ));
                   } else {
@@ -153,7 +152,7 @@ class ContactListPage extends StatelessWidget {
                     () => Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Contact using MBAG ${contactController.user.value?.user.length}',
+                    'Contact using MBAG ${contactController.filteredUsersWithStatusPhoneTrue.length}',
                     style: Styles.textStyleTitle16.copyWith(
                       color: Colors.grey,
                       fontWeight: FontWeight.w400,
@@ -192,9 +191,9 @@ class ContactListPage extends StatelessWidget {
         initState: (state) => ContactControllerSend(),
         builder: (controller) {
           controller.filteredContacts.sort((a, b) {
-            if (a.user?.img != null && b.user?.img == null) {
+            if (a.user?.firstName != null && b.user?.firstName == null) {
               return -1;
-            } else if (a.user?.img == null && b.user?.img != null) {
+            } else if (a.user?.firstName == null && b.user?.firstName != null) {
               return 1;
             } else {
               return 0;
@@ -249,8 +248,8 @@ class ContactListPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         child: Image.network(
           photo ?? '',
-          width: 60.h,
-          height: 60.h,
+          width: 60,
+          height: 60,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => const Padding(
             padding: EdgeInsets.all(11.0),

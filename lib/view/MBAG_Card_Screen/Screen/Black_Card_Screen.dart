@@ -58,7 +58,7 @@ class BlackCard extends StatelessWidget {
                       height: 15.h,
                     ),
                     Container(
-                      width: 273.w,
+                      width: MediaQuery.of(context).size.width / 1.5,
                       decoration: BoxDecoration(
                           border: Border.all(
                         color: Color(0XFFA6ABBD),

@@ -257,8 +257,8 @@ class AccountTransactions extends StatelessWidget {
                                                           );
                                                         },
                                                         fit: BoxFit.fill,
-                                                        height: 45.h,
-                                                        width: 45.w,
+                                                        height: 45,
+                                                        width: 45,
                                                       ),
                                                     ),
                                                     SizedBox(

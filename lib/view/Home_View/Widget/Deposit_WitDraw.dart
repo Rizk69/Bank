@@ -63,15 +63,20 @@ class DepositAndWithdraw extends StatelessWidget {
                   const SizedBox(
                     width: 3,
                   ),
-                  Text(
-                    balance,
-                    style: TextStyle(
-                        color: settingsController.isDarkMode.value
-                            ? Colors.white
-                            : Colors.black,
-                        fontSize: 37,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.visible),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2.8,
+                    child: Center(
+                      child: Text(
+                        balance,
+                        style: TextStyle(
+                            color: settingsController.isDarkMode.value
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 37,
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -134,7 +139,7 @@ class DepositAndWithdraw extends StatelessWidget {
                 )
               ],
             ),
-          ),
+          )
         ],
       ),
     );

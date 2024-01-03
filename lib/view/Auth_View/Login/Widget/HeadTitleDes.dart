@@ -32,7 +32,9 @@ class HeadFirstTitle extends StatelessWidget {
         ),
         Center(
             child: Text(
-              des,
+              maxLines: 1,
+          des,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,

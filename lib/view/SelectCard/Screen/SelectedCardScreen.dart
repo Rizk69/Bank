@@ -45,7 +45,7 @@ class CardScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 30.h,
+                height: 20.h,
               ),
               GetBuilder<CardController>(
                 builder: (_) {
@@ -153,7 +153,7 @@ class CardScreen extends StatelessWidget {
     );
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.66,
+      height: MediaQuery.of(context).size.height / 1.3,
       child: Column(
         children: [
           CardDetails(selectedCard: selectedCard),
@@ -171,7 +171,9 @@ class CardScreen extends StatelessWidget {
           Text(' ${selectedCard.description}',
               style:
                   Styles.textStyleTitle14.copyWith(color: Color(0XFF979797))),
-          const Spacer(),
+          SizedBox(
+            height: 15.h,
+          ),
           SizedBox(
               width: double.infinity,
               child: Buttoms(

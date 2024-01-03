@@ -32,12 +32,20 @@ class CupertinoOnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => FocusScope.of(context).unfocus());
+
     return Scaffold(
-      body: GetBuilder<CupertinoOnBoardingController>(
-        init: CupertinoOnBoardingController(),
-        builder: (controller) => Padding(
-          padding: const EdgeInsets.all(16),
-          child: buildBody(context),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 1.001,
+          child: GetBuilder<CupertinoOnBoardingController>(
+            init: CupertinoOnBoardingController(),
+            builder: (controller) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: buildBody(context),
+            ),
+          ),
         ),
       ),
     );
@@ -61,7 +69,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
       children: [
         buildPageViewBuilder(),
         Positioned(
-          top: 430.h,
+          top: MediaQuery.of(context).size.height / 1.4,
           left: 140.w,
           child: buildIndicatorArea(context),
         ),
@@ -91,7 +99,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
           onBoardingList[index].imageUrl,
           height: 180.h,
         ),
-        SizedBox(height: 90.h),
+        SizedBox(height: 20.h),
         Text(
           onBoardingList[index].description,
           textAlign: TextAlign.center,
@@ -138,6 +146,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: List.generate(
             onBoardingList.length,
             (index) => GestureDetector(

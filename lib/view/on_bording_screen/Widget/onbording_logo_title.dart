@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../helper/Dark/SettingsController.dart';
@@ -14,7 +15,7 @@ class OnBordingLogoAndTitle extends StatelessWidget {
       children: [
         Image.asset(
           'Assets/images/Logo Mbag without background.png',
-          height: 200,
+          height: 220.h,
           color: settingsController.isDarkMode.value
               ? Colors.orange.shade100
               : Colors.yellow.shade700,
@@ -22,7 +23,7 @@ class OnBordingLogoAndTitle extends StatelessWidget {
         Positioned(
           bottom: 0,
           child: Text(
-            'Send money for free, at \n\t\t\t\t\t\t lightning speed.',
+            'Send money for free,at \n    lightning speed.',
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,

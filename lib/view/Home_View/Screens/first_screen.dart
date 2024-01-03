@@ -152,173 +152,178 @@ class FirstScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              margin: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: settingsController.isDarkMode.value
-                      ? Colors.black87
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(15)),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => AccountTransactions());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.send_outlined,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Notification',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                            Spacer(),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Center(
-                                child: Text(
-                                  "${userController.userModel.countNotifications}",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.white),
+        return SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      color: settingsController.isDarkMode.value
+                          ? Colors.black87
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(15)),
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => AccountTransactions());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.send_outlined,
+                                  size: 25,
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: 1,
-                    decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Notification',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                                Spacer(),
+                                Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Center(
+                                    child: Text(
+                                      "${userController.userModel.countNotifications}",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        height: 1,
+                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SlideDownTextAnimation(
+                                  appBarView: true,
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.reply_all,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Request Money',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
+                          )),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SlideDownTextAnimation(
+                                  appBarView: true,
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.interpreter_mode,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'International Money transfer',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
+                          )),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.to(() => SlideDownTextAnimation(
+                                  appBarView: true,
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.refresh_outlined,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Recurrig transfer',
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
                   ),
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SlideDownTextAnimation(
-                              appBarView: true,
-                            ));
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Buttoms(
+                      text: 'Cancel',
+                      color: settingsController.isDarkMode.value
+                          ? Colors.black
+                          : Colors.black,
+                      onPressed: () {
+                        Get.back();
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.reply_all,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Request Money',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                  ),
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SlideDownTextAnimation(
-                              appBarView: true,
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.interpreter_mode,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'International Money transfer',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                  ),
-                  InkWell(
-                      onTap: () {
-                        Get.to(() => SlideDownTextAnimation(
-                              appBarView: true,
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.refresh_outlined,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Recurrig transfer',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      )),
-                ],
-              ),
+                      colorText: Colors.white),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Buttoms(
-                  text: 'Cancel',
-                  color: settingsController.isDarkMode.value
-                      ? Colors.black
-                      : Colors.black,
-                  onPressed: () {
-                    Get.back();
-                  },
-                  colorText: Colors.white),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-          ],
+          ),
         );
       },
     );

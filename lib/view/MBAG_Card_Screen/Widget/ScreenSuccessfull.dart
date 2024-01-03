@@ -10,80 +10,86 @@ class ScreenSuccessfull extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 5,
-            ),
-            Center(child: AnimatedCheck()),
-            SizedBox(
-              height: 15.h,
-            ),
-            Center(
-                child: Text('The transaction has been',
-                    style: Styles.textStyleTitle24)),
-            Center(child: Text('successful.', style: Styles.textStyleTitle24)),
-            SizedBox(
-              height: 15.h,
-            ),
-            Center(
-                child: Text(
-              'Your money transfer has been successful.',
-              style: Styles.textStyleTitle16.copyWith(
-                  color: Colors.grey,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400),
-            )),
-            SizedBox(
-              height: 30.h,
-            ),
-            Center(
-                child: Text(
-              'You can perform this transaction automatically',
-              style: Styles.textStyleTitle16.copyWith(
-                  color: Colors.grey,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400),
-            )),
-            Center(
-                child: Text(
-              'by giving aRecurring Transfer Order.',
-              style: Styles.textStyleTitle16.copyWith(
-                  color: Colors.grey,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400),
-            )),
-            Spacer(),
-            Buttoms(
-                text: 'Receipt',
-                color: Colors.white,
-                onPressed: () {},
-                colorText: Colors.black),
-            SizedBox(
-              height: 15.h,
-            ),
-            Buttoms(
-                text: 'Set Up Recurring Transfer',
-                color: Colors.white,
-                onPressed: () {},
-                colorText: Colors.black),
-            SizedBox(
-              height: 15.h,
-            ),
-            Buttoms(
-                text: 'Ok',
-                color: Colors.black,
-                onPressed: () {
-                  Get.offAllNamed('/HomeScreen');
-                },
-                colorText: Colors.white),
-            SizedBox(
-              height: 15.h,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height * 1.1,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 5,
+              ),
+              Center(child: AnimatedCheck()),
+              SizedBox(
+                height: 15.h,
+              ),
+              Center(
+                  child: Text('The transaction has been',
+                      style: Styles.textStyleTitle24)),
+              Center(
+                  child: Text('successful.', style: Styles.textStyleTitle24)),
+              SizedBox(
+                height: 15.h,
+              ),
+              Center(
+                  child: Text(
+                'Your money transfer has been successful.',
+                style: Styles.textStyleTitle16.copyWith(
+                    color: Colors.grey,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              )),
+              SizedBox(
+                height: 30.h,
+              ),
+              Center(
+                  child: Text(
+                'You can perform this transaction automatically',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Styles.textStyleTitle16.copyWith(
+                    color: Colors.grey,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              )),
+              Center(
+                  child: Text(
+                'by giving aRecurring Transfer Order.',
+                style: Styles.textStyleTitle16.copyWith(
+                    color: Colors.grey,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              )),
+              Spacer(),
+              Buttoms(
+                  text: 'Receipt',
+                  color: Colors.white,
+                  onPressed: () {},
+                  colorText: Colors.black),
+              SizedBox(
+                height: 15.h,
+              ),
+              Buttoms(
+                  text: 'Set Up Recurring Transfer',
+                  color: Colors.white,
+                  onPressed: () {},
+                  colorText: Colors.black),
+              SizedBox(
+                height: 15.h,
+              ),
+              Buttoms(
+                  text: 'Ok',
+                  color: Colors.black,
+                  onPressed: () {
+                    Get.offAllNamed('/HomeScreen');
+                  },
+                  colorText: Colors.white),
+              SizedBox(
+                height: 15.h,
+              ),
+            ],
+          ),
         ),
       ),
     );

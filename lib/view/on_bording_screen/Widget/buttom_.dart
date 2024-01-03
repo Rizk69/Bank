@@ -29,6 +29,8 @@ class Buttoms extends StatelessWidget {
         margin: const EdgeInsets.all(12),
         child: Text(
           text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: colorText,
             fontFamily: 'Roboto',
