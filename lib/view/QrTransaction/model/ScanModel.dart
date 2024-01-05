@@ -27,11 +27,13 @@ class ApiResponseCheckScan {
 class Currency {
   int id;
   String name;
+  String img;
   String abbreviation;
 
   Currency({
     required this.id,
     required this.abbreviation,
+    required this.img,
     required this.name,
   });
 
@@ -39,6 +41,7 @@ class Currency {
     return Currency(
       id: json['id'],
       name: json['name'],
+      img: json['img'],
       abbreviation: json['abbreviation'],
     );
   }

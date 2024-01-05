@@ -86,6 +86,7 @@ class Trans {
   String? receiverLastName;
   int? finalAmount;
   String? createdAt;
+  String? abbreviation;
 
   Trans(
       {this.id,
@@ -98,6 +99,7 @@ class Trans {
       this.receiverFirstName,
       this.receiverLastName,
       this.finalAmount,
+      this.abbreviation,
       this.createdAt});
 
   Trans.fromJson(Map<String, dynamic> json) {
@@ -112,6 +114,7 @@ class Trans {
     receiverLastName = json['receiver_last_name'];
     finalAmount = json['final_amount'];
     createdAt = json['created_at'];
+    abbreviation = json['abbreviation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -127,6 +130,7 @@ class Trans {
     data['receiver_last_name'] = receiverLastName;
     data['final_amount'] = finalAmount;
     data['created_at'] = createdAt;
+    data['abbreviation'] = abbreviation;
     return data;
   }
 }
@@ -186,12 +190,14 @@ class CurrencyHome {
   int? id;
   String? name;
   String? abbreviation;
+  String? img;
   bool? active;
 
   CurrencyHome({
     required this.id,
     required this.name,
     required this.active,
+    required this.img,
     required this.abbreviation,
   });
 
@@ -199,6 +205,7 @@ class CurrencyHome {
     return CurrencyHome(
       id: json['id'],
       name: json['name'] as String?,
+      img: json['img'] as String?,
       abbreviation: json['abbreviation'] as String?,
       active: json['active'] as bool?,
     );
@@ -208,12 +215,14 @@ class CurrencyHome {
 class CurrencyHomeModel {
   int? id;
   String? name;
+  String? img;
   String? abbreviation;
   bool? active;
 
   CurrencyHomeModel({
     required this.id,
     required this.name,
+    required this.img,
     required this.active,
     required this.abbreviation,
   });
@@ -222,6 +231,7 @@ class CurrencyHomeModel {
     return CurrencyHomeModel(
       id: json['id'],
       name: json['name'] as String?,
+      img: json['img'] as String?,
       abbreviation: json['abbreviation'] as String?,
       active: json['active'] as bool?,
     );

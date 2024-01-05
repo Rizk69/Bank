@@ -68,8 +68,6 @@ class MyApp extends StatelessWidget {
               name: '/HomeScreen',
               page: () => HomeScreen(),
             ),
-            GetPage(
-                name: '/NotificationScreen', page: () => NotificationScreen()),
           ],
         ),
       ),

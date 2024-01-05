@@ -152,14 +152,14 @@ class NearestBranch extends StatelessWidget {
                                     ),
                                     Text(
                                       controller.nearestBranchModel
-                                              ?.nearestBranch?.title ??
+                                              ?.nearestBranch?.firstName ??
                                           '',
                                       style: Styles.textStyleTitle20.copyWith(
                                           fontWeight: FontWeight.w700),
                                     ),
                                     Text(
                                       controller.nearestBranchModel
-                                              ?.nearestBranch?.name ??
+                                              ?.nearestBranch?.lastname ??
                                           '',
                                       style: Styles.textStyleTitle12.copyWith(
                                         fontWeight: FontWeight.w400,
@@ -229,15 +229,19 @@ class NearestBranch extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    controller.nearestBranchModel
-                                            .nearestBranches?[index].title ??
+                                    controller
+                                            .nearestBranchModel
+                                            .nearestBranches?[index]
+                                            .firstName ??
                                         '',
                                     style: Styles.textStyleTitle20
                                         .copyWith(fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                      controller.nearestBranchModel
-                                              .nearestBranches?[index].name ??
+                                      controller
+                                              .nearestBranchModel
+                                              .nearestBranches?[index]
+                                              .lastname ??
                                           '',
                                       style: Styles.textStyleTitle16.copyWith(
                                           fontWeight: FontWeight.w400,

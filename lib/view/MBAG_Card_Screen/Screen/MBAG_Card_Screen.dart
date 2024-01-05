@@ -1,12 +1,14 @@
 import 'package:MBAG/Core/widgets/Styles.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Screen/Black_Card_Screen.dart';
 import 'package:MBAG/view/MBAG_Card_Screen/Widget/Card.dart';
-import 'package:MBAG/view/MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
+import 'package:MBAG/view/ScreenSuccessfully/screen/ScreenSuccessfull.dart';
 import 'package:MBAG/view/SelectCard/Screen/SelectedCardScreen.dart';
 import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import '../../../helper/HelperScreenNerst.dart';
 
 class MBAGCardScreen extends StatelessWidget {
   const MBAGCardScreen({Key? key}) : super(key: key);
@@ -40,7 +42,7 @@ class MBAGCardScreen extends StatelessWidget {
             ),
             InkWell(
                 onTap: () {
-                  Get.to(ScreenSuccessfull());
+                  // Get.to(ScreenSuccessfully(transferId: '',type: '',));
                 },
                 child: MbagCard(
                     image: 'Assets/images/Vector(10).png',
@@ -50,7 +52,10 @@ class MBAGCardScreen extends StatelessWidget {
               text: 'New Card',
               color: Color(0XFFFFFFFF),
               onPressed: () {
-                Get.to(() => CardScreen()); // Provide the correct route name
+                // Get.to(() => CardScreen()); // Provide the correct route name
+                Get.to(() => SlideDownTextAnimation(
+                      appBarView: true,
+                    ));
               },
               colorText: Colors.black,
             ),

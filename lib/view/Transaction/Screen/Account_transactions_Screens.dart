@@ -9,16 +9,20 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../helper/Dark/SettingsController.dart';
+import '../../QrTransaction/model/ScanModel.dart';
 
 class AccountTransactions extends StatelessWidget {
   final TransactionController controller = Get.put(TransactionController());
   final SettingsController settingsController = Get.find();
 
-
-  AccountTransactions({Key? key}) : super(key: key);
+  AccountTransactions({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    controller.getDataCurrencyUser();
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -44,14 +48,22 @@ class AccountTransactions extends StatelessWidget {
                         child: Text('Account Transactions',
                             style: Styles.textStyleTitle24
                                 .copyWith(fontSize: 22))),
-                    Column(
-                      children: [
-                        Icon(Icons.file_download_outlined),
-                        Text(
-                          'Download',
-                          style: Styles.textStyleTitle12.copyWith(fontSize: 10),
-                        )
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Get.snackbar('Coming Soon', '',
+                            colorText: Colors.white,
+                            backgroundColor: Colors.green);
+                      },
+                      child: Column(
+                        children: [
+                          Icon(Icons.file_download_outlined),
+                          Text(
+                            'Download',
+                            style:
+                                Styles.textStyleTitle12.copyWith(fontSize: 10),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -85,65 +97,70 @@ class AccountTransactions extends StatelessWidget {
                     ),
                     prefixIcon:
                         const Icon(Icons.search_sharp, color: Colors.grey),
-                    // prefixIcon: ,
                   ), // textInputAction: textInputAction,
                   keyboardType: TextInputType.text,
                 ),
                 SizedBox(
                   height: 28.h,
                 ),
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        width: 300.w,
-                        decoration: BoxDecoration(
-                          color: settingsController.isDarkMode.value
-                              ? Colors.black
-                              : Colors.white,
-                          border: Border.all(color: Colors.grey, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
+                GestureDetector(
+                  onTap: () {
+                    _showBottomSheet(context, controller.currenciesList);
+                  },
+                  child: Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          width: 300.w,
+                          decoration: BoxDecoration(
+                            color: settingsController.isDarkMode.value
+                                ? Colors.black
+                                : Colors.white,
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Account Type',
+                                      style: Styles.textStyleTitle12),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    controller.selectedCurrency.value?.name ??
+                                        '',
+                                    style: Styles.textStyleTitle14
+                                        .copyWith(fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                              Icon(Icons.arrow_downward)
+                            ],
+                          ),
                         ),
-                        child: Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Account Type',
-                                    style: Styles.textStyleTitle12),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  'All',
-                                  style: Styles.textStyleTitle14
-                                      .copyWith(fontSize: 20),
-                                ),
-                              ],
+                            Icon(Icons.filter_alt_rounded),
+                            SizedBox(
+                              height: 5.h,
                             ),
-                            Icon(Icons.arrow_downward)
+                            Text(
+                              'Filter',
+                              style: Styles.textStyleTitle12.copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            )
                           ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.filter_alt_rounded),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Text(
-                            'Filter',
-                            style: Styles.textStyleTitle12.copyWith(
-                                fontSize: 12, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -151,72 +168,69 @@ class AccountTransactions extends StatelessWidget {
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 1,
-                  child:
-                      GetBuilder<TransactionController>(builder: (controller) {
-                    return controller.transactionData.isEmpty
-                        ? const SizedBox()
-                        : SizedBox(
-                            height: MediaQuery.of(context).size.height / 1.9,
-                            child: controller.isLoading.value
-                                ? Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              2,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        color: Colors.white,
-                                      ),
+                  child: Obx(() => controller.transactionData.isEmpty
+                      ? const SizedBox()
+                      : SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.9,
+                          child: controller.isLoading.value
+                              ? Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: Colors.white,
                                     ),
-                                  )
-                                : ListView.builder(
-                                    itemCount:
-                                        controller.transactionData.length,
-                                    itemBuilder: (context, index) {
-                                      var transaction =
-                                          controller.transactionData[index];
-                                      bool isNewHeader = index == 0 ||
-                                          transaction.createdAt !=
-                                              controller
-                                                  .transactionData[index - 1]
-                                                  .createdAt;
-                                      String formattedDate =
-                                          transaction.createdAt != null
-                                              ? DateUtilsFormat
-                                                  .formatTransactionDate(
-                                                      transaction.createdAt!)
-                                              : '';
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: controller.transactionData.length,
+                                  itemBuilder: (context, index) {
+                                    var transaction =
+                                        controller.transactionData[index];
+                                    bool isNewHeader = index == 0 ||
+                                        transaction.createdAt !=
+                                            controller
+                                                .transactionData[index - 1]
+                                                .createdAt;
+                                    String formattedDate = transaction
+                                                .createdAt !=
+                                            null
+                                        ? DateUtilsFormat.formatTransactionDate(
+                                            transaction.createdAt!)
+                                        : '';
 
-                                      return Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: Column(
-                                          children: [
-                                            if (isNewHeader)
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8.0),
-                                                  child: Text(
-                                                    formattedDate ??
-                                                        'Unknown Date',
-                                                    style: Styles
-                                                        .textStyleTitle12
-                                                        .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      // Customize the header text style
-                                                    ), // Handle the case where textStyleTitle14 is null
-                                                  ),
+                                    return Container(
+                                      padding: EdgeInsets.all(5),
+                                      child: Column(
+                                        children: [
+                                          if (isNewHeader)
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(
+                                                  formattedDate ??
+                                                      'Unknown Date',
+                                                  style: Styles.textStyleTitle12
+                                                      .copyWith(
+                                                    fontWeight: FontWeight.w400,
+                                                  ), // Handle the case where textStyleTitle14 is null
                                                 ),
                                               ),
-                                            SizedBox(
-                                              height: 10,
                                             ),
-                                            Row(
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              controller.getTransactionsDetails(
+                                                  id: "${transaction.id}");
+                                            },
+                                            child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
@@ -232,21 +246,21 @@ class AccountTransactions extends StatelessWidget {
                                                                 .receiverImg ??
                                                             '',
                                                         errorBuilder:
-                                                            (BuildContext
+                                                  (BuildContext
                                                                     context,
                                                                 Object error,
                                                                 StackTrace?
                                                                     stackTrace) {
-                                                          return ClipRRect(
-                                                            borderRadius:
+                                                return ClipRRect(
+                                                  borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        30),
-                                                            child: SizedBox(
-                                                              height: 45.h,
-                                                              width: 45.w,
-                                                              child:
-                                                                  const Center(
+                                                                        50),
+                                                            child:
+                                                                const SizedBox(
+                                                              height: 45,
+                                                              width: 45,
+                                                              child: Center(
                                                                 child: Icon(
                                                                   Icons
                                                                       .account_circle,
@@ -255,72 +269,55 @@ class AccountTransactions extends StatelessWidget {
                                                               ),
                                                             ),
                                                           );
-                                                        },
-                                                        fit: BoxFit.fill,
-                                                        height: 45,
-                                                        width: 45,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
+                                              },
+                                              fit: BoxFit.fill,
+                                              height: 45,
+                                              width: 45,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              Text(
+                                                  transaction
+                                                      .receiverFirstName ??
+                                                      '',
+                                                  style: Styles
+                                                      .textStyleTitle14),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                transaction
+                                                    .receiverLastName ??
+                                                    "",
+                                                style: Styles
+                                                    .textStyleTitle14
+                                                    .copyWith(
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w400),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
                                                         Text(
-                                                            transaction
-                                                                    .receiverFirstName ??
-                                                                '',
-                                                            style: Styles
-                                                                .textStyleTitle14),
-                                                        SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        Text(
-                                                          transaction
-                                                                  .receiverLastName ??
-                                                              "",
-                                                          style: Styles
-                                                              .textStyleTitle14
-                                                              .copyWith(
-                                                                  fontSize: 13,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        ImageIcon(
-                                                          AssetImage(
-                                                              'Assets/images/Vector(9).png'),
-                                                          color: transaction
-                                                                          .finalAmount !=
-                                                                      null &&
-                                                                  transaction
-                                                                          .finalAmount! >
-                                                                      0
-                                                              ? Color(
-                                                                  0XFF4FD25D)
-                                                              : Colors.red,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 7.h,
-                                                        ),
-                                                        Text(
-                                                          "${transaction.finalAmount ?? '0'}",
-                                                          // Use 'N/A' if finalAmount is null
-                                                          style: Styles
-                                                              .textStyleTitle24
-                                                              .copyWith(
-                                                            color: transaction
+                                                "${transaction.finalAmount ?? '0'}",
+                                                style: Styles
+                                                    .textStyleTitle24
+                                                    .copyWith(
+                                                  color: transaction
                                                                             .finalAmount !=
                                                                         null &&
                                                                     transaction
@@ -331,18 +328,39 @@ class AccountTransactions extends StatelessWidget {
                                                                 : Colors.red,
                                                           ),
                                                         ),
+                                                        SizedBox(
+                                                          width: 7.h,
+                                                        ),
+                                                        Text(
+                                                          transaction
+                                                                  .abbreviation ??
+                                                              '',
+                                                          style: Styles
+                                                              .textStyleTitle18
+                                                              .copyWith(
+                                                            color: transaction
+                                                                            .finalAmount !=
+                                                                        null &&
+                                                                    transaction
+                                                                            .finalAmount! >
+                                                                        0
+                                                                ? Color(
+                                                                    0XFF4FD25D)
+                                                                : Colors.red,
+                                                          ),
+                                                        )
                                                       ],
                                                     ),
                                                   ],
                                                 )
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ));
-                  }),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ))),
                 )
               ],
             ),
@@ -353,4 +371,109 @@ class AccountTransactions extends StatelessWidget {
   }
 
   Timer? _debounce;
+
+  void _showBottomSheet(
+    BuildContext context,
+    List<Currency> currencies,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+              color: settingsController.isDarkMode.value
+                  ? Colors.black38
+                  : Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            child: Column(
+              children: [
+                Text(
+                  'Select Currency',
+                  style: Styles.textStyleTitle24.copyWith(fontSize: 30),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    controller.selectedCurrency.value = Currency(
+                        id: 0,
+                        abbreviation: 'abbreviation',
+                        name: 'All',
+                        img: '');
+                    controller.update();
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('All', style: Styles.textStyleTitle18),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 0.5,
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  margin: EdgeInsets.only(
+                    right: 10,
+                  ),
+                  decoration: BoxDecoration(
+                      border:
+                          Border.all(color: Colors.grey.shade700, width: 0.2)),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              controller.selectedCurrency(currencies[index]);
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(currencies[index].abbreviation ?? '',
+                                      style: Styles.textStyleTitle12
+                                          .copyWith(color: Colors.grey)),
+                                  SizedBox(
+                                    width: 20,
+                                    child: Center(child: Text('--')),
+                                  ),
+                                  Text(currencies[index].name ?? '',
+                                      style: Styles.textStyleTitle14),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.h,
+                          ),
+                          Container(
+                            height: 0.5,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey.shade700, width: 0.2)),
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: currencies.length,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

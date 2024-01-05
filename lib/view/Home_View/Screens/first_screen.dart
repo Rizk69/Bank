@@ -1,4 +1,6 @@
 import 'package:MBAG/helper/LoadingData.dart';
+import 'package:MBAG/view/NotificationView/Screen/NotificationScreens.dart';
+import 'package:MBAG/view/QrTransaction/model/ScanModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,10 +12,11 @@ import '../../../helper/Data.dart';
 import '../../../helper/HelperScreenNerst.dart';
 import '../../AccountDetails/Controller/AccountDetailsController.dart';
 import '../../Auth_View/Add_Id_Image/Screen/CaptureIdScreen.dart';
+import '../../Transaction/Screen/Account_transaction_details.dart';
 import '../../on_bording_screen/Widget/buttom_.dart';
 import 'package:MBAG/Core/cache_helper.dart';
 import 'package:MBAG/Core/widgets/Styles.dart';
-import 'package:MBAG/view/Home_View/Screens/Cashback_Screen.dart';
+import 'package:MBAG/view/Trader/Screen/Cashback_Screen.dart';
 import 'package:MBAG/view/Transaction/Screen/Account_transactions_Screens.dart';
 import 'package:MBAG/view/Home_View/Widget/App_Bar_First_Home.dart';
 import 'package:MBAG/view/Home_View/Widget/Deposit_WitDraw.dart';
@@ -83,7 +86,8 @@ class FirstScreen extends StatelessWidget {
                                 id: 0,
                                 name: '',
                                 active: false,
-                                abbreviation: ''),
+                                abbreviation: '',
+                                img: ''),
                       ),
                       SizedBox(height: 25.h),
                       DepositAndWithdraw(
@@ -152,177 +156,174 @@ class FirstScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: settingsController.isDarkMode.value
-                          ? Colors.black87
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(15)),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            Get.to(() => AccountTransactions());
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.send_outlined,
-                                  size: 25,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Notification',
-                                  style: Styles.textStyleTitle18
-                                      .copyWith(fontWeight: FontWeight.w700),
-                                ),
-                                Spacer(),
-                                Container(
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: Center(
-                                    child: Text(
-                                      "${userController.userModel.countNotifications}",
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.white),
-                                    ),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: settingsController.isDarkMode.value
+                        ? Colors.black87
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          Get.to(() => NotificationScreenHome());
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.send_outlined,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Notification',
+                                style: Styles.textStyleTitle18
+                                    .copyWith(fontWeight: FontWeight.w700),
+                              ),
+                              Spacer(),
+                              Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Center(
+                                  child: Text(
+                                    "${userController.userModel.countNotifications}",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
                                   ),
-                                )
-                              ],
-                            ),
-                          )),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        height: 1,
-                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Get.to(() => SlideDownTextAnimation(
-                                  appBarView: true,
-                                ));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.reply_all,
-                                  size: 25,
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Request Money',
-                                  style: Styles.textStyleTitle18
-                                      .copyWith(fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                          )),
-                      Container(
-                        width: double.infinity,
-                        height: 1,
-                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Get.to(() => SlideDownTextAnimation(
-                                  appBarView: true,
-                                ));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.interpreter_mode,
-                                  size: 25,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'International Money transfer',
-                                  style: Styles.textStyleTitle18
-                                      .copyWith(fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                          )),
-                      Container(
-                        width: double.infinity,
-                        height: 1,
-                        decoration: BoxDecoration(color: Color(0xffA6ABBD)),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Get.to(() => SlideDownTextAnimation(
-                                  appBarView: true,
-                                ));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.refresh_outlined,
-                                  size: 25,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Recurrig transfer',
-                                  style: Styles.textStyleTitle18
-                                      .copyWith(fontWeight: FontWeight.w700),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
+                              )
+                            ],
+                          ),
+                        )),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      height: 1,
+                      decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          Get.to(() => SlideDownTextAnimation(
+                                appBarView: true,
+                              ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.reply_all,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Request Money',
+                                style: Styles.textStyleTitle18
+                                    .copyWith(fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        )),
+                    Container(
+                      width: double.infinity,
+                      height: 1,
+                      decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          Get.to(() => SlideDownTextAnimation(
+                                appBarView: true,
+                              ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.interpreter_mode,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'International Money transfer',
+                                style: Styles.textStyleTitle18
+                                    .copyWith(fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        )),
+                    Container(
+                      width: double.infinity,
+                      height: 1,
+                      decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          Get.to(() => SlideDownTextAnimation(
+                                appBarView: true,
+                              ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.refresh_outlined,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Recurrig transfer',
+                                style: Styles.textStyleTitle18
+                                    .copyWith(fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Buttoms(
-                      text: 'Cancel',
-                      color: settingsController.isDarkMode.value
-                          ? Colors.black
-                          : Colors.black,
-                      onPressed: () {
-                        Get.back();
-                      },
-                      colorText: Colors.white),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Buttoms(
+                    text: 'Cancel',
+                    color: settingsController.isDarkMode.value
+                        ? Colors.black
+                        : Colors.black,
+                    onPressed: () {
+                      Get.back();
+                    },
+                    colorText: Colors.white),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
           ),
         );
       },
@@ -489,95 +490,112 @@ class FirstScreen extends StatelessWidget {
                   )),
                 )
               : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.network(
-                              transaction.receiverImg ?? '',
-                              errorBuilder: (BuildContext context, Object error,
-                                  StackTrace? stackTrace) {
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: SizedBox(
-                                    height: 45.h,
-                                    width: 45.w,
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.account_circle,
-                                        size: 45,
-                                      ),
-                                    ),
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                  child: InkWell(
+                    onTap: () {
+                      homeControllerGetData.getTransactionsDetails(
+                          id: transaction.id);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    transaction.receiverImg ?? '',
+                                    errorBuilder: (BuildContext context,
+                                        Object error, StackTrace? stackTrace) {
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: const SizedBox(
+                                          height: 50,
+                                          width: 50,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.account_circle,
+                                              size: 50,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    fit: BoxFit.fill,
+                                    height: 50,
+                                    width: 50,
                                   ),
-                                );
-                              },
-                              fit: BoxFit.fill,
-                              height: 45.h,
-                              width: 45.w,
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(transaction.receiverFirstName ?? '',
+                                        style: Styles.textStyleTitle14),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      transaction.receiverLastName ?? "",
+                                      style: Styles.textStyleTitle14.copyWith(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(transaction.receiverFirstName ?? '',
-                                  style: Styles.textStyleTitle14),
-                              SizedBox(height: 5),
-                              Text(
-                                transaction.receiverLastName ?? '',
-                                style: Styles.textStyleTitle14.copyWith(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "${transaction.finalAmount ?? '0'}",
+                                  textAlign: TextAlign.right,
+                                  style: Styles.textStyleTitle24.copyWith(
+                                    color: transaction.finalAmount != null &&
+                                            transaction.finalAmount! >= 0
+                                        ? Color(0XFF4FD25D)
+                                        : Colors.red,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              ImageIcon(
-                                AssetImage('Assets/images/Vector(9).png'),
-                                color: transaction.finalAmount != null &&
-                                        transaction.finalAmount! > 0
-                                    ? Color(0XFF4FD25D)
-                                    : Colors.red,
-                              ),
-                              SizedBox(
-                                width: 7.h,
-                              ),
-                              Text(
-                                "${transaction.finalAmount ?? '0'}",
-                                style: Styles.textStyleTitle24.copyWith(
-                                  color: transaction.finalAmount != null &&
-                                          transaction.finalAmount! >= 0
-                                      ? Color(0XFF4FD25D)
-                                      : Colors.red,
+                                SizedBox(
+                                  width: 7.h,
                                 ),
-                              ),
-                            ],
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                formattedDate ?? 'Unknown Date',
-                                style: Styles.textStyleTitle12.copyWith(
-                                  fontWeight: FontWeight.w400,
+                                Text(
+                                  transaction.abbreviation ?? '',
+                                  style: Styles.textStyleTitle18.copyWith(
+                                    color: transaction.finalAmount != null &&
+                                            transaction.finalAmount! > 0
+                                        ? Color(0XFF4FD25D)
+                                        : Colors.red,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  formattedDate ?? 'Unknown Date',
+                                  style: Styles.textStyleTitle12.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 );
         },
@@ -693,15 +711,32 @@ class FirstScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                  currencies.currencies[index].abbreviation ??
-                                      '',
-                                  style: Styles.textStyleTitle12
-                                      .copyWith(color: Colors.grey)),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    currencies.currencies[index].img ?? '',
+                                    height: 25.h,
+                                    width: 25.h,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const SizedBox(),
+                                  )),
+
+                              // const SizedBox(
+                              //   width: 20,
+                              //   child: Center(child: Text('--')),
+                              // ),
+                              // Text(
+                              //     currencies.currencies[index].abbreviation ??
+                              //         '',
+                              //     style: Styles.textStyleTitle12
+                              //         .copyWith(color: Colors.grey)),
+
                               const SizedBox(
                                 width: 20,
                                 child: Center(child: Text('--')),
                               ),
+
                               Text(currencies.currencies[index].name ?? '',
                                   style: Styles.textStyleTitle14),
                               const Spacer(),
@@ -763,34 +798,3 @@ class FirstScreen extends StatelessWidget {
     );
   }
 }
-// InkWell(
-// onTap: () {
-// Get.snackbar('This Not Activity', '',
-// backgroundColor: Colors.red, colorText: Colors.white);
-// },
-// child: Row(
-// children: [
-// ClipRRect(
-// borderRadius: BorderRadius.circular(50),
-// child: Image.asset(
-// 'Assets/images/2560px-Flag_of_the_United_States.svg.png',
-// height: 40.h,
-// width: 60.h,
-// )),
-// SizedBox(
-// width: 8,
-// ),
-// Text('USD', style: Styles.textStyleTitle14),
-// SizedBox(
-// width: 3,
-// ),
-// Text('.', style: Styles.textStyleTitle14),
-// SizedBox(
-// width: 3,
-// ),
-// Text('Dollar', style: Styles.textStyleTitle14),
-// Spacer(),
-// Text('', style: Styles.textStyleTitle14),
-// ],
-// ),
-// ),

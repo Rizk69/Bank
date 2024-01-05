@@ -2,8 +2,6 @@ import 'package:MBAG/view/Location/Screens/Location%20Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
 import '../../../helper/Dark/SettingsController.dart';
 import '../../../helper/HelperScreenNerst.dart';
 
@@ -53,30 +51,27 @@ class DepositAndWithdraw extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  Center(
+                    child: Text(
+                      balance,
+                      style: TextStyle(
+                        color: settingsController.isDarkMode.value
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
                   ImageIcon(
                     AssetImage('Assets/images/Vector(9).png'),
                     color: settingsController.isDarkMode.value
                         ? Colors.white
                         : Colors.black,
                     size: 30,
-                  ),
-                  const SizedBox(
-                    width: 3,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.8,
-                    child: Center(
-                      child: Text(
-                        balance,
-                        style: TextStyle(
-                            color: settingsController.isDarkMode.value
-                                ? Colors.white
-                                : Colors.black,
-                            fontSize: 37,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -105,7 +100,7 @@ class DepositAndWithdraw extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      '$accountNumber',
+                      accountNumber,
                       style: TextStyle(
                         fontSize: 14,
                         color: settingsController.isDarkMode.value

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/http_helper.dart';
+import '../../Transaction/Screen/Account_transaction_details.dart';
+import '../../Transaction/model/transaction_model.dart';
 import '../model/HomeModel.dart';
 
 class HomeControllerGetData extends GetxController {
@@ -9,6 +11,7 @@ class HomeControllerGetData extends GetxController {
   late CurrencyModel _currencyModel;
   late var isLoading = true.obs;
   late var isDataLoaded = false.obs;
+  late TransactionDetails transactionDetails;
 
   HomeModel get homeModel => _homeModel;
 
@@ -59,6 +62,30 @@ class HomeControllerGetData extends GetxController {
       handleErrorResponse(error);
     } finally {
       update();
+    }
+  }
+
+  Future<void> getTransactionsDetails({required var id}) async {
+    print(id);
+    try {
+      final response =
+          await HttpHelper.postData(endpoint: "get_transactionn/$id", body: {});
+      if (response["status"] == true && response["transaction"] != null) {
+        transactionDetails =
+            TransactionDetails.fromJson(response["transaction"]);
+        print(response);
+        Get.to(() => AccountTransActonDetails(
+              transactionDetails: transactionDetails,
+              notification: false,
+            ));
+      } else {
+        print("Transaction details not found or status is false");
+      }
+      update();
+    } catch (error) {
+      print("Error fetching transaction details: $error");
+    } finally {
+      isLoading.value = false;
     }
   }
 

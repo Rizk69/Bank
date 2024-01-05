@@ -161,7 +161,6 @@ class LoginController extends GetxController {
       );
 
       if (response["status"]) {
-        showSuccessSnackbar(response['message']);
         await CacheHelper.saveDataSharedPreference(
           key: "token",
           value: response['token'],

@@ -70,9 +70,6 @@ class FastLoginController extends GetxController {
       if (response["status"] == true) {
         print(response.toString());
 
-        Get.snackbar("Success!", response['message'],
-            backgroundColor: Colors.blue);
-
         Get.offAll(() => HomeScreen());
       } else {
         Get.snackbar("Warning!", response['message'],

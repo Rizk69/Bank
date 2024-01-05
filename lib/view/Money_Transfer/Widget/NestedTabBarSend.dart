@@ -20,14 +20,11 @@ class NestedTabBar extends StatefulWidget {
 class _NestedTabBarState extends State<NestedTabBar>
     with TickerProviderStateMixin {
   late final TabController _tabController;
-  final ContactControllerSend contactController =
-      Get.put(ContactControllerSend());
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    // contactController.update();
   }
 
   @override
@@ -125,14 +122,25 @@ class ContactListPage extends StatelessWidget {
                         ));
                   } else {
                     return SizedBox(
-                      height: 115.h,
+                      height: 105.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: controller.favoriteClients.length,
                         itemBuilder: (context, index) {
                           final client = controller.favoriteClients[index];
-                          return buildContactWidget(client.img ?? '',
-                              '${client.firstName} ${client.lastName}');
+                          return InkWell(
+                            onTap: () {
+                              Get.to(() => AmountSendScreenId(
+                                    modelReceiver: '${client.id}',
+                                    name:
+                                        '${client.firstName} ${client.lastName}',
+                                    img: client.img ?? "",
+                                    endPoint: 'send_amount_phone',
+                                  ));
+                            },
+                            child: buildContactWidget(client.img ?? '',
+                                '${client.firstName} ${client.lastName}'),
+                          );
                         },
                       ),
                     );
@@ -164,19 +172,19 @@ class ContactListPage extends StatelessWidget {
                     () => Expanded(
                     flex: 1,
                     child: contactController.isLoading.isFalse
-                        ? buildContactListView()
+                        ? buildContactListView(context)
                         : Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: Colors.white,
-                        ),
-                        height: 90.h,
-                        width: double.infinity,
-                      ),
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: Colors.white,
+                              ),
+                              height: 90.h,
+                              width: double.infinity,
+                            ),
                     )),
               )
             ],
@@ -186,7 +194,7 @@ class ContactListPage extends StatelessWidget {
     );
   }
 
-  Widget buildContactListView() {
+  Widget buildContactListView(BuildContext context) {
     return GetBuilder<ContactControllerSend>(
         initState: (state) => ContactControllerSend(),
         builder: (controller) {
@@ -200,40 +208,44 @@ class ContactListPage extends StatelessWidget {
             }
           });
 
-          return ListView.builder(
-            itemCount: controller.filteredContacts.length,
-            itemBuilder: (context, index) {
-              if (index < 0 || index >= controller.filteredContacts.length) {
-                return const SizedBox();
-              }
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 2,
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: controller.filteredContacts.length,
+              itemBuilder: (context, index) {
+                if (index < 0 || index >= controller.filteredContacts.length) {
+                  return const SizedBox();
+                }
 
-              var contact = controller.filteredContacts[index].phone ??
-                  'لا يوجد رقم هاتف';
-              var contactId = controller.filteredContacts[index].user?.id;
-              var photo = controller.filteredContacts[index].user?.img;
-              var firstName =
-                  controller.filteredContacts[index].user?.firstName ?? '';
-              var lastName =
-                  controller.filteredContacts[index].user?.lastName ?? '';
+                var contact = controller.filteredContacts[index].phone ??
+                    'لا يوجد رقم هاتف';
+                var contactId = controller.filteredContacts[index].user?.id;
+                var photo = controller.filteredContacts[index].user?.img;
+                var firstName =
+                    controller.filteredContacts[index].user?.firstName ?? '';
+                var lastName =
+                    controller.filteredContacts[index].user?.lastName ?? '';
 
-              return InkWell(
-                onTap: () {
-                  Get.to(() => AmountSendScreenId(
-                        modelReceiver: '$contactId',
-                        name: '$firstName $lastName',
-                        img: photo ?? "",
-                        endPoint: 'send_amount_phone',
-                      ));
-                },
-                child: ListTile(
-                  leading: buildContactImage(photo),
-                  title: Text('$firstName $lastName'),
-                  subtitle: Text(contact),
-                  trailing:
-                      Icon(firstName.isNotEmpty ? Icons.check : Icons.error),
-                ),
-              );
-            },
+                return InkWell(
+                  onTap: () {
+                    Get.to(() => AmountSendScreenId(
+                          modelReceiver: '$contactId',
+                          name: '$firstName $lastName',
+                          img: photo ?? "",
+                          endPoint: 'send_amount_phone',
+                        ));
+                  },
+                  child: ListTile(
+                    leading: buildContactImage(photo),
+                    title: Text('$firstName $lastName'),
+                    subtitle: Text(contact),
+                    trailing:
+                        Icon(firstName.isNotEmpty ? Icons.check : Icons.error),
+                  ),
+                );
+              },
+            ),
           );
         });
   }
@@ -281,8 +293,8 @@ class ContactListPage extends StatelessWidget {
                     imagePath,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: const Padding(
+                      return const Center(
+                        child: Padding(
                           padding: EdgeInsets.all(11.0),
                           child: ImageIcon(
                             AssetImage('Assets/images/line-md_account.png'),
@@ -293,24 +305,27 @@ class ContactListPage extends StatelessWidget {
                     },
                   ),
                 )
-              : Center(
-                  child: const ImageIcon(
+              : const Center(
+                  child: ImageIcon(
                     AssetImage('Assets/images/line-md_account.png'),
                     size: 40,
                   ),
                 ), // Default image if null or empty
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         SizedBox(
           width: 80.w,
-          child: Text(
-            name,
-            maxLines: 1,
-            style: const TextStyle(
-                color: Color(0Xff6A6969),
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                overflow: TextOverflow.ellipsis),
+          child: Center(
+            child: Text(
+              name.length > 6 ? name.substring(0, 6) : '..',
+              // هنا تم استخدام substring
+              maxLines: 1,
+              style: const TextStyle(
+                  color: Color(0Xff6A6969),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  overflow: TextOverflow.ellipsis),
+            ),
           ),
         ),
       ],

@@ -58,7 +58,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
         Expanded(
           child: buildPageView(context),
         ),
-        buildButtonsSection(),
+        buildButtonsSection(context),
       ],
     );
   }
@@ -68,11 +68,11 @@ class CupertinoOnboardingScreen extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         buildPageViewBuilder(),
-        Positioned(
-          top: MediaQuery.of(context).size.height / 1.4,
-          left: 140.w,
-          child: buildIndicatorArea(context),
-        ),
+        // Positioned(
+        //   bottom: MediaQuery.of(context).size.height / 50,
+        //   left: 140.w,
+        //   child: buildIndicatorArea(context),
+        // ),
       ],
     );
   }
@@ -114,10 +114,14 @@ class CupertinoOnboardingScreen extends StatelessWidget {
     );
   }
 
-  Widget buildButtonsSection() {
+  Widget buildButtonsSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        buildIndicatorArea(context),
+        SizedBox(
+          height: 15,
+        ),
         Buttoms(
           text: controller.selectedIndex == 2 ? 'Get Start' : 'Login',
           color: Colors.white,

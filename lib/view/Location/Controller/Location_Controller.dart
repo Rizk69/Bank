@@ -102,7 +102,7 @@ class LocationController extends GetxController {
         if (nearestBranchModel.nearestBranch != null) {
           print('Nearest Branch ID: ${nearestBranchModel.nearestBranch!.id}');
           print(
-              'Nearest Branch Name: ${nearestBranchModel.nearestBranch!.name}');
+              'Nearest Branch Name: ${nearestBranchModel.nearestBranch!.firstName}');
           // Access other properties as needed
         }
 
@@ -111,7 +111,7 @@ class LocationController extends GetxController {
               'Number of Nearest Branches: ${nearestBranchModel.nearestBranches!.length}');
           for (var branch in nearestBranchModel.nearestBranches!) {
             print('Branch ID: ${branch.id}');
-            print('Branch Name: ${branch.name}');
+            print('Branch Name: ${branch.firstName}');
             // Access other properties as needed
           }
         }

@@ -120,8 +120,17 @@ class AmountSendScreen extends StatelessWidget {
                                       : Colors.grey,
                                   fontWeight: FontWeight.bold)),
                           SizedBox(
-                            width: 8,
+                            width: 3,
                           ),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                controller.selectedCurrency.value?.img ?? '',
+                                height: 25.h,
+                                width: 25.h,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const SizedBox(),
+                              )),
                           SizedBox(
                             width: 3,
                           ),
@@ -151,21 +160,16 @@ class AmountSendScreen extends StatelessWidget {
                 Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ImageIcon(
-                          const AssetImage('Assets/images/Vector(9).png'),
-                          color: settingsController.isDarkMode.value
-                              ? Colors.white
-                              : Colors.grey,
-                          size: 30,
-                        ),
-                        const SizedBox(width: 6),
                         Text(
                           controller.input.value,
-                          style: TextStyle(
-                              fontSize: 36,
-                              color: settingsController.isDarkMode.value
-                                  ? Colors.white
-                                  : Colors.grey),
+                          style:
+                              const TextStyle(fontSize: 36, color: Colors.grey),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          controller.selectedCurrency.value?.abbreviation ?? '',
+                          style:
+                              const TextStyle(fontSize: 36, color: Colors.grey),
                         ),
                       ],
                     )),
@@ -319,9 +323,20 @@ class AmountSendScreen extends StatelessWidget {
                             },
                             child: Row(
                               children: [
-                                Text(currencies[index].abbreviation ?? '',
-                                    style: Styles.textStyleTitle12
-                                        .copyWith(color: Colors.grey)),
+                                // Text(currencies[index].abbreviation ?? '',
+                                //     style: Styles.textStyleTitle12
+                                //         .copyWith(color: Colors.grey)),
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(
+                                      controller.selectedCurrency.value?.img ??
+                                          '',
+                                      height: 25.h,
+                                      width: 25.h,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const SizedBox(),
+                                    )),
                                 SizedBox(
                                   width: 20,
                                   child: Center(child: Text('--')),
@@ -477,8 +492,17 @@ class AmountSendScreenId extends StatelessWidget {
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold)),
                           SizedBox(
-                            width: 8,
+                            width: 3,
                           ),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                controller.selectedCurrency.value?.img ?? '',
+                                height: 25.h,
+                                width: 25.h,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const SizedBox(),
+                              )),
                           SizedBox(
                             width: 3,
                           ),
@@ -499,14 +523,14 @@ class AmountSendScreenId extends StatelessWidget {
                 Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const ImageIcon(
-                          AssetImage('Assets/images/Vector(9).png'),
-                          color: Colors.grey,
-                          size: 30,
+                        Text(
+                          controller.input.value,
+                          style:
+                              const TextStyle(fontSize: 36, color: Colors.grey),
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          controller.input.value,
+                          controller.selectedCurrency.value?.abbreviation ?? '',
                           style:
                               const TextStyle(fontSize: 36, color: Colors.grey),
                         ),
@@ -651,14 +675,24 @@ class AmountSendScreenId extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               controller.selectedCurrency(currencies[index]);
-                              print(currencies[index]);
                               Navigator.pop(context);
                             },
                             child: Row(
                               children: [
-                                Text(currencies[index].abbreviation ?? '',
-                                    style: Styles.textStyleTitle12
-                                        .copyWith(color: Colors.grey)),
+                                // Text(currencies[index].abbreviation ?? '',
+                                //     style: Styles.textStyleTitle12
+                                //         .copyWith(color: Colors.grey)),
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(
+                                      controller.selectedCurrency.value?.img ??
+                                          '',
+                                      height: 25.h,
+                                      width: 25.h,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const SizedBox(),
+                                    )),
                                 SizedBox(
                                   width: 20,
                                   child: Center(child: Text('--')),

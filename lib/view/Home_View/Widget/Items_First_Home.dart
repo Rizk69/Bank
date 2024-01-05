@@ -90,6 +90,18 @@ class ItemsFirstHome extends StatelessWidget {
                     SizedBox(
                       width: 8,
                     ),
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          currency.img ?? '',
+                          height: 25.h,
+                          width: 25.h,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const SizedBox(),
+                        )),
+                    SizedBox(
+                      width: 8,
+                    ),
                     SizedBox(
                       width: 3,
                     ),
@@ -132,10 +144,3 @@ class ItemsFirstHome extends StatelessWidget {
   }
 }
 // currency.id==1?
-// ClipRRect(
-//     borderRadius: BorderRadius.circular(15),
-//     child: Image.asset(
-//       'Assets/images/download.png',
-//       height: 25.h,
-//       width: 25.h,
-//     )):SizedBox(),

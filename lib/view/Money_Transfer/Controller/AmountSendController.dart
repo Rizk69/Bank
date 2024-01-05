@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/http_helper.dart';
-import '../../MBAG_Card_Screen/Widget/ScreenSuccessfull.dart';
+import '../../ScreenSuccessfully/screen/ScreenSuccessfull.dart';
 import '../../QrTransaction/model/ScanModel.dart';
 
 class AmountSendController extends GetxController {
@@ -12,7 +12,7 @@ class AmountSendController extends GetxController {
 
   void selectCurrency(Currency currency) {
     selectedCurrency.value = currency;
-    print(currency.id);
+    update();
   }
 
   void appendNumber(String number) {
@@ -43,6 +43,9 @@ class AmountSendController extends GetxController {
     required BuildContext context,
   }) async {
     try {
+      print(receiverId);
+      print(currencyId);
+      print(amount);
       final response = await HttpHelper.postData(
         endpoint: endPoint,
         body: {
@@ -52,10 +55,15 @@ class AmountSendController extends GetxController {
         },
       );
       if (response["status"] == true) {
-        Get.snackbar("Success!", response['message'],
-            backgroundColor: Colors.blue);
+        // Get.snackbar("Success!", response['message'],
+        //     backgroundColor: Colors.blue);
+        var tranfer_id = response["tranfer_id"];
+        var type = response["type"];
         clear();
-        Get.offAll(const ScreenSuccessfull());
+        Get.offAll(() => ScreenSuccessfully(
+              transferId: "${tranfer_id}",
+              type: "${type}",
+            ));
       } else {
         Get.snackbar("Warning!", response['message'],
             backgroundColor: Colors.red);

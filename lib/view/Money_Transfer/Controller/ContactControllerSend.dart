@@ -20,7 +20,12 @@ class ContactControllerSend extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    main().then((_) => removeDuplicates());
+    if (filteredContacts.isNotEmpty) {
+      isLoading.value = false;
+      return; // إنهاء التنفيذ إذا كانت البيانات موجودة بالفعل
+    } else {
+      main().then((_) => removeDuplicates());
+    }
   }
 
   Future<void> getFavoriteClient() async {

@@ -45,7 +45,11 @@ class ShimmerLoadingHome extends StatelessWidget {
                   onPressed2: () {},
                   onPressed3: () {},
                   currency: CurrencyHome(
-                      id: 0, name: '', active: false, abbreviation: ''),
+                      id: 0,
+                      name: '',
+                      active: false,
+                      abbreviation: '',
+                      img: ''),
                 ),
               ),
               SizedBox(height: 25),

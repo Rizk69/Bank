@@ -49,16 +49,16 @@ class NearestBranch {
   double? distance;
   double? latitude;
   double? longitude;
-  String? name;
-  String? title;
+  String? firstName;
+  String? lastname;
 
   NearestBranch({
     this.id,
     this.distance,
     this.latitude,
     this.longitude,
-    this.name,
-    this.title,
+    this.firstName,
+    this.lastname,
   });
 
   NearestBranch.fromJson(Map<String, dynamic> json) {
@@ -66,8 +66,8 @@ class NearestBranch {
     distance = json['distance'];
     latitude = json['latitude'];
     longitude = json['longitude'];
-    name = json['name'];
-    title = json['title'];
+    firstName = json['first_name'];
+    lastname = json['last_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,8 +76,8 @@ class NearestBranch {
     data['distance'] = distance;
     data['latitude'] = latitude;
     data['longitude'] = longitude;
-    data['name'] = name;
-    data['title'] = title;
+    data['first_name'] = firstName;
+    data['last_name'] = lastname;
     return data;
   }
 }

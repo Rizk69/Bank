@@ -16,12 +16,13 @@ import 'package:MBAG/view/SelectCard/Controller/CardSelectionController.dart';
 import 'package:MBAG/view/Transaction/controller/transaction_controller.dart';
 import 'package:get/get.dart';
 
+import '../view/NotificationView/Controller/NotificationController.dart';
 import '../view/NotificationView/Controller/Push_Notification.dart';
 import '../view/AccountDetails/Controller/AccountDetailsController.dart';
 import '../view/Home_View/Screens/first_screen.dart';
 import '../view/Money_Transfer/Controller/ContactControllerSend.dart';
 import '../view/Money_Transfer/Controller/MbagNumberController.dart';
-import '../view/Trader/Controller.dart';
+import '../view/Trader/Controller/TraderController.dart';
 import 'Dark/SettingsController.dart';
 
 class Binding extends Bindings {
@@ -40,7 +41,7 @@ class Binding extends Bindings {
     Get.lazyPut(() => CountryController());
     Get.lazyPut(() => FastLoginController());
     Get.lazyPut(() => AuthController());
-    Get.lazyPut(() => TraderController());
+    Get.lazyPut(() => CashBakController());
     Get.lazyPut(() => FirstScreen());
     Get.lazyPut(() => LocationController());
     Get.lazyPut(() => ReceiveQrPaymentController());
@@ -51,5 +52,6 @@ class Binding extends Bindings {
     Get.lazyPut(() => AccountDetailsController());
     Get.lazyPut(() => CameraIdController());
     Get.lazyPut(() => CardController());
+    Get.lazyPut(() => NotificationControllerGetData());
   }
 }

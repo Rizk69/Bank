@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Core/cache_helper.dart';
 import '../../../Core/widgets/Styles.dart';
@@ -60,7 +59,7 @@ class AccountDetailsScreen extends StatelessWidget {
                           onTap: userController.takePhotoAndSendToAPI,
                           child: SizedBox(
                             height: 100.h,
-                            width: 110.h,
+                            width: 105.h,
                             child: Stack(
                               children: [
                                 Container(
@@ -75,11 +74,10 @@ class AccountDetailsScreen extends StatelessWidget {
                                       width: 100.h,
                                       height: 100.h,
                                       fit: BoxFit.cover,
-                                      // Ensure the image covers the container
                                       errorBuilder:
                                           (context, error, stackTrace) =>
-                                              Padding(
-                                        padding: const EdgeInsets.all(11.0),
+                                              const Padding(
+                                        padding: EdgeInsets.all(11.0),
                                         child: ImageIcon(
                                           AssetImage(
                                               'Assets/images/line-md_account.png'),
@@ -91,7 +89,7 @@ class AccountDetailsScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Positioned(
-                                  left: 70.h,
+                                  left: 65.h,
                                   child: Container(
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
@@ -138,7 +136,9 @@ class AccountDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Spacer(),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Expanded(
                           flex: 3,
                           child: Column(

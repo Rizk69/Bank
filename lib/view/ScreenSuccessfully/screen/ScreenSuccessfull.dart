@@ -4,18 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ScreenSuccessfull extends StatelessWidget {
-  const ScreenSuccessfull({Key? key}) : super(key: key);
+import '../controller/ScreenSuccessfullyControler.dart';
+
+class ScreenSuccessfully extends StatelessWidget {
+  String transferId;
+  String type;
+  ScreenSuccessfullyController controller =
+      Get.put(ScreenSuccessfullyController());
+
+  ScreenSuccessfully({super.key, required this.transferId, required this.type});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height * 1.1,
+          height: MediaQuery.of(context).size.height * 1.001111111,
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height / 5,
@@ -62,31 +69,31 @@ class ScreenSuccessfull extends StatelessWidget {
                     fontWeight: FontWeight.w400),
               )),
               Spacer(),
-              Buttoms(
-                  text: 'Receipt',
-                  color: Colors.white,
-                  onPressed: () {},
-                  colorText: Colors.black),
-              SizedBox(
-                height: 15.h,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Buttoms(
+                      text: 'Receipt',
+                      color: Colors.white,
+                      onPressed: () {
+                        controller.getTransactionsDetails(
+                            id: int.parse(transferId));
+                      },
+                      colorText: Colors.black),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  Buttoms(
+                      text: 'Ok',
+                      color: Colors.black,
+                      onPressed: () {
+                        Get.offAllNamed('/HomeScreen');
+                      },
+                      colorText: Colors.white),
+                ],
               ),
-              Buttoms(
-                  text: 'Set Up Recurring Transfer',
-                  color: Colors.white,
-                  onPressed: () {},
-                  colorText: Colors.black),
               SizedBox(
-                height: 15.h,
-              ),
-              Buttoms(
-                  text: 'Ok',
-                  color: Colors.black,
-                  onPressed: () {
-                    Get.offAllNamed('/HomeScreen');
-                  },
-                  colorText: Colors.white),
-              SizedBox(
-                height: 15.h,
+                height: 10.h,
               ),
             ],
           ),
