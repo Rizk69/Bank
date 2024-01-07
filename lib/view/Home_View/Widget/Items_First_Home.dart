@@ -9,7 +9,7 @@ class ItemsFirstHome extends StatelessWidget {
   final VoidCallback onPressed1;
   final VoidCallback onPressed2;
   final VoidCallback onPressed3;
-  CurrencyHome currency;
+  CurrencyHomeModel currency;
 
   ItemsFirstHome(
       {Key? key,
@@ -67,7 +67,7 @@ class ItemsFirstHome extends StatelessWidget {
               onTap: onPressed2,
               child: Container(
                 height: 33.h,
-                padding: EdgeInsets.symmetric(horizontal: 30.h, vertical: 3.h),
+                padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 3.h),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: settingsController.isDarkMode.value
@@ -84,7 +84,7 @@ class ItemsFirstHome extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(currency.name ?? '',
+                    Text(currency.abbreviation ?? '',
                         style: TextStyle(
                             color: Colors.grey, fontWeight: FontWeight.bold)),
                     SizedBox(
@@ -105,7 +105,7 @@ class ItemsFirstHome extends StatelessWidget {
                     SizedBox(
                       width: 3,
                     ),
-                    Text(currency.abbreviation ?? '',
+                    Text(currency.name ?? '',
                         style: TextStyle(
                             color: Colors.grey, fontWeight: FontWeight.bold)),
                     SizedBox(

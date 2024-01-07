@@ -44,7 +44,7 @@ class NotificationScreenHome extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 20.h,
+              height: 10.h,
             ),
             GetBuilder<NotificationControllerGetData>(
               builder: (notificationController) {
@@ -89,9 +89,12 @@ class NotificationScreenHome extends StatelessWidget {
 
   Widget notificationDetails(String? title, String? des) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15),
-      color: Color(0XFF979797).withOpacity(0.3),
-      height: 70,
+      decoration: BoxDecoration(
+          color: Color(0XFF979797).withOpacity(0.3),
+          borderRadius: BorderRadius.circular(15)),
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      height: 66,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -113,11 +116,11 @@ class NotificationScreenHome extends StatelessWidget {
               ],
             ),
           ),
-          Spacer(),
-          Container(
-            color: Colors.black,
-            height: 1,
-          )
+          // Spacer(),
+          // Container(
+          //   color: Colors.black,
+          //   height: 1,
+          // )
         ],
       ),
     );

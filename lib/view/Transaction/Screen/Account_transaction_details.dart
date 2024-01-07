@@ -51,21 +51,26 @@ class AccountTransActonDetails extends StatelessWidget {
                 )
               ],
             ),
+            SizedBox(
+              height: 13,
+            ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('Assets/images/Logo Mbag without background 5.png',
-                    height: 150),
-                Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Text(
+            Padding(
+              padding: EdgeInsets.only(right: 15, left: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset('Assets/images/MBAG.png', height: 80),
+                  Text(
                     'Receipt',
                     style: Styles.textStyleTitle16
                         .copyWith(color: Color(0Xff6A6969)),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 13,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -86,18 +91,18 @@ class AccountTransActonDetails extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text('Transaction No :',
+                      Text('Transaction No : ',
                           style: Styles.textStyleTitle14.copyWith(
                               fontWeight: FontWeight.w400,
                               color: Color(0XFF979797))),
-                      Text('',
+                      Text(transactionDetails.transNumber ?? 'Empty',
                           style: Styles.textStyleTitle14.copyWith(
                               fontWeight: FontWeight.w400,
                               color: Color(0XFF979797))),
                     ],
                   ),
                   SizedBox(
-                    height: 40.h,
+                    height: 20.h,
                   ),
                   Text(
                     'Money Transfer',
@@ -107,7 +112,7 @@ class AccountTransActonDetails extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20.h,
+              height: 15.h,
             ),
             detailsData(
                 color: Color(0XFFF8F8F8), title: 'Date', value: formattedDate),

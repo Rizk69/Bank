@@ -97,6 +97,7 @@ class TransactionDetails {
   String? finalAmount;
   String? createdAt;
   String? abbreviation;
+  String? transNumber;
 
   TransactionDetails(
       {this.id,
@@ -110,6 +111,7 @@ class TransactionDetails {
       this.receiverLastName,
       this.finalAmount,
       this.createdAt,
+      this.transNumber,
       this.abbreviation});
 
   TransactionDetails.fromJson(Map<String, dynamic> json) {
@@ -123,6 +125,7 @@ class TransactionDetails {
     receiverFirstName = json['receiver_first_name'];
     receiverLastName = json['receiver_last_name'];
     finalAmount = json['final_amount'];
+    transNumber = json['trans_number'];
     createdAt = json['created_at'];
     abbreviation = json['abbreviation'];
   }
@@ -140,6 +143,7 @@ class TransactionDetails {
     data['receiver_last_name'] = this.receiverLastName;
     data['final_amount'] = this.finalAmount;
     data['created_at'] = this.createdAt;
+    data['trans_number'] = this.transNumber;
     data['abbreviation'] = this.abbreviation;
 
     return data;

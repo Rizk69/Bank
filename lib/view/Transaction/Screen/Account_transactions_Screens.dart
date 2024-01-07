@@ -56,7 +56,7 @@ class AccountTransactions extends StatelessWidget {
                       },
                       child: Column(
                         children: [
-                          Icon(Icons.file_download_outlined),
+                          const Icon(Icons.file_download_outlined),
                           Text(
                             'Download',
                             style:
@@ -105,7 +105,7 @@ class AccountTransactions extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _showBottomSheet(context, controller.currenciesList);
+                    // _showBottomSheet(context, controller.currenciesList);
                   },
                   child: Obx(
                     () => Row(
@@ -130,7 +130,7 @@ class AccountTransactions extends StatelessWidget {
                                 children: [
                                   Text('Account Type',
                                       style: Styles.textStyleTitle12),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
                                   Text(
@@ -141,14 +141,14 @@ class AccountTransactions extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Icon(Icons.arrow_downward)
+                              const Icon(Icons.arrow_downward)
                             ],
                           ),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(Icons.filter_alt_rounded),
+                            const Icon(Icons.filter_alt_rounded),
                             SizedBox(
                               height: 5.h,
                             ),
@@ -163,7 +163,7 @@ class AccountTransactions extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
@@ -203,7 +203,7 @@ class AccountTransactions extends StatelessWidget {
                                         : '';
 
                                     return Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       child: Column(
                                         children: [
                                           if (isNewHeader)
@@ -222,7 +222,7 @@ class AccountTransactions extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           InkWell(
@@ -246,13 +246,13 @@ class AccountTransactions extends StatelessWidget {
                                                                 .receiverImg ??
                                                             '',
                                                         errorBuilder:
-                                                  (BuildContext
+                                                            (BuildContext
                                                                     context,
                                                                 Object error,
                                                                 StackTrace?
                                                                     stackTrace) {
-                                                return ClipRRect(
-                                                  borderRadius:
+                                                          return ClipRRect(
+                                                            borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         50),
@@ -269,61 +269,61 @@ class AccountTransactions extends StatelessWidget {
                                                               ),
                                                             ),
                                                           );
-                                              },
-                                              fit: BoxFit.fill,
-                                              height: 45,
-                                              width: 45,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment
-                                                .start,
-                                            children: [
-                                              Text(
-                                                  transaction
-                                                      .receiverFirstName ??
-                                                      '',
-                                                  style: Styles
-                                                      .textStyleTitle14),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                transaction
-                                                    .receiverLastName ??
-                                                    "",
-                                                style: Styles
-                                                    .textStyleTitle14
-                                                    .copyWith(
-                                                    fontSize: 13,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w400),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
+                                                        },
+                                                        fit: BoxFit.fill,
+                                                        height: 45,
+                                                        width: 45,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
                                                         Text(
-                                                "${transaction.finalAmount ?? '0'}",
-                                                style: Styles
-                                                    .textStyleTitle24
-                                                    .copyWith(
-                                                  color: transaction
+                                                            transaction
+                                                                    .receiverFirstName ??
+                                                                '',
+                                                            style: Styles
+                                                                .textStyleTitle14),
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          transaction
+                                                                  .receiverLastName ??
+                                                              "",
+                                                          style: Styles
+                                                              .textStyleTitle14
+                                                              .copyWith(
+                                                                  fontSize: 13,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "${transaction.finalAmount ?? '0'}",
+                                                          style: Styles
+                                                              .textStyleTitle24
+                                                              .copyWith(
+                                                            color: transaction
                                                                             .finalAmount !=
                                                                         null &&
                                                                     transaction
                                                                             .finalAmount! >=
                                                                         0
-                                                                ? Color(
+                                                                ? const Color(
                                                                     0XFF4FD25D)
                                                                 : Colors.red,
                                                           ),
@@ -344,7 +344,7 @@ class AccountTransactions extends StatelessWidget {
                                                                     transaction
                                                                             .finalAmount! >
                                                                         0
-                                                                ? Color(
+                                                                ? const Color(
                                                                     0XFF4FD25D)
                                                                 : Colors.red,
                                                           ),
@@ -425,50 +425,50 @@ class AccountTransactions extends StatelessWidget {
                       border:
                           Border.all(color: Colors.grey.shade700, width: 0.2)),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 3,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              controller.selectedCurrency(currencies[index]);
-                              Navigator.pop(context);
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Row(
-                                children: [
-                                  Text(currencies[index].abbreviation ?? '',
-                                      style: Styles.textStyleTitle12
-                                          .copyWith(color: Colors.grey)),
-                                  SizedBox(
-                                    width: 20,
-                                    child: Center(child: Text('--')),
-                                  ),
-                                  Text(currencies[index].name ?? '',
-                                      style: Styles.textStyleTitle14),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5.h,
-                          ),
-                          Container(
-                            height: 0.5,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey.shade700, width: 0.2)),
-                          ),
-                        ],
-                      );
-                    },
-                    itemCount: currencies.length,
-                  ),
-                ),
+                // SizedBox(
+                //   height: MediaQuery.of(context).size.height / 3,
+                //   child: ListView.builder(
+                //     itemBuilder: (context, index) {
+                //       return Column(
+                //         children: [
+                //           InkWell(
+                //             onTap: () {
+                //               controller.selectedCurrency(currencies[index]);
+                //               Navigator.pop(context);
+                //             },
+                //             child: Padding(
+                //               padding:
+                //                   const EdgeInsets.symmetric(vertical: 8.0),
+                //               child: Row(
+                //                 children: [
+                //                   Text(currencies[index].abbreviation ?? '',
+                //                       style: Styles.textStyleTitle12
+                //                           .copyWith(color: Colors.grey)),
+                //                   SizedBox(
+                //                     width: 20,
+                //                     child: Center(child: Text('--')),
+                //                   ),
+                //                   Text(currencies[index].name ?? '',
+                //                       style: Styles.textStyleTitle14),
+                //                 ],
+                //               ),
+                //             ),
+                //           ),
+                //           SizedBox(
+                //             width: 5.h,
+                //           ),
+                //           Container(
+                //             height: 0.5,
+                //             decoration: BoxDecoration(
+                //                 border: Border.all(
+                //                     color: Colors.grey.shade700, width: 0.2)),
+                //           ),
+                //         ],
+                //       );
+                //     },
+                //     itemCount: currencies.length,
+                //   ),
+                // ),
               ],
             ),
           ),

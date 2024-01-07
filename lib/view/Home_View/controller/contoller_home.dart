@@ -28,7 +28,10 @@ class HomeController extends GetxController {
         );
         break;
       case 4:
-        _currentScreen = MBAGCardScreen();
+        _currentScreen = SlideDownTextAnimation(
+          appBarView: false,
+        );
+        //MBAGCardScreen();
         break;
       default:
         _currentScreen = FirstScreen();

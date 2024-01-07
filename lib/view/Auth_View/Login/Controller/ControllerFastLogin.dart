@@ -57,14 +57,12 @@ class FastLoginController extends GetxController {
     required String password,
     required BuildContext context,
   }) async {
-    print('start');
+    var device_token = CacheHelper.getDataSharedPreference(key: 'fcmToken');
 
     try {
       final response = await HttpHelper.postData(
         endpoint: "fast_login",
-        body: {
-          'password': password,
-        },
+        body: {'password': password, 'device_token': device_token},
       );
       print(response.toString());
       if (response["status"] == true) {

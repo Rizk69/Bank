@@ -130,6 +130,8 @@ class ContactListPage extends StatelessWidget {
                           final client = controller.favoriteClients[index];
                           return InkWell(
                             onTap: () {
+                              print(client.id);
+
                               Get.to(() => AmountSendScreenId(
                                     modelReceiver: '${client.id}',
                                     name:

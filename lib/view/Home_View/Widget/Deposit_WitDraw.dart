@@ -7,9 +7,13 @@ import '../../../helper/HelperScreenNerst.dart';
 
 class DepositAndWithdraw extends StatelessWidget {
   DepositAndWithdraw(
-      {Key? key, required this.balance, required this.accountNumber})
+      {Key? key,
+      required this.balance,
+      required this.accountNumber,
+      required this.abbreviation})
       : super(key: key);
   String balance;
+  String abbreviation;
   String accountNumber;
 
   @override
@@ -51,6 +55,19 @@ class DepositAndWithdraw extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  Text(
+                    abbreviation,
+                    style: TextStyle(
+                      color: settingsController.isDarkMode.value
+                          ? Colors.white
+                          : Colors.black,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 6,
+                  ),
                   Center(
                     child: Text(
                       balance,
@@ -62,16 +79,6 @@ class DepositAndWithdraw extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  ImageIcon(
-                    AssetImage('Assets/images/Vector(9).png'),
-                    color: settingsController.isDarkMode.value
-                        ? Colors.white
-                        : Colors.black,
-                    size: 30,
                   ),
                 ],
               ),

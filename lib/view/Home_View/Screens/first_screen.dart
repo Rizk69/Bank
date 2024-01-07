@@ -1,6 +1,5 @@
 import 'package:MBAG/helper/LoadingData.dart';
 import 'package:MBAG/view/NotificationView/Screen/NotificationScreens.dart';
-import 'package:MBAG/view/QrTransaction/model/ScanModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,7 +11,7 @@ import '../../../helper/Data.dart';
 import '../../../helper/HelperScreenNerst.dart';
 import '../../AccountDetails/Controller/AccountDetailsController.dart';
 import '../../Auth_View/Add_Id_Image/Screen/CaptureIdScreen.dart';
-import '../../Transaction/Screen/Account_transaction_details.dart';
+import '../../Trader/Controller/TraderController.dart';
 import '../../on_bording_screen/Widget/buttom_.dart';
 import 'package:MBAG/Core/cache_helper.dart';
 import 'package:MBAG/Core/widgets/Styles.dart';
@@ -81,17 +80,22 @@ class FirstScreen extends StatelessWidget {
                                 appBarView: true,
                               ));
                         },
-                        currency: homeController.homeModel.currency ??
-                            CurrencyHome(
+                        currency: homeController.selectedCurrency.value ??
+                            CurrencyHomeModel(
                                 id: 0,
                                 name: '',
                                 active: false,
                                 abbreviation: '',
-                                img: ''),
+                                img: '',
+                                amount: ''),
                       ),
                       SizedBox(height: 25.h),
                       DepositAndWithdraw(
-                        balance: homeController.homeModel.user?.balance ?? '',
+                        abbreviation: homeController
+                                .selectedCurrency.value?.abbreviation ??
+                            '',
+                        balance:
+                            homeController.selectedCurrency.value?.amount ?? '',
                         accountNumber:
                             homeController.homeModel.user?.accountNumber ?? '',
                       ),
@@ -610,25 +614,35 @@ class FirstScreen extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return Container(
-            width: 330.w,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Color(0XFFEBEBEB), width: 1),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildPharmacyItem(
-                    traders[index].img ?? '',
-                    traders[index].activityName!,
-                    "${traders[index].discount!}",
-                    Color(0XFF86E08F)),
+          CashBakController cashBakController = Get.put(CashBakController());
 
-                // _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
-              ],
+          return InkWell(
+            onTap: () {
+              final traderId = traders[index].id;
+              if (traderId != null) {
+                cashBakController.getTraderAddress(id: traderId);
+              }
+            },
+            child: Container(
+              width: 300.w,
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Color(0XFFEBEBEB), width: 1),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildPharmacyItem(
+                      traders[index].img ?? '',
+                      traders[index].activityName!,
+                      "${traders[index].discount!}",
+                      Color(0XFF86E08F)),
+
+                  // _buildPharmacyItem('EcZane', 'lorem epsim', Color(0XFF979797)),
+                ],
+              ),
             ),
           );
         },
@@ -650,7 +664,7 @@ class FirstScreen extends StatelessWidget {
             errorBuilder: (context, error, stackTrace) => SizedBox(),
           ),
         ),
-        SizedBox(width: 13.h),
+        SizedBox(width: 23.h),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -707,84 +721,94 @@ class FirstScreen extends StatelessWidget {
                       } else {
                         isActive = false;
                       }
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image.network(
-                                    currencies.currencies[index].img ?? '',
-                                    height: 25.h,
-                                    width: 25.h,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            const SizedBox(),
-                                  )),
-
-                              // const SizedBox(
-                              //   width: 20,
-                              //   child: Center(child: Text('--')),
-                              // ),
-                              // Text(
-                              //     currencies.currencies[index].abbreviation ??
-                              //         '',
-                              //     style: Styles.textStyleTitle12
-                              //         .copyWith(color: Colors.grey)),
-
-                              const SizedBox(
-                                width: 20,
-                                child: Center(child: Text('--')),
-                              ),
-
-                              Text(currencies.currencies[index].name ?? '',
-                                  style: Styles.textStyleTitle14),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  if (isActive == false) {
-                                    homeControllerGetData.requestAntherAccount(
-                                        currencyId:
-                                            "${currencies.currencies[index].id}" ??
-                                                '0');
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                child: Container(
-                                    width: 80.w,
-                                    height: 50.h,
-                                    decoration: BoxDecoration(
-                                        color: isActive
-                                            ? Colors.green
-                                            : Colors.red,
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    padding: EdgeInsets.all(10),
-                                    child: Center(
-                                      child: Text(
-                                          isActive ? 'Active' : 'NoActive',
-                                          style: Styles.textStyleTitle14
-                                              .copyWith(color: Colors.white)),
+                      return InkWell(
+                        onTap: () {
+                          if (isActive == true) {
+                            homeControllerGetData
+                                .selectCurrency(currencies.currencies[index]);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(
+                                      currencies.currencies[index].img ?? '',
+                                      height: 25.h,
+                                      width: 25.h,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const SizedBox(),
                                     )),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 5.h,
-                          ),
-                          Container(
-                            height: 0.5,
-                            padding: EdgeInsets.symmetric(vertical: 30),
-                            margin:
-                                EdgeInsets.only(right: 10, top: 10, bottom: 5),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey.shade700, width: 0.2)),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
+
+                                // const SizedBox(
+                                //   width: 20,
+                                //   child: Center(child: Text('--')),
+                                // ),
+
+                                const SizedBox(
+                                  width: 10,
+                                  // child: Center(child: Text('--')),
+                                ),
+                                Text(
+                                    currencies.currencies[index].abbreviation ??
+                                        '',
+                                    style: Styles.textStyleTitle20.copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+
+                                // Text(currencies.currencies[index].name ?? '',
+                                //     style: Styles.textStyleTitle14),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    if (isActive == false) {
+                                      homeControllerGetData.requestAntherAccount(
+                                          currencyId:
+                                              "${currencies.currencies[index].id}" ??
+                                                  '0');
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: Container(
+                                      width: 80.w,
+                                      height: 50.h,
+                                      decoration: BoxDecoration(
+                                          color: isActive
+                                              ? Colors.green
+                                              : Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      padding: EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                            isActive ? 'Active' : 'NoActive',
+                                            style: Styles.textStyleTitle14
+                                                .copyWith(color: Colors.white)),
+                                      )),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 5.h,
+                            ),
+                            Container(
+                              height: 0.5,
+                              padding: EdgeInsets.symmetric(vertical: 30),
+                              margin: EdgeInsets.only(
+                                  right: 10, top: 10, bottom: 5),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.grey.shade700, width: 0.2)),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                          ],
+                        ),
                       );
                     },
                     itemCount: currencies.currencies.length,

@@ -9,6 +9,8 @@ import '../model/HomeModel.dart';
 class HomeControllerGetData extends GetxController {
   late HomeModel _homeModel = HomeModel();
   late CurrencyModel _currencyModel;
+  Rx<CurrencyHomeModel?> selectedCurrency = Rx<CurrencyHomeModel?>(null);
+
   late var isLoading = true.obs;
   late var isDataLoaded = false.obs;
   late TransactionDetails transactionDetails;
@@ -25,6 +27,11 @@ class HomeControllerGetData extends GetxController {
       getDataHome();
     }
     getDataCurrency();
+  }
+
+  void selectCurrency(CurrencyHomeModel currency) {
+    selectedCurrency.value = currency;
+    update();
   }
 
   Future<void> refreshDataHome() async {
@@ -147,6 +154,7 @@ class HomeControllerGetData extends GetxController {
       if (response["status"] == true) {
         print(response);
         _currencyModel = CurrencyModel.fromJson(response);
+        selectedCurrency.value = _currencyModel.currencies[0];
         update();
       } else {
         // Handle the case when currency data is not available

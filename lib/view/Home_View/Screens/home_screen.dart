@@ -115,10 +115,12 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
-                              'Pay with QR code',
-                              style: Styles.textStyleTitle18
-                                  .copyWith(fontWeight: FontWeight.w700),
+                            Expanded(
+                              child: Text('Send Money With QR code',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Styles.textStyleTitle18
+                                      .copyWith(fontWeight: FontWeight.w700)),
                             ),
                           ],
                         ),

@@ -44,9 +44,10 @@ class ShimmerLoadingHome extends StatelessWidget {
                   },
                   onPressed2: () {},
                   onPressed3: () {},
-                  currency: CurrencyHome(
+                  currency: CurrencyHomeModel(
                       id: 0,
                       name: '',
+                      amount: '',
                       active: false,
                       abbreviation: '',
                       img: ''),
@@ -60,6 +61,7 @@ class ShimmerLoadingHome extends StatelessWidget {
                 child: DepositAndWithdraw(
                   balance: '',
                   accountNumber: '',
+                  abbreviation: '',
                 ),
               ),
               // Add shimmer effect to _cheakIdCard widget

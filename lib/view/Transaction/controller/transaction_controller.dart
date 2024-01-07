@@ -26,6 +26,8 @@ class TransactionController extends GetxController {
     ever(selectedCurrency, (_) => getTransactions());
     getTransactions();
     update();
+    selectedCurrency.value =
+        Currency(id: 0, abbreviation: 'abbreviation', name: 'All', img: '');
   }
 
   var isLoading = true.obs;
@@ -66,7 +68,7 @@ class TransactionController extends GetxController {
             .map((currencyJson) => Currency.fromJson(currencyJson))
             .toList();
         if (currenciesList.isNotEmpty) {
-          selectedCurrency.value = currenciesList.first;
+          // selectedCurrency.value = currenciesList.first;
         }
         update();
       } else {}
@@ -99,4 +101,3 @@ class TransactionController extends GetxController {
     }
   }
 }
-

@@ -217,6 +217,7 @@ class CurrencyHomeModel {
   String? name;
   String? img;
   String? abbreviation;
+  String? amount;
   bool? active;
 
   CurrencyHomeModel({
@@ -224,6 +225,7 @@ class CurrencyHomeModel {
     required this.name,
     required this.img,
     required this.active,
+    required this.amount,
     required this.abbreviation,
   });
 
@@ -232,6 +234,7 @@ class CurrencyHomeModel {
       id: json['id'],
       name: json['name'] as String?,
       img: json['img'] as String?,
+      amount: json['amount'] as String?,
       abbreviation: json['abbreviation'] as String?,
       active: json['active'] as bool?,
     );

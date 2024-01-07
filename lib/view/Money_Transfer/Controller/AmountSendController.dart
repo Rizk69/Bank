@@ -9,6 +9,11 @@ class AmountSendController extends GetxController {
   var input = '0'.obs;
   Rx<Currency?> selectedCurrency = Rx<Currency?>(null);
   var currenciesList = <Currency>[].obs;
+@override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
 
   void selectCurrency(Currency currency) {
     selectedCurrency.value = currency;
@@ -80,12 +85,15 @@ class AmountSendController extends GetxController {
       );
       if (response["status"] == true) {
         List<dynamic> currenciesJson = response["currencies"];
+        print(response);
         currenciesList.value = currenciesJson
             .map((currencyJson) => Currency.fromJson(currencyJson))
             .toList();
         if (currenciesList.isNotEmpty) {
-          selectedCurrency.value = currenciesList.first;
+          selectedCurrency.value = currenciesList[0];
         }
+        update();
+
         update();
       } else {
         // Handle the case when currency data is not available
