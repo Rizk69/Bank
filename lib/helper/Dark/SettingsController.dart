@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Core/http_helper.dart';
+
 class SettingsController extends GetxController {
   RxBool isDarkMode = false.obs;
 
@@ -33,6 +35,9 @@ class SettingsController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('languageCode', langCode);
     await prefs.setString('countryCode', countryCode);
+    HttpHelper.updateLanguageHeader(langCode);
+
     Get.back();
+    Get.offAllNamed('/HomeScreen');
   }
 }

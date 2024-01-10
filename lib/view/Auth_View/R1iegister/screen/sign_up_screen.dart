@@ -41,7 +41,7 @@ class SignUpScreen extends StatelessWidget {
                     height: 60.h,
                   ),
                   SizedBox(
-                    height: 600.h,
+                    height: 500.h,
                     child: PageView.builder(
                       onPageChanged: (int index) {
                         registerController.currentIndex.value = index;
@@ -59,7 +59,7 @@ class SignUpScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Having a trouble ? ',
+                          'Having trouble?'.tr,
                           style: Styles.textStyleTitle18,
                         ),
                         SizedBox(
@@ -68,18 +68,18 @@ class SignUpScreen extends StatelessWidget {
                         Obx(
                               () => registerController.currentIndex.value < 4
                               ? Button(
-                            textButton: "Continue",
-                            function: () async {
-                              if (registerController.currentIndex.value ==
-                                  0) {
-                                await registerController.registerPhone();
-                              }
-                              if (registerController.currentIndex.value ==
-                                  1) {
-                                await registerController.checkPhone();
-                              }
-                              if (registerController.currentIndex.value ==
-                                  2) {
+                                textButton: "Continue".tr,
+                                  function: () async {
+                                    if (registerController.currentIndex.value ==
+                                        0) {
+                                      await registerController.registerPhone();
+                                    }
+                                    if (registerController.currentIndex.value ==
+                                        1) {
+                                      await registerController.checkPhone();
+                                    }
+                                    if (registerController.currentIndex.value ==
+                                        2) {
                                 await registerController
                                     .completeRegister();
                               }

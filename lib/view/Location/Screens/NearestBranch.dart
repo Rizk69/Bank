@@ -18,7 +18,7 @@ class NearestBranch extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(19),
+          padding: const EdgeInsets.all(19),
           child: GetBuilder<LocationController>(builder: (controller) {
             return controller.isLoading.value
                 ? Column(
@@ -54,7 +54,7 @@ class NearestBranch extends StatelessWidget {
                             style: Styles.textStyleTitle24.copyWith(
                                 fontSize: 40, fontStyle: FontStyle.normal),
                           ),
-                          ImageIcon(
+                          const ImageIcon(
                             AssetImage('Assets/images/exclamation.png'),
                             size: 20,
                           )
@@ -65,7 +65,7 @@ class NearestBranch extends StatelessWidget {
                       ),
                       SingleChildScrollView(
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
@@ -76,7 +76,7 @@ class NearestBranch extends StatelessWidget {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 1,
                                 blurRadius: 6,
-                                offset: Offset(
+                                offset: const Offset(
                                     0, 3), // changes the position of the shadow
                               ),
                             ],

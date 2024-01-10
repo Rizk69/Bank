@@ -35,6 +35,7 @@ class Transaction {
   int? finalAmount;
   String? createdAt;
   String? abbreviation;
+  String? time;
 
   Transaction(
       {this.id,
@@ -48,6 +49,7 @@ class Transaction {
       this.receiverLastName,
       this.finalAmount,
       this.abbreviation,
+      this.time,
       this.createdAt});
 
   Transaction.fromJson(Map<String, dynamic> json) {
@@ -64,6 +66,7 @@ class Transaction {
     finalAmount = amount is int ? amount : int.tryParse(amount.toString());
     createdAt = json['created_at'];
     abbreviation = json['abbreviation'];
+    time = json['time'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +83,7 @@ class Transaction {
     data['final_amount'] = this.finalAmount;
     data['created_at'] = this.createdAt;
     data['abbreviation'] = this.abbreviation;
+    data['time'] = this.time;
     return data;
   }
 }

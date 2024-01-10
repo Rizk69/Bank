@@ -30,12 +30,12 @@ class CheckEmail extends StatelessWidget {
             icon: Icon(Icons.arrow_back)),
         Center(
           child: HeadFirstTitle(
-              title: 'Check your Email ',
-              des: 'Check your email address and enter the '),
+              title: 'Check your Email'.tr,
+              des: 'Check your email address and enter the'.tr),
         ),
         Center(
           child: Text(
-            "verification code we had sent",
+            "verification code we had sent".tr,
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
@@ -52,7 +52,8 @@ class CheckEmail extends StatelessWidget {
         SizedBox(height: 30.h),
         Obx(() => Center(
             child: Text(
-                'Resend a code after ${controllerTimer.counter.value} s',
+                'resend_code'
+                    .trArgs([controllerTimer.counter.value.toString()]),
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,

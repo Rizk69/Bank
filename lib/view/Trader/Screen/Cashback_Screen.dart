@@ -59,7 +59,7 @@ class CashbackScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, size: 28),
         ),
         Text(
-          'Cashback ',
+          'Cashback'.tr,
           style: Styles.textStyleTitle24,
         ),
         const ImageIcon(
@@ -196,7 +196,7 @@ class CashbackScreen extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Your total earning this month ',
+          'Your total earning this month'.tr,
           style: Styles.textStyleTitle16.copyWith(
             color: Color(0XFF565656),
             fontWeight: FontWeight.w400,
@@ -219,7 +219,7 @@ class CashbackScreen extends StatelessWidget {
         ),
         SizedBox(height: 13.h),
         Text(
-          'Your total earning to date 23-11',
+          'Your total earning to date 23-11'.tr,
           style: Styles.textStyleTitle12.copyWith(
             color: Color(0XFF565656),
             fontWeight: FontWeight.w400,
@@ -236,7 +236,7 @@ class CashbackScreen extends StatelessWidget {
         Text(
           'CATEGORIES',
           style: Styles.textStyleTitle16.copyWith(
-            color: Color(0XFF565656),
+            color: const Color(0XFF565656),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -262,7 +262,7 @@ class CashbackScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'BRANDS ',
+          'BRANDS'.tr,
           style: Styles.textStyleTitle16.copyWith(
             color: Color(0XFF565656),
             fontWeight: FontWeight.w500,
@@ -349,7 +349,7 @@ class CashbackScreen extends StatelessWidget {
           ),
           SizedBox(width: 10.h),
           Text(
-            'Terms of use',
+            'Terms of use'.tr,
             style:
                 Styles.textStyleTitle16.copyWith(fontWeight: FontWeight.w400),
           ),

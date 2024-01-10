@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CustomListPickerField extends StatefulWidget {
   final String label;
@@ -35,7 +36,7 @@ class _CustomListPickerFieldState extends State<CustomListPickerField> {
       borderRadius: BorderRadius.circular(15),
       decoration: InputDecoration(
         labelText: widget.label,
-        hintText: widget.isRequired ? 'Select ${widget.label}' : null,
+        hintText: widget.isRequired ? '${'Select'.tr} ${widget.label}' : null,
       ),
       items: List.generate(
         widget.itemsCode.length,

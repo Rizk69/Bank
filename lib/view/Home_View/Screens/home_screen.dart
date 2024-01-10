@@ -53,26 +53,26 @@ class HomeScreen extends StatelessWidget {
               _showBottomSheet(context, 'Bottom Sheet ${index + 1}');
             }
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('Assets/images/Vector(1).png')),
-              label: 'Home',
+              icon: const ImageIcon(AssetImage('Assets/images/Vector(1).png')),
+              label: 'Home'.tr,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('Assets/images/Vector(2).png')),
-              label: 'QR Transaction ',
+              icon: const ImageIcon(AssetImage('Assets/images/Vector(2).png')),
+              label: 'QR Transaction'.tr,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('Assets/images/Vector(3).png')),
-              label: 'Money Transfer ',
+              icon: const ImageIcon(AssetImage('Assets/images/Vector(3).png')),
+              label: 'Money Transfer'.tr,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('Assets/images/Vector(4).png')),
-              label: 'Payments',
+              icon: const ImageIcon(AssetImage('Assets/images/Vector(4).png')),
+              label: 'Payments'.tr,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('Assets/images/Vector(5).png')),
-              label: 'MBAG Card',
+              icon: const ImageIcon(AssetImage('Assets/images/Vector(5).png')),
+              label: 'MBAG Card'.tr,
             ),
           ],
         ),
@@ -116,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                               width: 10,
                             ),
                             Expanded(
-                              child: Text('Send Money With QR code',
+                              child: Text('send_money_qr'.tr,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Styles.textStyleTitle18
@@ -221,7 +221,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                     color: settingsController.isDarkMode.value
                         ? Colors.black
@@ -232,18 +232,18 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     InkWell(
                         onTap: () {
-                          Get.to(() => SendMoneyScreen());
+                          Get.to(() => const SendMoneyScreen());
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 10),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.send_outlined,
                                 size: 25,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -256,9 +256,9 @@ class HomeScreen extends StatelessWidget {
                         )),
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       height: 1,
-                      decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      decoration: const BoxDecoration(color: Color(0xffA6ABBD)),
                     ),
                     InkWell(
                         onTap: () {
@@ -272,11 +272,11 @@ class HomeScreen extends StatelessWidget {
                               vertical: 15, horizontal: 10),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.reply_all,
                                 size: 25,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -290,7 +290,7 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       height: 1,
-                      decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      decoration: const BoxDecoration(color: Color(0xffA6ABBD)),
                     ),
                     InkWell(
                         onTap: () {
@@ -303,11 +303,11 @@ class HomeScreen extends StatelessWidget {
                               vertical: 15, horizontal: 10),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.interpreter_mode,
                                 size: 25,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -325,7 +325,7 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       height: 1,
-                      decoration: BoxDecoration(color: Color(0xffA6ABBD)),
+                      decoration: const BoxDecoration(color: Color(0xffA6ABBD)),
                     ),
                     InkWell(
                         onTap: () {
@@ -338,11 +338,11 @@ class HomeScreen extends StatelessWidget {
                               vertical: 15, horizontal: 10),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.refresh_outlined,
                                 size: 25,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
@@ -367,7 +367,7 @@ class HomeScreen extends StatelessWidget {
                     },
                     colorText: Colors.white),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               )
             ],

@@ -1,12 +1,16 @@
 import 'package:MBAG/Core/widgets/Styles.dart';
+import 'package:MBAG/view/on_bording_screen/Widget/buttom_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../helper/Data.dart';
+import '../controller/AccountTransActonDetailsController.dart';
 import '../model/transaction_model.dart';
 
 class AccountTransActonDetails extends StatelessWidget {
+  AccountTransActonDetailsController controller =
+      Get.put(AccountTransActonDetailsController());
   TransactionDetails transactionDetails;
   bool notification;
 
@@ -19,7 +23,7 @@ class AccountTransActonDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedDate = transactionDetails.createdAt != null
         ? DateUtilsFormat.formatTransactionDateNumber(
-            transactionDetails.createdAt!)
+        transactionDetails.createdAt!)
         : '';
 
     return Scaffold(
@@ -61,10 +65,16 @@ class AccountTransActonDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset('Assets/images/MBAG.png', height: 80),
-                  Text(
-                    'Receipt',
-                    style: Styles.textStyleTitle16
-                        .copyWith(color: Color(0Xff6A6969)),
+                  InkWell(
+                    onTap: () {
+                      controller.saveTransactionsDetailsToExternalStorage(
+                          id: transactionDetails.id, context: context);
+                    },
+                    child: Text(
+                      'Receipt',
+                      style: Styles.textStyleTitle16
+                          .copyWith(color: Color(0Xff6A6969)),
+                    ),
                   )
                 ],
               ),
@@ -120,7 +130,7 @@ class AccountTransActonDetails extends StatelessWidget {
                 color: Colors.white,
                 title: 'Name Surname',
                 value:
-                    "${transactionDetails.senderFirstName} ${transactionDetails.senderLastName}"),
+                "${transactionDetails.senderFirstName} ${transactionDetails.senderLastName}"),
             detailsData(
                 color: Color(0XFFF8F8F8),
                 title: 'Recipient',
@@ -134,17 +144,20 @@ class AccountTransActonDetails extends StatelessWidget {
                 title: 'Transaction Amount',
                 value:
                     "${transactionDetails.finalAmount} ${transactionDetails.abbreviation}"),
-            // detailsData(color:Colors.white ,title:'Transaction Fee' ,value:'' ),
-            // detailsData(color:Color(0XFFF8F8F8) ,title:'Amount' ,value:'' ),
-            // detailsData(color:Colors.white ,title:'Description' ,value:'' ),
+            // Container(
+            //   padding: EdgeInsets.all(10),
+            //     width: double.infinity,
+            //     child: Buttoms(text: 'Save', color: Colors.black, onPressed: (){
+            //     controller.saveTransactionsDetails(id: transactionDetails.id);
+            //
+            //     }, colorText: Colors.white))
           ],
         ),
       ),
     );
   }
 
-  Widget detailsData(
-      {required Color color, required String title, required String value}) {
+  Widget detailsData({required Color color, required String title, required String value}) {
     return Container(
       height: 60,
       color: color,

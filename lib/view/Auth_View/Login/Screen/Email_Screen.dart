@@ -26,9 +26,7 @@ class EmailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 70.h),
-            HeadFirstTitle(
-                title: 'Log in',
-                des: 'Log in with email address or phone number '),
+            HeadFirstTitle(title: 'Log in'.tr, des: 'Log in des'.tr),
             SizedBox(height: 30.h),
             TextFormField(
               controller: controller,
@@ -43,7 +41,7 @@ class EmailScreen extends StatelessWidget {
                 return null;
               },
               decoration: InputDecoration(
-                labelText: 'Email address or phone number',
+                labelText: 'Email address or phone number'.tr,
                 focusColor: Colors.grey,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.0),
@@ -59,10 +57,10 @@ class EmailScreen extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            const Center(
+            Center(
               child: Text(
-                'Having trouble? ',
-                style: TextStyle(
+                'Having trouble?'.tr,
+                style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w400,
                   color: Colors.black,
@@ -73,7 +71,7 @@ class EmailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 25),
               child: ButtomsNotBorder(
-                text: 'Continue',
+                text: 'Continue'.tr,
                 color: settingsController.isDarkMode.value
                     ? Colors.white
                     : Colors.black,

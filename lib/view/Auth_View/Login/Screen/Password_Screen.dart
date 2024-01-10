@@ -30,7 +30,7 @@ class PasswordScreen extends StatelessWidget {
               SizedBox(height: 70.h),
               Center(
                 child: Text(
-                  'Enter your 6 digital ',
+                  'Enter your 6 digital'.tr,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class PasswordScreen extends StatelessWidget {
               SizedBox(height: 8.h),
               Center(
                 child: Text(
-                  'PIN',
+                  'PIN'.tr,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -56,10 +56,10 @@ class PasswordScreen extends StatelessWidget {
               SizedBox(height: 30.h),
               PinputPassword(controller: controllerPin),
               const Spacer(),
-              const Center(
+              Center(
                 child: Text(
-                  'Having trouble? ',
-                  style: TextStyle(
+                  'Having trouble?'.tr,
+                  style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w400,
                     color: Colors.black,
@@ -70,7 +70,7 @@ class PasswordScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 25),
                 child: ButtomsNotBorder(
-                  text: 'Continue',
+                  text: 'Continue'.tr,
                   color: settingsController.isDarkMode.value
                       ? Colors.white
                       : Colors.black,

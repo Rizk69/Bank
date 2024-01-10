@@ -330,8 +330,8 @@ class AmountSendScreen extends StatelessWidget {
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
                                     child: Image.network(
-                                      controller.selectedCurrency.value?.img ??
-                                          '',
+                                      controller.currenciesList[index].img ??
+                                          '' '',
                                       height: 25.h,
                                       width: 25.h,
                                       errorBuilder:
@@ -682,7 +682,7 @@ class AmountSendScreenId extends StatelessWidget {
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
                                     child: Image.network(
-                                      controller.selectedCurrency.value?.img ??
+                                      controller.currenciesList[index].img ??
                                           '',
                                       height: 25.h,
                                       width: 25.h,

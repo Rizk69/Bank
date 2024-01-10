@@ -15,17 +15,11 @@ class CupertinoOnboardingScreen extends StatelessWidget {
 
   final List<OnBoardingModel> onBoardingList = [
     OnBoardingModel(
-        "Welcome",
-        "send money 24/7 without fees to any MBAG account or IBAN . Request money from any one. set up recurring transfers for your regular payments",
-        "Assets/images/onbordingimage.png"),
+        "Welcome", "on_Boarding_des".tr, "Assets/images/onbordingimage.png"),
     OnBoardingModel(
-        "Discover",
-        "send money 24/7 without fees to any MBAG account or IBAN . Request money from any one. set up recurring transfers for your regular payments",
-        "Assets/images/onbordingimage.png"),
+        "Discover", "on_Boarding_des".tr, "Assets/images/onbordingimage.png"),
     OnBoardingModel(
-        "Shop",
-        "send money 24/7 without fees to any MBAG account or IBAN . Request money from any one. set up recurring transfers for your regular payments",
-        "Assets/images/onbordingimage.png"),
+        "Shop", "on_Boarding_des".tr, "Assets/images/onbordingimage.png"),
   ];
 
   CupertinoOnboardingScreen({super.key});
@@ -68,11 +62,6 @@ class CupertinoOnboardingScreen extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         buildPageViewBuilder(),
-        // Positioned(
-        //   bottom: MediaQuery.of(context).size.height / 50,
-        //   left: 140.w,
-        //   child: buildIndicatorArea(context),
-        // ),
       ],
     );
   }
@@ -123,7 +112,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
           height: 15,
         ),
         Buttoms(
-          text: controller.selectedIndex == 2 ? 'Get Start' : 'Login',
+          text: 'Login'.tr,
           color: Colors.white,
           onPressed: () {
             Get.to(() => LoginScreen());
@@ -132,7 +121,7 @@ class CupertinoOnboardingScreen extends StatelessWidget {
         ),
         SizedBox(height: 15.h),
         Buttoms(
-          text: 'Create Account',
+          text: 'Create Account'.tr,
           color: Colors.black,
           onPressed: () {
             Get.to(() => SignUpScreen());

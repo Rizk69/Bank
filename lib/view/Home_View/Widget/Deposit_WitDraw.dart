@@ -32,18 +32,18 @@ class DepositAndWithdraw extends StatelessWidget {
             },
             child: Column(
               children: [
-                ImageIcon(
+                const ImageIcon(
                     AssetImage(
                       'Assets/images/Vector(8).png',
                     ),
                     size: 26,
                     color: Colors.red),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  'Witdraw',
-                  style: TextStyle(
+                  'Witdraw'.tr,
+                  style: const TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
                       fontWeight: FontWeight.w400),
@@ -88,7 +88,7 @@ class DepositAndWithdraw extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'MBAG Number:  ',
+                    'MBAG Number:  '.tr,
                     style: TextStyle(
                         fontSize: 14,
                         color: settingsController.isDarkMode.value
@@ -102,7 +102,8 @@ class DepositAndWithdraw extends StatelessWidget {
                       // Optionally, show a message that the text has been copied.
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Account number copied to clipboard'),
+                          content:
+                              Text('Account number copied to clipboard'.tr),
                         ),
                       );
                     },
@@ -133,7 +134,7 @@ class DepositAndWithdraw extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'Deposit',
+                  'Deposit'.tr,
                   style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,

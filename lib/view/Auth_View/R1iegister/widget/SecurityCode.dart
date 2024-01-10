@@ -29,8 +29,8 @@ class SecurityCodeSignUp extends StatelessWidget {
               },
               icon: Icon(Icons.arrow_back)),
           HeadFirstTitle(
-              title: 'Enter security code',
-              des: 'Enter the 6 digital sent to phone number '),
+              title: 'Enter security code'.tr,
+              des: 'Enter the 6 digits sent to phone number '.tr),
           // Center(
           //   child: Text(
           //     registerController.emailControllerSignUpOne.text,
@@ -40,12 +40,13 @@ class SecurityCodeSignUp extends StatelessWidget {
           SizedBox(height: 30.h),
           Center(
               child: PinputPassword(
-                controller: controllerPin,
-              )),
+            controller: controllerPin,
+          )),
           SizedBox(height: 30.h),
           Obx(() => Center(
               child: Text(
-                  'Resend a code after ${controllerTimer.counter.value} s',
+                  'resend_code'
+                      .trArgs([controllerTimer.counter.value.toString()]),
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

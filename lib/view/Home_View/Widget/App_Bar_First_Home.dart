@@ -82,9 +82,9 @@ class AppBarFirstHome extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                const Text(
-                  'My Account',
-                  style: TextStyle(
+                Text(
+                  'My Account'.tr,
+                  style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
                       fontWeight: FontWeight.w300),

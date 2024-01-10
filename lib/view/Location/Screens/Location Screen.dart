@@ -17,7 +17,7 @@ class LocationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(19),
+        padding: const EdgeInsets.all(19),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -29,13 +29,14 @@ class LocationScreen extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {},
-                    icon: ImageIcon(AssetImage('Assets/images/Group.png'))),
+                    icon:
+                        const ImageIcon(AssetImage('Assets/images/Group.png'))),
                 Text(
                   'M',
                   style: Styles.textStyleTitle24
                       .copyWith(fontSize: 40, fontStyle: FontStyle.normal),
                 ),
-                ImageIcon(
+                const ImageIcon(
                   AssetImage('Assets/images/exclamation.png'),
                   size: 20,
                 )
@@ -55,7 +56,7 @@ class LocationScreen extends StatelessWidget {
                 child: Text(
                   ' Please add the location that you want clients contact you in it',
                   style: Styles.textStyleTitle16.copyWith(
-                    color: Color(0Xff6A6969),
+                    color: const Color(0Xff6A6969),
                     fontWeight: FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,
@@ -99,13 +100,13 @@ class LocationScreen extends StatelessWidget {
                             onMapCreated: (GoogleMapController controller) {},
                             markers: {
                               Marker(
-                                markerId: MarkerId('current_location'),
+                                markerId: const MarkerId('current_location'),
                                 position: LatLng(
                                   currentPosition.latitude,
                                   currentPosition.longitude,
                                 ),
                                 infoWindow:
-                                    InfoWindow(title: 'Current Location'),
+                                    const InfoWindow(title: 'Current Location'),
                               ),
                             },
                           ),
@@ -113,7 +114,7 @@ class LocationScreen extends StatelessWidget {
                 },
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Buttoms(
                 text: 'Nearest Branch',
                 color: Colors.black,

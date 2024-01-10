@@ -67,7 +67,7 @@ class CashBakController extends GetxController {
         print(_lat);
         print(_long);
 
-        Get.to(() => TraderAdressScreen(
+        Get.to(() => TraderAddressScreen(
               lat: _lat,
               long: _long,
             ));

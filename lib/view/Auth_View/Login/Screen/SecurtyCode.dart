@@ -38,7 +38,7 @@ class SecurityCodeScreen extends StatelessWidget {
                 SizedBox(height: 70.h),
                 Center(
                   child: Text(
-                    'Enter security code',
+                    'Enter security code'.tr,
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -49,10 +49,10 @@ class SecurityCodeScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8.h),
-                const Center(
+                Center(
                   child: Text(
-                    'Enter the 6 digits sent to phone number ',
-                    style: TextStyle(
+                    'Enter the 6 digits sent to phone number '.tr,
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: Color(0XFF6A6969),
@@ -75,19 +75,20 @@ class SecurityCodeScreen extends StatelessWidget {
                 SizedBox(height: 30.h),
                 Obx(() => Center(
                   child: Text(
-                    'Resend a code after ${controllerTimer.counter.value} s',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0XFF6A6969),
-                    ),
-                  ),
+                    'resend_code'
+                            .trArgs([controllerTimer.counter.value.toString()]),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0XFF6A6969),
+                        ),
+                      ),
                 )),
                 const Spacer(),
-                const Center(
+                Center(
                   child: Text(
-                    'Having trouble? ',
-                    style: TextStyle(
+                    'Having trouble?'.tr,
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
@@ -98,7 +99,7 @@ class SecurityCodeScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 25),
                   child: ButtomsNotBorder(
-                    text: 'Continue',
+                    text: 'Continue'.tr,
                     color: settingsController.isDarkMode.value
                         ? Colors.white
                         : Colors.black,

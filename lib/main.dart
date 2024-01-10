@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Core/MyTranslations.dart';
+import 'Core/http_helper.dart';
 import 'view/NotificationView/Controller/Push_Notification.dart';
 import 'Core/cache_helper.dart';
 import 'firebase_options.dart';
@@ -25,6 +27,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   Get.put(NotificationController());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -32,6 +35,7 @@ void main() async {
   String languageCode = prefs.getString('languageCode') ?? 'en';
   String countryCode = prefs.getString('countryCode') ?? 'US';
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  HttpHelper.updateLanguageHeader(languageCode);
 
   Get.put(SettingsController());
 
@@ -83,18 +87,6 @@ class MyApp extends StatelessWidget {
     primaryColor: Colors.black,
     scaffoldBackgroundColor: Colors.black,
   );
-}
-
-class MyTranslations extends Translations {
-  @override
-  Map<String, Map<String, String>> get keys => {
-        'en_US': {
-          'hello': 'Hello World',
-        },
-        'ar_SA': {
-          'hello': 'مرحبا بالعالم',
-        },
-      };
 }
 
 // class Home extends StatelessWidget {

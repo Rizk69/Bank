@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,11 +5,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../Core/widgets/Styles.dart';
 
-class TraderAdressScreen extends StatelessWidget {
-  double lat;
-  double long;
+class TraderAddressScreen extends StatelessWidget {
+  final double lat;
+  final double long;
 
-  TraderAdressScreen({required this.lat, required this.long});
+  const TraderAddressScreen({super.key, required this.lat, required this.long});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class TraderAdressScreen extends StatelessWidget {
                   onPressed: () {
                     Get.back();
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     size: 30,
                   )),
@@ -37,7 +36,7 @@ class TraderAdressScreen extends StatelessWidget {
                 style: Styles.textStyleTitle24
                     .copyWith(fontSize: 25, fontStyle: FontStyle.normal),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               )
             ],
@@ -46,7 +45,7 @@ class TraderAdressScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 4.98,
           ),
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               height: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -63,9 +62,9 @@ class TraderAdressScreen extends StatelessWidget {
                   onMapCreated: (GoogleMapController controller) {},
                   markers: {
                     Marker(
-                      markerId: MarkerId('Agent_location'),
+                      markerId: const MarkerId('Agent_location'),
                       position: LatLng(lat, long),
-                      infoWindow: InfoWindow(title: 'Agent Location'),
+                      infoWindow: const InfoWindow(title: 'Agent Location'),
                     ),
                   },
                 ),

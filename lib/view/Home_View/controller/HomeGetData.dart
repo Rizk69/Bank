@@ -41,6 +41,7 @@ class HomeControllerGetData extends GetxController {
 
     update();
     await getDataHome();
+    update();
   }
 
   Future<void> getDataHome() async {

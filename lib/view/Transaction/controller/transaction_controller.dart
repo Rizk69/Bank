@@ -35,12 +35,11 @@ class TransactionController extends GetxController {
   Future getTransactions() async {
     try {
       transactionData.value = [];
-      // Move this line here
       final response = await HttpHelper.getData(
         endpoint: "get_transaction_type/${selectedCurrency.value?.id}",
       );
       if (response["status"] == true) {
-        print(response);
+        print('get_transaction_type $response');
         print(response.toString());
         response['transactions'].forEach((e) {
           transactionData.add(Transaction.fromJson(e));
@@ -51,7 +50,7 @@ class TransactionController extends GetxController {
         });
       }
     } catch (error) {
-      print(error);
+      print("get_transaction_type$error");
     } finally {
       isLoading.value = false;
     }

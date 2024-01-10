@@ -55,7 +55,7 @@ class AccountDetailsController extends GetxController {
         // Send the request and handle the response
         var response = await request.send();
 
-        if (response.statusCode == 201) {
+        if (response.statusCode == 200) {
           Get.snackbar("Done", 'Image uploaded successfully',
               backgroundColor: Colors.blue, colorText: Colors.black);
           print('Image uploaded successfully');

@@ -22,14 +22,17 @@ class OnBordingLogoAndTitle extends StatelessWidget {
         ),
         Positioned(
           bottom: 0,
-          child: Text(
-            'Send money for free,at \n    lightning speed.',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: settingsController.isDarkMode.value
-                    ? Colors.white
-                    : Colors.black),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width / 1.1,
+            child: Text(
+              "on_Boarding_Title".tr,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: settingsController.isDarkMode.value
+                      ? Colors.white
+                      : Colors.black),
+            ),
           ),
         ),
       ],

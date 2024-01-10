@@ -26,10 +26,10 @@ class SignUpTwo extends StatelessWidget {
                   },
                   icon: Icon(Icons.arrow_back)),
             ),
-            HeadFirstTitle(title: 'Enter your information', des: ''),
+            HeadFirstTitle(title: 'Enter your information'.tr, des: ''),
             SizedBox(height: 50.h),
             CustomTextFormField(
-                hintText: 'First name',
+                hintText: 'First name'.tr,
                 controller: controller.firstNameControllerSignUpTwo,
                 textInputType: TextInputType.text,
                 validator: (value) {
@@ -41,7 +41,7 @@ class SignUpTwo extends StatelessWidget {
                 }),
             SizedBox(height: 15.h),
             CustomTextFormField(
-                hintText: 'Last name ',
+                hintText: 'Last name'.tr,
                 controller: controller.lastNameControllerSignUpTwo,
                 textInputType: TextInputType.text,
                 validator: (value) {
@@ -53,7 +53,7 @@ class SignUpTwo extends StatelessWidget {
                 }),
             SizedBox(height: 15.h),
             CustomTextFormField(
-                hintText: 'Email',
+                hintText: 'Email'.tr,
                 controller: controller.emailControllerSignUp,
                 textInputType: TextInputType.text,
                 validator: (value) {
@@ -66,7 +66,7 @@ class SignUpTwo extends StatelessWidget {
             SizedBox(height: 15.h),
             CustomTextFormField(
                 maxLength: 6,
-                hintText: 'Pin',
+                hintText: 'Pin'.tr,
                 controller: controller.passwordControllerSignUpOne,
                 textInputType: TextInputType.text,
                 validator: (value) {
@@ -88,8 +88,7 @@ class SignUpTwo extends StatelessWidget {
                     },
                   ),
                 ),
-                const Text(
-                    'I confirm that i have read and agree to \nthe user Agreement and PPD policy .'),
+                Text('policy1'.tr),
               ],
             ),
             const SizedBox(height: 16),
@@ -104,7 +103,7 @@ class SignUpTwo extends StatelessWidget {
                     },
                   ),
                 ),
-                const Text('You can inform me about campign and  \nupdates.'),
+                Text('policy2'.tr),
               ],
             ),
           ],

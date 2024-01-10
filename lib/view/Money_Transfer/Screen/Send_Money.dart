@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../Core/widgets/Styles.dart';
-import '../Widget/NestedTabBarSend.dart';
+import '../Widget/send/NestedTabBarSend.dart';
 
 class SendMoneyScreen extends StatelessWidget {
   const SendMoneyScreen({Key? key}) : super(key: key);
@@ -25,19 +25,19 @@ class SendMoneyScreen extends StatelessWidget {
                   onPressed: () {
                     Get.back();
                   },
-                  icon: Icon(Icons.arrow_back, size: 28),
+                  icon: const Icon(Icons.arrow_back, size: 28),
                 ),
                 Text(
                   'Send Money',
                   style: Styles.textStyleTitle24,
                 ),
-                ImageIcon(
+                const ImageIcon(
                   AssetImage('Assets/images/exclamation.png'),
                   size: 20,
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(child: NestedTabBar())

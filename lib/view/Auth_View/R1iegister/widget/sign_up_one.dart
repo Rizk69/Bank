@@ -22,8 +22,8 @@ class SignUpOne extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeadFirstTitle(
-          title: 'Sign up',
-          des: 'Sign up with email address or phone number',
+          title: 'Sign up'.tr,
+          des: 'Sign up des'.tr,
         ),
         SizedBox(height: 30.h),
         FutureBuilder(
@@ -48,7 +48,7 @@ class SignUpOne extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: CustomListPickerField(
-                      label: "Country",
+                      label: "Country".tr,
                       isRequired: true,
                       itemsCode: countryCodes,
                       itemsImage: countryImages,
@@ -82,7 +82,7 @@ class SignUpOne extends StatelessWidget {
 
                       return CustomTextFormField(
                         maxLength: maxLength,
-                        hintText: 'Enter phone number',
+                        hintText: 'Enter phone number'.tr,
                         prefix: const Icon(Icons.phone_outlined,
                             color: Colors.black),
                         textInputType: TextInputType.phone,

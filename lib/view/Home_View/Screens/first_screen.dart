@@ -1,4 +1,5 @@
 import 'package:MBAG/helper/LoadingData.dart';
+import 'package:MBAG/view/Auth_View/Add_Id_Image/Screen/AddImage/AddImagefront.dart';
 import 'package:MBAG/view/NotificationView/Screen/NotificationScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +28,8 @@ import '../model/HomeModel.dart';
 class FirstScreen extends StatelessWidget {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  final RefreshController _refreshController1 =
+      RefreshController(initialRefresh: false);
   final SettingsController settingsController = Get.find();
 
   final AccountDetailsController userController =
@@ -45,7 +48,7 @@ class FirstScreen extends StatelessWidget {
             return ShimmerLoadingHome();
           } else if (homeController.isDataLoaded.value) {
             return SmartRefresher(
-              onRefresh: () => homeControllerGetData.refreshDataHome(),
+              onRefresh: () => homeController.refreshDataHome(),
               enablePullDown: true,
               controller: _refreshController,
               child: Padding(
@@ -101,7 +104,7 @@ class FirstScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 15.h),
                       homeController.homeModel.user?.froutid != null
-                          ? SizedBox()
+                          ? const SizedBox()
                           : InkWell(
                               onTap: () {
                                 Get.to(() => CameraScreenId());
@@ -109,7 +112,7 @@ class FirstScreen extends StatelessWidget {
                               child: _cheakIdCard()),
                       SizedBox(height: 15.h),
                       homeController.homeModel.user?.img != null
-                          ? SizedBox()
+                          ? const SizedBox()
                           : InkWell(
                               onTap: () {
                                 Get.to(() => CameraScreen());
@@ -124,7 +127,7 @@ class FirstScreen extends StatelessWidget {
                         onTap: () {
                           Get.to(() => CashbackScreen());
                         },
-                        child: _buildListTile('CASHBACK'),
+                        child: _buildListTile('CASHBACK'.tr),
                       ),
                       SizedBox(height: 10.h),
                       _buildPharmacyContainer(
@@ -373,8 +376,9 @@ class FirstScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Add Profile Photo', style: Styles.textStyleTitle16),
-                  Text('You can add a photo', style: Styles.textStyleTitle12),
+                  Text('Add Profile Photo'.tr, style: Styles.textStyleTitle16),
+                  Text('You can add a photo'.tr,
+                      style: Styles.textStyleTitle12),
                 ],
               ),
               Spacer(),
@@ -426,7 +430,7 @@ class FirstScreen extends StatelessWidget {
               ),
               SizedBox(width: 10.h),
               Text(
-                'Please Enter \nPersonal ID Card Image',
+                'Please Enter \nPersonal ID Card Image'.tr,
                 style: Styles.textStyleTitle16,
                 maxLines: 2,
               ),
@@ -447,7 +451,7 @@ class FirstScreen extends StatelessWidget {
       onTap: () {
         Get.to(() => AccountTransactions());
       },
-      child: _buildListTile('ACCOUNT TRANSACTION'),
+      child: _buildListTile('ACCOUNT TRANSACTION'.tr),
     );
   }
 

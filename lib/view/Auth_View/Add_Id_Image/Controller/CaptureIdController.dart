@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:MBAG/Core/http_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../../Core/cache_helper.dart';
 import '../../../Home_View/Screens/home_screen.dart';
-import '../Screen/CaptureIdScreen.dart';
+import '../Screen/AddImage/ImageSubment.dart';
 
 enum CurrentScreen {
   CameraScreen,
@@ -99,12 +100,12 @@ class CameraIdController extends GetxController {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
-        'Accept-Language': 'en',
+        'Accept-Language': HttpHelper.languageCode,
       });
 
       var response = await request.send();
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         Get.offAll(() => HomeScreen());
         print('Images uploaded successfully');
       } else {
@@ -146,7 +147,7 @@ class CameraController extends GetxController {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',
-          'Accept-Language': 'en',
+          'Accept-Language': HttpHelper.languageCode,
         });
 
         var response = await request.send();
@@ -155,10 +156,9 @@ class CameraController extends GetxController {
         if (response.statusCode == 200 || response.statusCode == 201) {
           print('Image uploaded successfully');
           print('Response: ${await response.stream.bytesToString()}');
-          Get.snackbar("Done", '', backgroundColor: Colors.blue);
-          Get.off(() => HomeScreen());
+          Get.snackbar('Successful'.tr, '', backgroundColor: Colors.blue);
+          Get.offAll(() => HomeScreen());
         } else {
-          // تحديث رسائل الخطأ
           var reason = response.reasonPhrase ?? 'Unknown error';
           Get.snackbar("Warning!", reason, backgroundColor: Colors.red);
           print('Error uploading image: $reason');
